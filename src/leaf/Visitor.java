@@ -7,8 +7,6 @@ import leaf.exception.*;
 import leaf.language_leaf.*;
 import leaf.structure.*;
 
-// java -jar ./sablecc.jar -d src -p leaf ./language.sablecc
-
 public class Visitor extends Walker {
 	private Engine engine;
 	private Data data;
