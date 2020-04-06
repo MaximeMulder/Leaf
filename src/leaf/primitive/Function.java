@@ -32,8 +32,6 @@ public class Function extends ValueFunction {
 			engine.setVariable(this.parameters.get(i), arguments.get(i));
 		}
 		
-		engine.setScope(this.scope);
-		
 		Value value = null;
 		
 		try {
@@ -41,6 +39,8 @@ public class Function extends ValueFunction {
 		} catch (ControlReturn control) {
 			value = control.getValue();
 		}
+		
+		engine.setScope(this.scope);
 			
 		return value;
 	}
