@@ -1,0 +1,24 @@
+/**
+ *
+ * This file aims to provide examples of working features of this project language.
+ *
+ */
+
+function new_person(forename, surname, age) {
+	person = new();
+	person.forename = forename;
+	person.surname = surname;
+	person.age = age;
+	return person;
+};
+
+say_hello = function(person) {
+	print("I am " + person.forename + " " + person.surname + ".");
+	if person.age >= 18 {
+		print("I am " + person.age.to_string() + " years old.");
+	} else {
+		print("I am not yet an adult");
+	};
+};
+
+say_hello(new_person("Jean", "Tremblay", 27));
