@@ -1,0 +1,166 @@
+Language leaf;
+
+Lexer
+
+	digit = '0' .. '9';
+	letter = ('A' .. 'Z') | ('a' .. 'z') | '_';
+
+	number = digit+;
+	string = Shortest '"' (Any - endline)* '"';
+	identifier = letter+;
+
+	whitespace = #9 | ' ';
+	endline = #13 | #10;
+	comment_block = Shortest '/*' Any* '*/';
+	comment_line = Shortest '//' (Any - endline)*;
+
+	operator1 = '*' | '/';
+	operator2 = '+' | '-';
+	operator3 = '<' | '>' | '<=' | '>=';
+	operator4 = '==' | '!=';
+	operator5 = '&&';
+	operator6 = '||';
+
+	Ignored
+		whitespace, endline, comment_block, comment_line;
+
+Parser
+
+	file = statements;
+
+	// Statements
+
+	statements
+		= {some:} statements statement
+		| {none:}
+		;
+
+	statement
+		= {expression:} expression ';'
+		;
+
+	structure
+		= {class:} class
+		| {function:} function
+		| {block:} block
+		| {if:} 'if' [condition:] expression block else_option
+		| {loop:} 'loop' block
+		| {while:} 'while' [condition:] expression block
+		| {for:} 'for' identifier 'in' expression block
+		;
+
+	else_option
+		= {some:} 'else' block
+		| {none:}
+		;
+
+	block = '{' statements '}';
+
+	// Expressions
+
+	expression
+		= {null:} 'null'
+		| {true:}  'true' 
+		| {false:} 'false'
+
+		| {number:}   number
+		| {string:}   string
+		| {variable:} identifier
+
+		| {structure:} structure
+
+		| {return:} 'return' expression
+		| {break:} 'break' expression
+		| {continue:} 'continue' expression
+		
+		| {group:} '(' expression ')'
+		| {chain:} expression '.' identifier
+		| {call:} expression '(' arguments ')'
+		
+		| {assignment:} [reference:] expression '=' expression
+		
+		| {operation1:} [left:] expression [operator:] operator1 [right:] expression
+		| {operation2:} [left:] expression [operator:] operator2 [right:] expression
+		| {operation3:} [left:] expression [operator:] operator3 [right:] expression
+		| {operation4:} [left:] expression [operator:] operator4 [right:] expression
+		| {operation5:} [left:] expression [operator:] operator5 [right:] expression
+		| {operation6:} [left:] expression [operator:] operator6 [right:] expression
+		;
+
+	Priority
+		Left chain, call;
+		Left operation1;
+		Left operation2;
+		Left operation3;
+		Left operation4;
+		Left operation5;
+		Left operation6;
+		Right return, break, continue;
+		Left assignment;
+
+	arguments
+		= {some:} argument arguments_more
+		| {none:}
+		;
+
+	arguments_more
+		= {some:} arguments_more ',' argument
+		| {none:}
+		;
+
+	argument = expression;
+
+	// Functions
+
+	function = 'function' function_name '(' parameters ')' block;
+
+	function_name
+		= {some:} identifier
+		| {none:}
+		;
+
+	parameters
+		= {some:} parameter parameters_more
+		| {none:}
+		;
+
+	parameters_more
+		= {some:} parameters_more ',' parameter
+		| {none:}
+		;
+
+	parameter = identifier;
+
+	// Classes
+
+	class = 'class' class_name class_parent '{' class_statements '}';
+
+	class_name
+		= {some:} identifier
+		| {none:}
+		;
+
+	class_parent
+		= {some:} ':' identifier
+		| {none:}
+		;
+
+	class_statements
+		= {some:} class_statements class_statement
+		| {none:}
+		;
+
+	class_statement = class_visibility class_member;
+
+	class_visibility
+		= {public:}    'public'
+		| {protected:} 'protected'
+		| {private:}   'private'
+		| {default:}
+		; 
+
+	class_member
+		= {method:} function
+		| {class:} class
+		| {attribute:} identifier
+		;

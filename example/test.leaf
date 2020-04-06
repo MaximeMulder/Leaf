@@ -1,0 +1,11 @@
+function hello() {
+	object = new();
+	object.a = "Hello";
+	return object.a;
+};
+
+function world() {
+	return "World";
+};
+
+print(2.to_string());
