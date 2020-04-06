@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.exception.*;
+import leaf.exception.Error;
 import leaf.language_leaf.*;
 import leaf.structure.*;
 
@@ -23,22 +24,22 @@ public class Visitor extends Walker {
 		this.parameters = null;
 	}
 	
-	private Data getData(Node node) throws Fail {
+	private Data getData(Node node) throws Error {
 		node.apply(this);
 		Data data = this.data;
 		this.data = null;
 		return data;
 	}
 	
-	private Value getValue(Node node) throws Fail {
+	private Value getValue(Node node) throws Error {
 		Data data = this.getData(node);
 		if (data == null) {
-			throw new Fail("Data error.");
+			throw new ErrorUndefined();
 		}
 		
 		Value value = this.engine.read(data);
 		if (value == null) {
-			throw new Fail("Undefined error.");
+			throw new ErrorUndefined();
 		}
 		
 		return value;

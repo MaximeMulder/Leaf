@@ -1,6 +1,7 @@
 package leaf.structure;
 
-import leaf.exception.Fail;
+import leaf.exception.ErrorType;
+import leaf.exception.ErrorWrite;
 
 public abstract class Value extends Data {
 	@Override
@@ -10,11 +11,11 @@ public abstract class Value extends Data {
 
 	@Override
 	void write(Value value) {
-		throw new Fail("Write error.");
+		throw new ErrorWrite();
 	}
 
 	private void cast(ValueClass type) {
-		throw new Fail("Type error.");
+		throw new ErrorType();
 	}
 	
 	ValueBoolean castBoolean(Engine engine) {

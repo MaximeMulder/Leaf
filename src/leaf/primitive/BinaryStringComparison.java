@@ -1,6 +1,6 @@
 package leaf.primitive;
 
-import leaf.exception.Fail;
+import leaf.exception.Error;
 import leaf.structure.*;
 
 public class BinaryStringComparison extends Binary {
@@ -8,7 +8,7 @@ public class BinaryStringComparison extends Binary {
 	public Value execute(Engine engine, Value left, Value right) {
 		try {
 			return engine.newBoolean(engine.castString(left).getPrimitive().equals(engine.castString(right).getPrimitive()));
-		} catch (Fail fail) {
+		} catch (Error error) {
 			return engine.newFalse();
 		}
 	}

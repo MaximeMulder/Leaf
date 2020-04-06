@@ -2,7 +2,7 @@ package leaf.primitive;
 
 import java.util.List;
 
-import leaf.exception.Fail;
+import leaf.exception.ErrorAssertion;
 import leaf.structure.Engine;
 import leaf.structure.Value;
 import leaf.structure.ValueFunction;
@@ -16,7 +16,7 @@ public class PrimitiveAssert extends ValueFunction {
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
 		if (!engine.castBoolean(arguments.get(0)).getPrimitive()) {
-			throw new Fail("Assertion error.");
+			throw new ErrorAssertion();
 		}
 		
 		return null;

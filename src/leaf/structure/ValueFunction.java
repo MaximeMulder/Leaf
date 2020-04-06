@@ -2,7 +2,7 @@ package leaf.structure;
 
 import java.util.List;
 
-import leaf.exception.Fail;
+import leaf.exception.ErrorArguments;
 
 public abstract class ValueFunction extends Value {
 	protected ValueFunction() {
@@ -21,7 +21,7 @@ public abstract class ValueFunction extends Value {
 	
 	public Value call(Engine engine, List<Value> arguments) {
 		if (!this.arguments(arguments)) {
-			throw new Fail("Arguments error.");
+			throw new ErrorArguments();
 		}
 		
 		return this.execute(engine, arguments);

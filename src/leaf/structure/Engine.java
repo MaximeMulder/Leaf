@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.Visitor;
-import leaf.exception.Fail;
+import leaf.exception.ErrorUndefined;
 import leaf.language_leaf.NBlock;
 import leaf.language_leaf.Node;
 import leaf.primitive.*;
@@ -115,7 +115,7 @@ public class Engine {
 	public Value operation(String operator, Value left, Value right) {
 		ValueFunction function = left.getType(this).getOperator(operator);
 		if (function == null) {
-			throw new Fail("Operator error.");
+			throw new ErrorUndefined();
 		}
 		
 		List<Value> operands = new ArrayList<Value>();
