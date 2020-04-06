@@ -102,9 +102,9 @@ public class Visitor extends Walker {
 	@Override
 	public void caseStructure_If(NStructure_If node) {
 		if (this.engine.castBoolean(this.getValue(node.get_Condition())).getPrimitive()) {
-			node.get_Block();
+			this.visit(node.get_Block());
 		} else {
-			node.get_ElseOption();
+			this.visit(node.get_ElseOption());
 		}
 	}
 	
