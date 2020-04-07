@@ -14,6 +14,6 @@ public class PrimitiveNew extends ValueFunction {
 
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
-		return engine.newInstance(engine.getTypeObject());
+		return engine.getValues().getInstance(engine.getTypeObject());
 	}
 }

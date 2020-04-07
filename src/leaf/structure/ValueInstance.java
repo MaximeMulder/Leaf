@@ -7,7 +7,7 @@ public class ValueInstance extends Value {
 	private ValueClass type;
 	private Map<String, Variable> attributes;
 	
-	ValueInstance(ValueClass type) {
+	public ValueInstance(ValueClass type) {
 		super();
 		this.type = type;
 		this.attributes = new HashMap<String, Variable>();

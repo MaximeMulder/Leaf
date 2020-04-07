@@ -14,6 +14,6 @@ public class MethodBooleanToString extends ValueFunction {
 	
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
-		return engine.newString(Boolean.toString(engine.castBoolean(arguments.get(0)).getPrimitive()));
+		return engine.getValues().getString(Boolean.toString(engine.castBoolean(arguments.get(0)).getPrimitive()));
 	}
 }

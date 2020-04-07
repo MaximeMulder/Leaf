@@ -14,6 +14,6 @@ public class MethodIntegerToString extends ValueFunction {
 	
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
-		return engine.newString(Integer.toString(engine.castInteger(arguments.get(0)).getPrimitive()));
+		return engine.getValues().getString(Integer.toString(engine.castInteger(arguments.get(0)).getPrimitive()));
 	}
 }

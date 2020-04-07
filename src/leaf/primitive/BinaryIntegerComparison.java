@@ -8,9 +8,9 @@ public class BinaryIntegerComparison extends Binary {
 	@Override
 	public Value execute(Engine engine, Value left, Value right) {
 		try {
-			return engine.newBoolean(engine.castInteger(left).getPrimitive() == engine.castInteger(right).getPrimitive());
+			return engine.getValues().getBoolean(engine.castInteger(left).getPrimitive() == engine.castInteger(right).getPrimitive());
 		} catch (Error error) {
-			return engine.newFalse();
+			return engine.getValues().getBooleanFalse();
 		}
 	}
 }

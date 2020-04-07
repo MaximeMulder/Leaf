@@ -6,6 +6,6 @@ import leaf.structure.Value;
 public class BinaryObjectComparison extends Binary {
 	@Override
 	public Value execute(Engine engine, Value left, Value right) {
-		return engine.newBoolean(left == right);
+		return engine.getValues().getBoolean(left == right);
 	}
 }

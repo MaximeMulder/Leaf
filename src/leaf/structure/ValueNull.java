@@ -1,7 +1,7 @@
 package leaf.structure;
 
 public class ValueNull extends Value {
-	ValueNull() {
+	public ValueNull() {
 		super();
 	}
 

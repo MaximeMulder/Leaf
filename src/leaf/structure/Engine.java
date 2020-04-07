@@ -5,11 +5,13 @@ import java.util.List;
 
 import leaf.Visitor;
 import leaf.exception.ErrorUndefined;
-import leaf.language_leaf.NBlock;
+import leaf.factory.*;
 import leaf.language_leaf.Node;
 import leaf.primitive.*;
 
 public class Engine {
+	private FactoryValues values;
+	
 	private Visitor visitor;
 	
 	private Scope scope;
@@ -23,17 +25,23 @@ public class Engine {
 	private ValueClass typeString;
 	
 	public Engine() {
-		this.visitor = new Visitor(this);
+		FactoryTypes types = new FactoryTypes();
 		
-		this.typeBoolean   = this.newTypeBoolean();
-		this.typeClass     = this.newTypeClass();
-		this.typeFunction  = this.newTypeFunction();
-		this.typeInteger   = this.newTypeInteger();
-		this.typeObject    = this.newTypeObject();
-		this.typeReference = this.newTypeReference();
-		this.typeString    = this.newTypeString();
+		this.typeBoolean   = types.getBoolean();
+		this.typeClass     = types.getType();
+		this.typeFunction  = types.getFunction();
+		this.typeInteger   = types.getInteger();
+		this.typeObject    = types.getObject();
+		this.typeReference = types.getReference();
+		this.typeString    = types.getString();
 		
 		this.scope = this.newScope();
+		
+		this.visitor = new Visitor(this);
+	}
+	
+	public FactoryValues getValues() {
+		return this.values;
 	}
 	
 	public void visit(Node node) {
@@ -96,6 +104,10 @@ public class Engine {
 	
 	public void setFrame(Scope scope) {
 		this.scope = new Scope(scope);
+	}
+	
+	public Scope getScope() {
+		return this.scope;
 	}
 	
 	public void setScope(Scope scope) {
@@ -161,42 +173,6 @@ public class Engine {
 		return variable;
 	}
 	
-	public ValueBoolean newBoolean(boolean primitive) {
-		return new ValueBoolean(primitive);
-	}
-	
-	public ValueFunction newFunction(List<String> parameters, NBlock body) {
-		return new Function(this.scope, parameters, body);
-	}
-	
-	public ValueInteger newInteger(int primitive) {
-		return new ValueInteger(primitive);
-	}
-	
-	public ValueInstance newInstance(ValueClass type) {
-		return new ValueInstance(this.getTypeObject());
-	}
-	
-	public ValueString newString(String primitive) {
-		return new ValueString(primitive);
-	}
-	
-	public ValueNull newNull() {
-		return new ValueNull();
-	}
-	
-	public ValueBoolean newBooleanOpposite(ValueBoolean value) {
-		return this.newBoolean(value.getPrimitive());
-	}
-	
-	public ValueBoolean newTrue() {
-		return this.newBoolean(true);
-	}
-	
-	public ValueBoolean newFalse() {
-		return this.newBoolean(false);
-	}
-	
 	// Cast functions.
 	
 	public ValueBoolean castBoolean(Value value) {
@@ -232,65 +208,6 @@ public class Engine {
 	}
 	
 	// Private utilities.
-	
-	private ValueClass newTypeBoolean() {
-		ValueClass type = new ValueClass();
-		
-		type.addOperator("==", new BinaryBooleanComparison());
-		
-		type.addMethod("to_string", new MethodBooleanToString());
-		
-		return type;
-	}
-	
-	private ValueClass newTypeClass() {
-		return new ValueClass();
-	}
-	
-	private ValueClass newTypeFunction() {
-		return new ValueClass();
-	}
-	
-	private ValueClass newTypeInteger() {
-		ValueClass type = new ValueClass();
-		
-		type.addOperator("+",  new BinaryIntegerAddition());
-		type.addOperator("-",  new BinaryIntegerSubtraction());
-		type.addOperator("*",  new BinaryIntegerMultiplication());
-		type.addOperator("/",  new BinaryIntegerDivision());
-		type.addOperator("<",  new BinaryIntegerOrderLesser());
-		type.addOperator("==", new BinaryIntegerComparison());
-		
-		type.addMethod("to_string", new MethodIntegerToString());
-		
-		return type;
-	}
-	
-	private ValueClass newTypeObject() {
-		ValueClass type = new ValueClass();
-
-		type.addOperator(">",  new BinaryObjectOrderGreater());
-		type.addOperator("<=", new BinaryObjectOrderLesserEqual());
-		type.addOperator(">=", new BinaryObjectOrderGreaterEqual());
-		type.addOperator("==", new BinaryObjectComparison());
-		type.addOperator("!=", new BinaryObjectDifference());
-		
-		return type;
-	}
-	
-	private ValueClass newTypeReference() {
-		return new ValueClass();
-	}
-	
-	private ValueClass newTypeString() {
-		ValueClass type = new ValueClass();
-		
-		type.addOperator("+",  new BinaryStringAddition());
-		type.addOperator("<",  new BinaryStringOrderLesser());
-		type.addOperator("==", new BinaryStringComparison());
-		
-		return type;
-	}
 	
 	private Scope newScope() {
 		Scope scope = new Scope(null);

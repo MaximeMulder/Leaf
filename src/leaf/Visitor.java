@@ -138,28 +138,28 @@ public class Visitor extends Walker {
 	
 	@Override
 	public void caseExpression_Null(NExpression_Null node) {
-		this.setData(this.engine.newNull());
+		this.setData(this.engine.getValues().getNull());
 	}
 	
 	@Override
 	public void caseExpression_True(NExpression_True node) {
-		this.setData(this.engine.newTrue());
+		this.setData(this.engine.getValues().getBooleanTrue());
 	}
 	
 	@Override
 	public void caseExpression_False(NExpression_False node) {
-		this.setData(this.engine.newFalse());
+		this.setData(this.engine.getValues().getBooleanFalse());
 	}
 	
 	@Override
 	public void caseExpression_Number(NExpression_Number node) {
-		this.setData(this.engine.newInteger(Integer.parseInt(node.get_Number().getText())));
+		this.setData(this.engine.getValues().getInteger(Integer.parseInt(node.get_Number().getText())));
 	}
 	
 	@Override
 	public void caseExpression_String(NExpression_String node) {
 		String string = node.get_String().getText();
-		this.setData(this.engine.newString(string.substring(1, string.length() - 1)));
+		this.setData(this.engine.getValues().getString(string.substring(1, string.length() - 1)));
 	}
 	
 	@Override
@@ -257,7 +257,7 @@ public class Visitor extends Walker {
 	public void caseFunction(NFunction node) {
 		this.parameters = new ArrayList<String>();
 		this.visit(node.get_Parameters());
-		ValueFunction function = this.engine.newFunction(this.getParameters(), node.get_Block());
+		ValueFunction function = this.engine.getValues().getFunction(this.getParameters(), node.get_Block());
 		this.setData(function);
 		String name = this.getName(node.get_FunctionName());
 		if (name != null) {

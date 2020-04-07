@@ -3,7 +3,7 @@ package leaf.structure;
 public class ValueBoolean extends Value {
 	private boolean primitive;
 	
-	ValueBoolean(boolean primitive) {
+	public ValueBoolean(boolean primitive) {
 		super();
 		this.primitive = primitive;
 	}

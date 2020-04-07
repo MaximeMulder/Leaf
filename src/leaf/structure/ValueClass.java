@@ -7,12 +7,12 @@ public class ValueClass extends Value {
 	private Map<String, ValueFunction> methods;
 	private Map<String, ValueFunction> operators;
 	
-	ValueClass() {
+	public ValueClass() {
 		super();
-		this.methods = new HashMap<String, ValueFunction>();
+		this.methods   = new HashMap<String, ValueFunction>();
 		this.operators = new HashMap<String, ValueFunction>();
 	}
-
+	
 	@Override
 	ValueClass getType(Engine engine) {
 		return engine.getTypeClass();
@@ -27,7 +27,7 @@ public class ValueClass extends Value {
 		return this.methods.get(method);
 	}
 	
-	void addMethod(String name, ValueFunction function) {
+	public void addMethod(String name, ValueFunction function) {
 		this.methods.put(name, function);
 	}
 	
@@ -35,7 +35,7 @@ public class ValueClass extends Value {
 		return this.operators.get(operator);
 	}
 	
-	void addOperator(String operator, ValueFunction function) {
+	public void addOperator(String operator, ValueFunction function) {
 		this.operators.put(operator, function);
 	}
 }

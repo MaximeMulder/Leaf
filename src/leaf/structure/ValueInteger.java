@@ -3,7 +3,7 @@ package leaf.structure;
 public class ValueInteger extends Value {
 	private int primitive;
 	
-	ValueInteger(int primitive) {
+	public ValueInteger(int primitive) {
 		super();
 		this.primitive = primitive;
 	}

@@ -6,6 +6,6 @@ import leaf.structure.Value;
 public class BinaryIntegerSubtraction extends Binary {
 	@Override
 	public Value execute(Engine engine, Value left, Value right) {
-		return engine.newInteger(engine.castInteger(left).getPrimitive() - engine.castInteger(right).getPrimitive());
+		return engine.getValues().getInteger(engine.castInteger(left).getPrimitive() - engine.castInteger(right).getPrimitive());
 	}
 }
