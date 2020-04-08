@@ -37,6 +37,8 @@ public class Engine {
 		
 		this.scope = this.newScope();
 		
+		this.values = new FactoryValues(this);
+
 		this.visitor = new Visitor(this);
 	}
 	
