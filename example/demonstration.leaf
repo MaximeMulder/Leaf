@@ -14,10 +14,10 @@ function new_person(forename, surname, age) {
 
 say_hello = function(person) {
 	print("I am " + person.forename + " " + person.surname + ".");
-	if person.age >= 18 {
-		print("I am " + person.age.to_string() + " years old.");
-	} else {
+	if person.age < 19 {
 		print("I am not yet an adult");
+	} else {
+		print("I am " + person.age.to_string() + " years old.");
 	};
 };
 
