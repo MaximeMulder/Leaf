@@ -7,6 +7,10 @@ import leaf.structure.Value;
 import leaf.structure.ValueFunction;
 
 public class PrimitiveExit extends ValueFunction {
+	public PrimitiveExit() {
+		super(null);
+	}
+	
 	@Override
 	public boolean arguments(List<Value> arguments) {
 		return arguments.size() <= 1;

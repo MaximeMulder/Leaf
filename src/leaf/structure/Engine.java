@@ -159,11 +159,11 @@ public class Engine {
 	
 	// Read and write.
 	
-	public Value read(Data data) {
+	public Value read(IValue data) {
 		return data.read();
 	}
 	
-	public void write(Data data, Value value) {
+	public void write(IValue data, Value value) {
 		data.write(value);
 	}
 	

@@ -14,7 +14,8 @@ public class Function extends ValueFunction {
 	List<String> parameters;
 	NBlock body;
 	
-	public Function(Scope scope, List<String> parameters, NBlock body) {
+	public Function(String name, Scope scope, List<String> parameters, NBlock body) {
+		super(name);
 		this.scope = scope;
 		this.parameters = parameters;
 		this.body = body;

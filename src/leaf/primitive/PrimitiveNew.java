@@ -7,6 +7,10 @@ import leaf.structure.Value;
 import leaf.structure.ValueFunction;
 
 public class PrimitiveNew extends ValueFunction {
+	public PrimitiveNew() {
+		super(null);
+	}
+	
 	@Override
 	public boolean arguments(List<Value> arguments) {
 		return arguments.size() == 0;

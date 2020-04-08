@@ -4,9 +4,17 @@ import java.util.List;
 
 import leaf.exception.ErrorArguments;
 
-public abstract class ValueFunction extends Value {
-	protected ValueFunction() {
+public abstract class ValueFunction extends Value implements IName {
+	private String name;
+	
+	protected ValueFunction(String name) {
 		super();
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
 	}
 
 	@Override

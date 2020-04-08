@@ -7,6 +7,10 @@ import leaf.structure.Value;
 import leaf.structure.ValueFunction;
 
 public class MethodIntegerToString extends ValueFunction {
+	public MethodIntegerToString() {
+		super(null);
+	}
+	
 	@Override
 	public boolean arguments(List<Value> arguments) {
 		return arguments.size() == 1;

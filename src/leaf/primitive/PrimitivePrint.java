@@ -7,6 +7,10 @@ import leaf.structure.Value;
 import leaf.structure.ValueFunction;
 
 public class PrimitivePrint extends ValueFunction {
+	public PrimitivePrint() {
+		super(null);
+	}
+	
 	@Override
 	public boolean arguments(List<Value> arguments) {
 		return true;

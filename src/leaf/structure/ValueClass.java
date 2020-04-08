@@ -3,14 +3,21 @@ package leaf.structure;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ValueClass extends Value {
+public class ValueClass extends Value implements IName {
+	private String name;
 	private Map<String, ValueFunction> methods;
 	private Map<String, ValueFunction> operators;
 	
-	public ValueClass() {
+	public ValueClass(String name) {
 		super();
+		this.name = name;
 		this.methods   = new HashMap<String, ValueFunction>();
 		this.operators = new HashMap<String, ValueFunction>();
+	}
+	
+	@Override
+	public String getName() {
+		return this.name;
 	}
 	
 	@Override

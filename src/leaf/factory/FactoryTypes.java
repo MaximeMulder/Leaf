@@ -5,7 +5,7 @@ import leaf.structure.ValueClass;
 
 public class FactoryTypes {
 	public ValueClass getBoolean() {
-		ValueClass type = new ValueClass();
+		ValueClass type = new ValueClass("Boolean");
 		
 		type.addOperator("==", new BinaryBooleanComparison());
 		
@@ -15,15 +15,15 @@ public class FactoryTypes {
 	}
 	
 	public ValueClass getType() {
-		return new ValueClass();
+		return new ValueClass("Class");
 	}
 	
 	public ValueClass getFunction() {
-		return new ValueClass();
+		return new ValueClass("Function");
 	}
 	
 	public ValueClass getInteger() {
-		ValueClass type = new ValueClass();
+		ValueClass type = new ValueClass("Integer");
 		
 		type.addOperator("+",  new BinaryIntegerAddition());
 		type.addOperator("-",  new BinaryIntegerSubtraction());
@@ -38,7 +38,7 @@ public class FactoryTypes {
 	}
 	
 	public ValueClass getObject() {
-		ValueClass type = new ValueClass();
+		ValueClass type = new ValueClass("Object");
 
 		type.addOperator(">",  new BinaryObjectOrderGreater());
 		type.addOperator("<=", new BinaryObjectOrderLesserEqual());
@@ -50,11 +50,11 @@ public class FactoryTypes {
 	}
 	
 	public ValueClass getReference() {
-		return new ValueClass();
+		return new ValueClass("Reference");
 	}
 	
 	public ValueClass getString() {
-		ValueClass type = new ValueClass();
+		ValueClass type = new ValueClass("String");
 		
 		type.addOperator("+",  new BinaryStringAddition());
 		type.addOperator("<",  new BinaryStringOrderLesser());

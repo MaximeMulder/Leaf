@@ -36,8 +36,8 @@ public class FactoryValues {
 		return this.getBoolean(false);
 	}
 	
-	public ValueFunction getFunction(List<String> parameters, NBlock body) {
-		return new Function(this.engine.getScope(), parameters, body);
+	public ValueFunction getFunction(String name, List<String> parameters, NBlock body) {
+		return new Function(name, this.engine.getScope(), parameters, body);
 	}
 	
 	public ValueInteger getInteger(int primitive) {

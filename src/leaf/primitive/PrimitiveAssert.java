@@ -8,6 +8,10 @@ import leaf.structure.Value;
 import leaf.structure.ValueFunction;
 
 public class PrimitiveAssert extends ValueFunction {
+	public PrimitiveAssert() {
+		super(null);
+	}
+	
 	@Override
 	public boolean arguments(List<Value> arguments) {
 		return arguments.size() == 1;

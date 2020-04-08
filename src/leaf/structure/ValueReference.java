@@ -9,12 +9,12 @@ public class ValueReference extends Value {
 	}
 	
 	@Override
-	Value read() {
+	public Value read() {
 		return this.value;
 	}
 	
 	@Override
-	void write(Value value) {
+	public void write(Value value) {
 		this.value = value;
 	}
 

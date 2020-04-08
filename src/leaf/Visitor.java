@@ -10,7 +10,8 @@ import leaf.structure.*;
 
 public class Visitor extends Walker {
 	private Engine engine;
-	private Data data;
+	
+	private IValue data;
 	private Value self;
 	private String name;
 	private List<Value> arguments;
@@ -21,18 +22,18 @@ public class Visitor extends Walker {
 		this.data = null;
 		this.self = null;
 		this.arguments = null;
-		this.parameters = null;
+		this.parameters = new ArrayList<String>();;
 	}
 	
-	private Data getData(Node node) throws Error {
+	private IValue getData(Node node) throws Error {
 		node.apply(this);
-		Data data = this.data;
+		IValue data = this.data;
 		this.data = null;
 		return data;
 	}
 	
 	private Value getValue(Node node) throws Error {
-		Data data = this.getData(node);
+		IValue data = this.getData(node);
 		if (data == null) {
 			throw new ErrorUndefined();
 		}
@@ -45,7 +46,7 @@ public class Visitor extends Walker {
 		return value;
 	}
 	
-	private void setData(Data data) {
+	private void setData(IValue data) {
 		this.data = data;
 	}
 	
@@ -80,7 +81,7 @@ public class Visitor extends Walker {
 	
 	private List<String> getParameters() {
 		List<String> parameters = this.parameters;
-		this.parameters = null;
+		this.parameters = new ArrayList<String>();
 		return parameters;
 	}
 	
@@ -186,7 +187,7 @@ public class Visitor extends Walker {
 	public void caseExpression_Chain(NExpression_Chain node) {
 		Value value = this.getValue(node.get_Expression());
 		String name = this.getName(node.get_Identifier());
-		Data data = null;
+		IValue data = null;
 		if (value instanceof ValueInstance) {
 			data = this.engine.getAttribute(this.engine.castInstance(value), name);
 			if (data != null) {
@@ -255,14 +256,14 @@ public class Visitor extends Walker {
 	
 	@Override
 	public void caseFunction(NFunction node) {
-		this.parameters = new ArrayList<String>();
 		this.visit(node.get_Parameters());
-		ValueFunction function = this.engine.getValues().getFunction(this.getParameters(), node.get_Block());
-		this.setData(function);
 		String name = this.getName(node.get_FunctionName());
+		ValueFunction function = this.engine.getValues().getFunction(name, this.getParameters(), node.get_Block());
 		if (name != null) {
 			this.engine.setVariable(name, function);
 		}
+
+		this.setData(function);
 	}
 	
 	@Override

@@ -7,6 +7,10 @@ import leaf.structure.Value;
 import leaf.structure.ValueFunction;
 
 public abstract class Binary extends ValueFunction {
+	public Binary() {
+		super(null);
+	}
+
 	@Override
 	public boolean arguments(List<Value> arguments) {
 		return arguments.size() == 2;

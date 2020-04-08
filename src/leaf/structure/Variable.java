@@ -1,6 +1,6 @@
 package leaf.structure;
 
-public class Variable extends Data {
+public class Variable implements IValue {
 	private String name;
 	private Value value;
 	
@@ -11,12 +11,12 @@ public class Variable extends Data {
 	}
 	
 	@Override
-	Value read() {
+	public Value read() {
 		return this.value;
 	}
 
 	@Override
-	void write(Value value) {
+	public void write(Value value) {
 		this.value = value;
 	}
 	

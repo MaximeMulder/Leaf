@@ -3,14 +3,14 @@ package leaf.structure;
 import leaf.exception.ErrorType;
 import leaf.exception.ErrorWrite;
 
-public abstract class Value extends Data {
+public abstract class Value implements IValue {
 	@Override
-	Value read() {
+	public Value read() {
 		return this;
 	}
 
 	@Override
-	void write(Value value) {
+	public void write(Value value) {
 		throw new ErrorWrite();
 	}
 
