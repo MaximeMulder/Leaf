@@ -4,6 +4,7 @@ import java.util.List;
 
 import leaf.structure.Engine;
 import leaf.structure.Value;
+import leaf.structure.ValueClass;
 import leaf.structure.ValueFunction;
 
 public class PrimitiveNew extends ValueFunction {
@@ -13,11 +14,18 @@ public class PrimitiveNew extends ValueFunction {
 	
 	@Override
 	public boolean arguments(List<Value> arguments) {
-		return arguments.size() == 0;
+		return arguments.size() <= 1;
 	}
 
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
-		return engine.getValues().getInstance(engine.getTypeObject());
+		ValueClass type;
+		if (arguments.size() == 1) {
+			type = engine.castClass(arguments.get(0));
+		} else {
+			type = engine.getTypeObject();
+		}
+		
+		return engine.getValues().getInstance(type);
 	}
 }

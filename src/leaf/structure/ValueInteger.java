@@ -9,12 +9,12 @@ public class ValueInteger extends Value {
 	}
 
 	@Override
-	ValueClass getType(Engine engine) {
+	public ValueClass getType(Engine engine) {
 		return engine.getTypeInteger();
 	}
 	
 	@Override
-	ValueInteger castInteger(Engine engine) {
+	public ValueInteger castInteger(Engine engine) {
 		return this;
 	}
 	

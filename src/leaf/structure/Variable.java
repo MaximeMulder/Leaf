@@ -4,10 +4,9 @@ public class Variable implements IValue {
 	private String name;
 	private Value value;
 	
-	Variable(String name) {
-		super();
+	public Variable(String name, Value value) {
 		this.name = name;
-		this.value = null;
+		this.value = value;
 	}
 	
 	@Override

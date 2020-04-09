@@ -21,16 +21,16 @@ public class ValueClass extends Value implements IName {
 	}
 	
 	@Override
-	ValueClass getType(Engine engine) {
+	public ValueClass getType(Engine engine) {
 		return engine.getTypeClass();
 	}
 	
 	@Override
-	ValueClass castClass(Engine engine) {
+	public ValueClass castClass(Engine engine) {
 		return this;
 	}
 	
-	ValueFunction getMethod(String method) {
+	public ValueFunction getMethod(String method) {
 		return this.methods.get(method);
 	}
 	
@@ -38,7 +38,7 @@ public class ValueClass extends Value implements IName {
 		this.methods.put(name, function);
 	}
 	
-	ValueFunction getOperator(String operator) {
+	public ValueFunction getOperator(String operator) {
 		return this.operators.get(operator);
 	}
 	

@@ -19,7 +19,7 @@ public class ValueReference extends Value {
 	}
 
 	@Override
-	ValueClass getType(Engine engine) {
+	public ValueClass getType(Engine engine) {
 		return engine.getTypeReference();
 	}
 }

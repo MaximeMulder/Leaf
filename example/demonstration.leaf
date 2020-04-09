@@ -4,21 +4,25 @@
  *
  */
 
+class Person {
+	function say_hello(self) {
+		print("I am " + self.forename + " " + self.surname + ".");
+		if self.age < 19 {
+			print("I am not yet an adult");
+		} else {
+			print("I am " + self.age.to_string() + " years old.");
+		};
+	};
+};
+
 function new_person(forename, surname, age) {
-	person = new();
+	person = new(Person);
 	person.forename = forename;
 	person.surname = surname;
 	person.age = age;
 	return person;
 };
 
-say_hello = function(person) {
-	print("I am " + person.forename + " " + person.surname + ".");
-	if person.age < 19 {
-		print("I am not yet an adult");
-	} else {
-		print("I am " + person.age.to_string() + " years old.");
-	};
-};
+object = new_person("Jean", "Tremblay", 27);
 
-say_hello(new_person("Jean", "Tremblay", 27));
+object.say_hello();

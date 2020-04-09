@@ -25,6 +25,8 @@ public class Engine {
 	private ValueClass typeString;
 	
 	public Engine() {
+		this.values = new FactoryValues(this);
+		
 		FactoryTypes types = new FactoryTypes();
 		
 		this.typeBoolean   = types.getBoolean();
@@ -36,8 +38,6 @@ public class Engine {
 		this.typeString    = types.getString();
 		
 		this.scope = this.newScope();
-		
-		this.values = new FactoryValues(this);
 
 		this.visitor = new Visitor(this);
 	}
@@ -92,14 +92,14 @@ public class Engine {
 			return variable;
 		}
 		
-		variable = new Variable(name);
+		variable = this.values.getVariable(name);
 		this.scope.setVariable(variable);
 		
 		return variable;
 	}
 	
 	public void setVariable(String name, Value value) {
-		this.scope.setVariable(this.newVariable(name, value));
+		this.scope.setVariable(this.values.getVariable(name, value));
 	}
 	
 	// Scope operations.
@@ -138,41 +138,12 @@ public class Engine {
 		return this.functionCall(function, operands);
 	}
 	
-	public Variable getAttribute(ValueInstance instance, String name) {
-		Variable attribute = instance.getAttribute(name);
-		if (attribute != null) {
-			return attribute;
-		}
-		
-		attribute = new Variable(name);
-		instance.setAttribute(attribute);
-		return attribute;
-	}
-	
 	public ValueFunction getMethod(Value value, String name) {
 		return value.getType(this).getMethod(name);
 	}
 	
 	public Value functionCall(ValueFunction function, List<Value> arguments) {
 		return function.call(this, arguments);
-	}
-	
-	// Read and write.
-	
-	public Value read(IValue data) {
-		return data.read();
-	}
-	
-	public void write(IValue data, Value value) {
-		data.write(value);
-	}
-	
-	// New data.
-	
-	public Variable newVariable(String name, Value value) {
-		Variable variable = new Variable(name);
-		variable.write(value);
-		return variable;
 	}
 	
 	// Cast functions.
@@ -213,20 +184,26 @@ public class Engine {
 	
 	private Scope newScope() {
 		Scope scope = new Scope(null);
+		/* ArrayList<IValue> values = new ArrayList<IValue>();
+		values.add(this.typeBoolean);
 		
-		scope.setVariable(this.newVariable("Boolean",   this.typeBoolean));
-		scope.setVariable(this.newVariable("Class",     this.typeClass));
-		scope.setVariable(this.newVariable("Function",  this.typeFunction));
-		scope.setVariable(this.newVariable("Integer",   this.typeInteger));
-		scope.setVariable(this.newVariable("Object",    this.typeObject));
-		scope.setVariable(this.newVariable("String",    this.typeString));
-		scope.setVariable(this.newVariable("Reference", this.typeReference));
+		for (IValue value : values) {
+			scope.setVariable(this.values.getVariable(value.getName(), value));
+		} */
+		
+		scope.setVariable(this.values.getVariable("Boolean",   this.typeBoolean));
+		scope.setVariable(this.values.getVariable("Class",     this.typeClass));
+		scope.setVariable(this.values.getVariable("Function",  this.typeFunction));
+		scope.setVariable(this.values.getVariable("Integer",   this.typeInteger));
+		scope.setVariable(this.values.getVariable("Object",    this.typeObject));
+		scope.setVariable(this.values.getVariable("String",    this.typeString));
+		scope.setVariable(this.values.getVariable("Reference", this.typeReference));
 
-		scope.setVariable(this.newVariable("assert", new PrimitiveAssert()));
-		scope.setVariable(this.newVariable("error",  new PrimitiveError()));
-		scope.setVariable(this.newVariable("exit",   new PrimitiveExit()));
-		scope.setVariable(this.newVariable("new",    new PrimitiveNew()));
-		scope.setVariable(this.newVariable("print",  new PrimitivePrint()));
+		scope.setVariable(this.values.getVariable("assert", new PrimitiveAssert()));
+		scope.setVariable(this.values.getVariable("error",  new PrimitiveError()));
+		scope.setVariable(this.values.getVariable("exit",   new PrimitiveExit()));
+		scope.setVariable(this.values.getVariable("new",    new PrimitiveNew()));
+		scope.setVariable(this.values.getVariable("print",  new PrimitivePrint()));
 		
 		return scope;
 	}

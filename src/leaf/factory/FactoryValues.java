@@ -5,6 +5,7 @@ import java.util.List;
 import leaf.language_leaf.NBlock;
 import leaf.primitive.Function;
 import leaf.structure.Engine;
+import leaf.structure.Value;
 import leaf.structure.ValueBoolean;
 import leaf.structure.ValueClass;
 import leaf.structure.ValueFunction;
@@ -12,12 +13,21 @@ import leaf.structure.ValueInstance;
 import leaf.structure.ValueInteger;
 import leaf.structure.ValueNull;
 import leaf.structure.ValueString;
+import leaf.structure.Variable;
 
 public class FactoryValues {
 	private Engine engine;
 	
 	public FactoryValues(Engine engine) {
 		this.engine = engine;
+	}
+	
+	public Variable getVariable(String name) {
+		return this.getVariable(name, null);
+	}
+	
+	public Variable getVariable(String name, Value value) {
+		return new Variable(name, value);
 	}
 	
 	public ValueBoolean getBoolean(boolean primitive) {

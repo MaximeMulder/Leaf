@@ -18,12 +18,12 @@ public abstract class ValueFunction extends Value implements IName {
 	}
 
 	@Override
-	ValueClass getType(Engine engine) {
+	public ValueClass getType(Engine engine) {
 		return engine.getTypeFunction();
 	}
 	
 	@Override
-	ValueFunction castFunction(Engine engine) {
+	public ValueFunction castFunction(Engine engine) {
 		return this;
 	}
 	

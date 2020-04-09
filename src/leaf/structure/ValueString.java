@@ -9,12 +9,12 @@ public class ValueString extends Value {
 	}
 
 	@Override
-	ValueClass getType(Engine engine) {
+	public ValueClass getType(Engine engine) {
 		return engine.getTypeString();
 	}
 	
 	@Override
-	ValueString castString(Engine engine) {
+	public ValueString castString(Engine engine) {
 		return this;
 	}
 	

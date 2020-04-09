@@ -150,7 +150,7 @@ Parser
 		| {none:}
 		;
 
-	class_statement = class_visibility class_member;
+	class_statement = class_visibility class_member ';';
 
 	class_visibility
 		= {public:}    'public'

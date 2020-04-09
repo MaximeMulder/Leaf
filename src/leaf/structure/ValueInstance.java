@@ -14,20 +14,20 @@ public class ValueInstance extends Value {
 	}
 	
 	@Override
-	ValueClass getType(Engine engine) {
+	public ValueClass getType(Engine engine) {
 		return this.type;
 	}
 	
 	@Override
-	ValueInstance castInstance(Engine engine) {
+	public ValueInstance castInstance(Engine engine) {
 		return this;
 	}
 	
-	Variable getAttribute(String name) {
+	public Variable getAttribute(String name) {
 		return this.attributes.get(name);
 	}
 	
-	void setAttribute(Variable variable) {
+	public void setAttribute(Variable variable) {
 		this.attributes.put(variable.getName(), variable);
 	}
 }

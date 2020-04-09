@@ -9,12 +9,12 @@ public class ValueBoolean extends Value {
 	}
 
 	@Override
-	ValueClass getType(Engine engine) {
+	public ValueClass getType(Engine engine) {
 		return engine.getTypeBoolean();
 	}
 	
 	@Override
-	ValueBoolean castBoolean(Engine engine) {
+	public ValueBoolean castBoolean(Engine engine) {
 		return this;
 	}
 	
