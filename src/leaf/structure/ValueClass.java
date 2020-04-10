@@ -3,30 +3,18 @@ package leaf.structure;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ValueClass extends Value implements IName {
-	private String name;
+public class ValueClass extends ValueName {
 	private Map<String, ValueFunction> methods;
 	private Map<String, ValueFunction> operators;
 	
-	public ValueClass(String name) {
-		super();
-		this.name = name;
+	public ValueClass(ValueClass type, String name) {
+		super(type, name);
 		this.methods   = new HashMap<String, ValueFunction>();
 		this.operators = new HashMap<String, ValueFunction>();
 	}
 	
 	@Override
-	public String getName() {
-		return this.name;
-	}
-	
-	@Override
-	public ValueClass getType(Engine engine) {
-		return engine.getTypeClass();
-	}
-	
-	@Override
-	public ValueClass castClass(Engine engine) {
+	public ValueClass castClass() {
 		return this;
 	}
 	

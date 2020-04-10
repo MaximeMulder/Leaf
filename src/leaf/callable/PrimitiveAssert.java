@@ -1,17 +1,13 @@
-package leaf.primitive;
+package leaf.callable;
 
 import java.util.List;
 
 import leaf.exception.ErrorAssertion;
+import leaf.structure.Callable;
 import leaf.structure.Engine;
 import leaf.structure.Value;
-import leaf.structure.ValueFunction;
 
-public class PrimitiveAssert extends ValueFunction {
-	public PrimitiveAssert() {
-		super(null);
-	}
-	
+public class PrimitiveAssert extends Callable {
 	@Override
 	public boolean arguments(List<Value> arguments) {
 		return arguments.size() == 1;
@@ -19,7 +15,7 @@ public class PrimitiveAssert extends ValueFunction {
 	
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
-		if (!engine.castBoolean(arguments.get(0)).getPrimitive()) {
+		if (!arguments.get(0).castBoolean().getPrimitive()) {
 			throw new ErrorAssertion();
 		}
 		

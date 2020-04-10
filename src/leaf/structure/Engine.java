@@ -7,10 +7,11 @@ import leaf.Visitor;
 import leaf.exception.ErrorUndefined;
 import leaf.factory.*;
 import leaf.language_leaf.Node;
-import leaf.primitive.*;
 
 public class Engine {
-	private FactoryValues values;
+	private FactoryPrimitives primitives;
+	private FactoryTypes      types;
+	private FactoryValues     values;
 	
 	private Visitor visitor;
 	
@@ -25,21 +26,30 @@ public class Engine {
 	private ValueClass typeString;
 	
 	public Engine() {
-		this.values = new FactoryValues(this);
+		this.primitives = new FactoryPrimitives(this);
+		this.types      = new FactoryTypes(this);
+		this.values     = new FactoryValues(this);
+
+		this.typeClass     = this.types.getType();
 		
-		FactoryTypes types = new FactoryTypes();
-		
-		this.typeBoolean   = types.getBoolean();
-		this.typeClass     = types.getType();
-		this.typeFunction  = types.getFunction();
-		this.typeInteger   = types.getInteger();
-		this.typeObject    = types.getObject();
-		this.typeReference = types.getReference();
-		this.typeString    = types.getString();
+		this.typeBoolean   = this.types.getBoolean();
+		this.typeFunction  = this.types.getFunction();
+		this.typeInteger   = this.types.getInteger();
+		this.typeObject    = this.types.getObject();
+		this.typeReference = this.types.getReference();
+		this.typeString    = this.types.getString();
 		
 		this.scope = this.newScope();
 
 		this.visitor = new Visitor(this);
+	}
+	
+	public FactoryPrimitives getPrimitives() {
+		return this.primitives;
+	}
+	
+	public FactoryTypes getTypes() {
+		return this.types;
 	}
 	
 	public FactoryValues getValues() {
@@ -93,13 +103,13 @@ public class Engine {
 		}
 		
 		variable = this.values.getVariable(name);
-		this.scope.setVariable(variable);
+		this.scope.addVariable(variable);
 		
 		return variable;
 	}
 	
 	public void setVariable(String name, Value value) {
-		this.scope.setVariable(this.values.getVariable(name, value));
+		this.scope.addVariable(this.values.getVariable(name, value));
 	}
 	
 	// Scope operations.
@@ -127,7 +137,7 @@ public class Engine {
 	// Other operations.
 	
 	public Value operation(String operator, Value left, Value right) {
-		ValueFunction function = left.getType(this).getOperator(operator);
+		ValueFunction function = left.getType().getOperator(operator);
 		if (function == null) {
 			throw new ErrorUndefined();
 		}
@@ -139,71 +149,33 @@ public class Engine {
 	}
 	
 	public ValueFunction getMethod(Value value, String name) {
-		return value.getType(this).getMethod(name);
+		return value.getType().getMethod(name);
 	}
 	
 	public Value functionCall(ValueFunction function, List<Value> arguments) {
 		return function.call(this, arguments);
 	}
 	
-	// Cast functions.
-	
-	public ValueBoolean castBoolean(Value value) {
-		return value.castBoolean(this);
-	}
-	
-	public ValueClass castClass(Value value) {
-		return value.castClass(this);
-	}
-	
-	public ValueFunction castFunction(Value value) {
-		return value.castFunction(this);
-	}
-	
-	public ValueInteger castInteger(Value value) {
-		return value.castInteger(this);
-	}
-	
-	public ValueNull castNull(Value value) {
-		return value.castNull(this);
-	}
-	
-	public ValueInstance castInstance(Value value) {
-		return value.castInstance(this);
-	}
-	
-	public ValueReference castReference(Value value) {
-		return value.castReference(this);
-	}
-	
-	public ValueString castString(Value value) {
-		return value.castString(this);
-	}
-	
 	// Private utilities.
 	
 	private Scope newScope() {
 		Scope scope = new Scope(null);
-		/* ArrayList<IValue> values = new ArrayList<IValue>();
-		values.add(this.typeBoolean);
-		
-		for (IValue value : values) {
-			scope.setVariable(this.values.getVariable(value.getName(), value));
-		} */
-		
-		scope.setVariable(this.values.getVariable("Boolean",   this.typeBoolean));
-		scope.setVariable(this.values.getVariable("Class",     this.typeClass));
-		scope.setVariable(this.values.getVariable("Function",  this.typeFunction));
-		scope.setVariable(this.values.getVariable("Integer",   this.typeInteger));
-		scope.setVariable(this.values.getVariable("Object",    this.typeObject));
-		scope.setVariable(this.values.getVariable("String",    this.typeString));
-		scope.setVariable(this.values.getVariable("Reference", this.typeReference));
-
-		scope.setVariable(this.values.getVariable("assert", new PrimitiveAssert()));
-		scope.setVariable(this.values.getVariable("error",  new PrimitiveError()));
-		scope.setVariable(this.values.getVariable("exit",   new PrimitiveExit()));
-		scope.setVariable(this.values.getVariable("new",    new PrimitiveNew()));
-		scope.setVariable(this.values.getVariable("print",  new PrimitivePrint()));
+		ArrayList<ValueName> values = new ArrayList<ValueName>();
+		values.add(this.getTypeBoolean());
+		values.add(this.getTypeClass());
+		values.add(this.getTypeFunction());
+		values.add(this.getTypeInteger());
+		values.add(this.getTypeObject());
+		values.add(this.getTypeString());
+		values.add(this.getTypeReference());
+		values.add(this.getPrimitives().getPrimitiveAssert());
+		values.add(this.getPrimitives().getPrimitiveError());
+		values.add(this.getPrimitives().getPrimitiveExit());
+		values.add(this.getPrimitives().getPrimitiveNew());
+		values.add(this.getPrimitives().getPrimitivePrint());
+		for (ValueName value : values) {
+			scope.addVariable(this.values.getVariable(value.getName(), value));
+		}
 		
 		return scope;
 	}

@@ -1,21 +1,20 @@
-package leaf.primitive;
+package leaf.callable;
 
 import java.util.List;
 
 import leaf.exception.ControlReturn;
 import leaf.language_leaf.NBlock;
+import leaf.structure.Callable;
 import leaf.structure.Engine;
 import leaf.structure.Scope;
 import leaf.structure.Value;
-import leaf.structure.ValueFunction;
 
-public class Function extends ValueFunction {
+public class Function extends Callable {
 	Scope scope;
 	List<String> parameters;
 	NBlock body;
 	
-	public Function(String name, Scope scope, List<String> parameters, NBlock body) {
-		super(name);
+	public Function(Scope scope, List<String> parameters, NBlock body) {
 		this.scope = scope;
 		this.parameters = parameters;
 		this.body = body;

@@ -3,8 +3,8 @@ package leaf.structure;
 public class ValueReference extends Value {
 	private Value value;
 	
-	ValueReference(Value value) {
-		super();
+	ValueReference(ValueClass type, Value value) {
+		super(type);
 		this.value = value;
 	}
 	
@@ -16,10 +16,5 @@ public class ValueReference extends Value {
 	@Override
 	public void write(Value value) {
 		this.value = value;
-	}
-
-	@Override
-	public ValueClass getType(Engine engine) {
-		return engine.getTypeReference();
 	}
 }

@@ -3,18 +3,13 @@ package leaf.structure;
 public class ValueInteger extends Value {
 	private int primitive;
 	
-	public ValueInteger(int primitive) {
-		super();
+	public ValueInteger(ValueClass type, int primitive) {
+		super(type);
 		this.primitive = primitive;
-	}
-
-	@Override
-	public ValueClass getType(Engine engine) {
-		return engine.getTypeInteger();
 	}
 	
 	@Override
-	public ValueInteger castInteger(Engine engine) {
+	public ValueInteger castInteger() {
 		return this;
 	}
 	

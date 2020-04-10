@@ -1,16 +1,12 @@
-package leaf.primitive;
+package leaf.callable;
 
 import java.util.List;
 
+import leaf.structure.Callable;
 import leaf.structure.Engine;
 import leaf.structure.Value;
-import leaf.structure.ValueFunction;
 
-public abstract class Binary extends ValueFunction {
-	public Binary() {
-		super(null);
-	}
-
+public abstract class Binary extends Callable {
 	@Override
 	public boolean arguments(List<Value> arguments) {
 		return arguments.size() == 2;

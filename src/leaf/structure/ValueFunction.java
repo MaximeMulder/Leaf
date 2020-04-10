@@ -4,38 +4,24 @@ import java.util.List;
 
 import leaf.exception.ErrorArguments;
 
-public abstract class ValueFunction extends Value implements IName {
-	private String name;
+public class ValueFunction extends ValueName {
+	Callable callable;
 	
-	protected ValueFunction(String name) {
-		super();
-		this.name = name;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public ValueClass getType(Engine engine) {
-		return engine.getTypeFunction();
+	public ValueFunction(ValueClass type, String name, Callable callable) {
+		super(type, name);
+		this.callable = callable;
 	}
 	
 	@Override
-	public ValueFunction castFunction(Engine engine) {
+	public ValueFunction castFunction() {
 		return this;
 	}
 	
 	public Value call(Engine engine, List<Value> arguments) {
-		if (!this.arguments(arguments)) {
+		if (!this.callable.arguments(arguments)) {
 			throw new ErrorArguments();
 		}
 		
-		return this.execute(engine, arguments);
+		return this.callable.execute(engine, arguments);
 	}
-	
-	public abstract boolean arguments(List<Value> arguments);
-	
-	public abstract Value execute(Engine engine, List<Value> arguments);
 }

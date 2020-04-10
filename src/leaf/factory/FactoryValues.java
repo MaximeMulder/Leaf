@@ -2,8 +2,8 @@ package leaf.factory;
 
 import java.util.List;
 
+import leaf.callable.Function;
 import leaf.language_leaf.NBlock;
-import leaf.primitive.Function;
 import leaf.structure.Engine;
 import leaf.structure.Value;
 import leaf.structure.ValueBoolean;
@@ -31,7 +31,7 @@ public class FactoryValues {
 	}
 	
 	public ValueBoolean getBoolean(boolean primitive) {
-		return new ValueBoolean(primitive);
+		return new ValueBoolean(this.engine.getTypeBoolean(), primitive);
 	}
 	
 	public ValueBoolean getBooleanOpposite(ValueBoolean value) {
@@ -46,12 +46,16 @@ public class FactoryValues {
 		return this.getBoolean(false);
 	}
 	
+	public ValueClass getType(String name) {
+		return new ValueClass(this.engine.getTypeObject(), name);
+	}
+	
 	public ValueFunction getFunction(String name, List<String> parameters, NBlock body) {
-		return new Function(name, this.engine.getScope(), parameters, body);
+		return new ValueFunction(this.engine.getTypeFunction(), name, new Function(this.engine.getScope(), parameters, body));
 	}
 	
 	public ValueInteger getInteger(int primitive) {
-		return new ValueInteger(primitive);
+		return new ValueInteger(this.engine.getTypeInteger(), primitive);
 	}
 	
 	public ValueInstance getInstance(ValueClass type) {
@@ -59,10 +63,10 @@ public class FactoryValues {
 	}
 	
 	public ValueNull getNull() {
-		return new ValueNull();
+		return new ValueNull(null);
 	}
 	
 	public ValueString getString(String primitive) {
-		return new ValueString(primitive);
+		return new ValueString(this.engine.getTypeString(), primitive);
 	}
 }

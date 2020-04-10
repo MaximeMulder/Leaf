@@ -29,7 +29,7 @@ public class Scope {
 		return null;
 	}
 	
-	void setVariable(Variable variable) {
+	void addVariable(Variable variable) {
 		this.variables.put(variable.getName(), variable);
 	}
 }

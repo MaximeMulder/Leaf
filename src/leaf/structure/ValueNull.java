@@ -1,13 +1,12 @@
 package leaf.structure;
 
 public class ValueNull extends Value {
-	@Override
-	public ValueClass getType(Engine engine) {
-		return null;
+	public ValueNull(ValueClass type) {
+		super(type);
 	}
-	
+
 	@Override
-	public ValueNull castNull(Engine engine) {
+	public ValueNull castNull() {
 		return this;
 	}
 }

@@ -4,22 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ValueInstance extends Value {
-	private ValueClass type;
 	private Map<String, Variable> attributes;
 	
 	public ValueInstance(ValueClass type) {
-		super();
-		this.type = type;
+		super(type);
 		this.attributes = new HashMap<String, Variable>();
 	}
 	
 	@Override
-	public ValueClass getType(Engine engine) {
-		return this.type;
-	}
-	
-	@Override
-	public ValueInstance castInstance(Engine engine) {
+	public ValueInstance castInstance() {
 		return this;
 	}
 	

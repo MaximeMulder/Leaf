@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.exception.*;
+import leaf.factory.FactoryValues;
 import leaf.language_leaf.*;
 import leaf.structure.*;
 
 public class Visitor extends Walker {
 	private Engine engine;
+	private FactoryValues values;
 	
 	private IValue value;
 	private String name;
@@ -19,6 +21,7 @@ public class Visitor extends Walker {
 	
 	public Visitor(Engine engine) {
 		this.engine = engine;
+		this.values = this.engine.getValues();
 		this.value = null;
 		this.name = null;
 		this.self = null;
@@ -111,7 +114,7 @@ public class Visitor extends Walker {
 	
 	@Override
 	public void caseStructure_If(NStructure_If node) {
-		if (this.engine.castBoolean(this.readValue(node.get_Condition())).getPrimitive()) {
+		if (this.readValue(node.get_Condition()).castBoolean().getPrimitive()) {
 			this.visit(node.get_Block());
 		} else {
 			this.visit(node.get_ElseOption());
@@ -132,7 +135,7 @@ public class Visitor extends Walker {
 	@Override
 	public void caseStructure_While(NStructure_While node) {
 		try {
-			while (this.engine.castBoolean(this.readValue(node.get_Condition())).getPrimitive()) {
+			while (this.readValue(node.get_Condition()).castBoolean().getPrimitive()) {
 				try {
 					this.visit(node.get_Block());
 				} catch (ControlContinue control) {}
@@ -149,28 +152,28 @@ public class Visitor extends Walker {
 	
 	@Override
 	public void caseExpression_Null(NExpression_Null node) {
-		this.setValue(this.engine.getValues().getNull());
+		this.setValue(this.values.getNull());
 	}
 	
 	@Override
 	public void caseExpression_True(NExpression_True node) {
-		this.setValue(this.engine.getValues().getBooleanTrue());
+		this.setValue(this.values.getBooleanTrue());
 	}
 	
 	@Override
 	public void caseExpression_False(NExpression_False node) {
-		this.setValue(this.engine.getValues().getBooleanFalse());
+		this.setValue(this.values.getBooleanFalse());
 	}
 	
 	@Override
 	public void caseExpression_Number(NExpression_Number node) {
-		this.setValue(this.engine.getValues().getInteger(Integer.parseInt(node.get_Number().getText())));
+		this.setValue(this.values.getInteger(Integer.parseInt(node.get_Number().getText())));
 	}
 	
 	@Override
 	public void caseExpression_String(NExpression_String node) {
 		String string = node.get_String().getText();
-		this.setValue(this.engine.getValues().getString(string.substring(1, string.length() - 1)));
+		this.setValue(this.values.getString(string.substring(1, string.length() - 1)));
 	}
 	
 	@Override
@@ -205,10 +208,10 @@ public class Visitor extends Walker {
 		}
 		
 		if (value instanceof ValueInstance) {
-			ValueInstance instance = value.castInstance(this.engine);
+			ValueInstance instance = value.castInstance();
 			Variable attribute = instance.getAttribute(name);
 			if (attribute == null) {
-				attribute = this.engine.getValues().getVariable(name);
+				attribute = this.values.getVariable(name);
 				instance.setAttribute(attribute);
 			}
 
@@ -227,7 +230,7 @@ public class Visitor extends Walker {
 		}
 		
 		this.visit(node.get_Arguments());
-		this.setValue(this.engine.functionCall(this.engine.castFunction(expression), this.arguments));
+		this.setValue(this.engine.functionCall(expression.castFunction(), this.arguments));
 		this.arguments = arguments;
 	}
 	
@@ -270,7 +273,7 @@ public class Visitor extends Walker {
 	public void caseFunction(NFunction node) {
 		this.visit(node.get_Parameters());
 		String name = this.getName(node.get_FunctionName());
-		ValueFunction function = this.engine.getValues().getFunction(name, this.getParameters(), node.get_Block());
+		ValueFunction function = this.values.getFunction(name, this.getParameters(), node.get_Block());
 		if (name != null) {
 			this.engine.setVariable(name, function);
 		}
@@ -286,7 +289,7 @@ public class Visitor extends Walker {
 	@Override
 	public void caseClass(NClass node) {
 		String name = this.getName(node.get_ClassName());
-		ValueClass type = this.pushType(new ValueClass(name));
+		ValueClass type = this.pushType(this.values.getType(name));
 		this.visit(node.get_ClassStatements());
 		if (name != null) {
 			this.engine.setVariable(name, this.type);
@@ -298,7 +301,7 @@ public class Visitor extends Walker {
 	
 	@Override
 	public void caseClassMember_Method(NClassMember_Method node) {
-		ValueFunction function = this.engine.castFunction(this.readValue(node.get_Function()));
+		ValueFunction function = this.readValue(node.get_Function()).castFunction();
 		this.type.addMethod(function.getName(), function);
 	}
 	

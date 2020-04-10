@@ -4,6 +4,16 @@ import leaf.exception.ErrorType;
 import leaf.exception.ErrorWrite;
 
 public abstract class Value implements IValue {
+	private ValueClass type;
+	
+	protected Value(ValueClass type) {
+		this.type = type;
+	}
+	
+	public ValueClass getType() {
+		return this.type;
+	}
+	
 	@Override
 	public Value read() {
 		return this;
@@ -14,49 +24,39 @@ public abstract class Value implements IValue {
 		throw new ErrorWrite();
 	}
 
-	private void cast(ValueClass type) {
+	private <ValueType extends Value> ValueType castError() {
 		throw new ErrorType();
 	}
 	
-	public ValueBoolean castBoolean(Engine engine) {
-		this.cast(engine.getTypeBoolean());
-		return null;
+	public ValueBoolean castBoolean() {
+		return this.castError();
 	}
 	
-	public ValueClass castClass(Engine engine) {
-		this.cast(engine.getTypeClass());
-		return null;
+	public ValueClass castClass() {
+		return this.castError();
 	}
 	
-	public ValueFunction castFunction(Engine engine) {
-		this.cast(engine.getTypeFunction());
-		return null;
+	public ValueFunction castFunction() {
+		return this.castError();
 	}
 	
-	public ValueInteger castInteger(Engine engine) {
-		this.cast(engine.getTypeInteger());
-		return null;
+	public ValueInteger castInteger() {
+		return this.castError();
 	}
 	
-	public ValueInstance castInstance(Engine engine) {
-		this.cast(null);
-		return null;
+	public ValueInstance castInstance() {
+		return this.castError();
 	}
 	
-	public ValueNull castNull(Engine engine) {
-		this.cast(null);
-		return null;
+	public ValueNull castNull() {
+		return this.castError();
 	}
 	
-	public ValueReference castReference(Engine engine) {
-		this.cast(engine.getTypeReference());
-		return null;
+	public ValueReference castReference() {
+		return this.castError();
 	}
 	
-	public ValueString castString(Engine engine) {
-		this.cast(engine.getTypeString());
-		return null;
+	public ValueString castString() {
+		return this.castError();
 	}
-
-	public abstract ValueClass getType(Engine engine);
 }
