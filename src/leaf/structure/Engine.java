@@ -1,10 +1,8 @@
 package leaf.structure;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import leaf.Visitor;
-import leaf.exception.ErrorUndefined;
 import leaf.factory.*;
 import leaf.language_leaf.Node;
 
@@ -31,11 +29,13 @@ public class Engine {
 		this.values     = new FactoryValues(this);
 
 		this.typeClass     = this.types.getType();
+		this.typeObject    = this.types.getObject();
+		
+		this.typeClass.setParent(this.typeObject);
 		
 		this.typeBoolean   = this.types.getBoolean();
 		this.typeFunction  = this.types.getFunction();
 		this.typeInteger   = this.types.getInteger();
-		this.typeObject    = this.types.getObject();
 		this.typeReference = this.types.getReference();
 		this.typeString    = this.types.getString();
 		
@@ -132,28 +132,6 @@ public class Engine {
 	
 	public void popScope() {
 		this.scope = this.scope.getParent();
-	}
-	
-	// Other operations.
-	
-	public Value operation(String operator, Value left, Value right) {
-		ValueFunction function = left.getType().getOperator(operator);
-		if (function == null) {
-			throw new ErrorUndefined();
-		}
-		
-		List<Value> operands = new ArrayList<Value>();
-		operands.add(left);
-		operands.add(right);
-		return this.functionCall(function, operands);
-	}
-	
-	public ValueFunction getMethod(Value value, String name) {
-		return value.getType().getMethod(name);
-	}
-	
-	public Value functionCall(ValueFunction function, List<Value> arguments) {
-		return function.call(this, arguments);
 	}
 	
 	// Private utilities.

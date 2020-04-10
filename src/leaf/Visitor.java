@@ -200,7 +200,7 @@ public class Visitor extends Walker {
 	public void caseExpression_Chain(NExpression_Chain node) {
 		Value value = this.readValue(node.get_Expression());
 		String name = this.getName(node.get_Identifier());
-		ValueFunction method = this.engine.getMethod(value, name);
+		ValueFunction method = value.getMethod(name);
 		if (method != null) {
 			this.setValue(method);
 			this.setSelf(value);
@@ -230,7 +230,7 @@ public class Visitor extends Walker {
 		}
 		
 		this.visit(node.get_Arguments());
-		this.setValue(this.engine.functionCall(expression.castFunction(), this.arguments));
+		this.setValue(expression.castFunction().call(this.engine, this.arguments));
 		this.arguments = arguments;
 	}
 	
@@ -288,11 +288,19 @@ public class Visitor extends Walker {
 
 	@Override
 	public void caseClass(NClass node) {
-		String name = this.getName(node.get_ClassName());
-		ValueClass type = this.pushType(this.values.getType(name));
+		String nameClass  = this.getName(node.get_ClassName());
+		String nameParent = this.getName(node.get_ClassParent());
+		ValueClass parent;
+		if (nameParent != null) {
+			parent = this.engine.getVariable(nameParent).read().castClass();
+		} else {
+			parent = this.engine.getTypeObject();
+		}
+		
+		ValueClass type = this.pushType(this.values.getType(nameClass, parent));
 		this.visit(node.get_ClassStatements());
-		if (name != null) {
-			this.engine.setVariable(name, this.type);
+		if (nameClass != null) {
+			this.engine.setVariable(nameClass, this.type);
 		}
 		
 		this.setValue(this.type);
@@ -302,10 +310,13 @@ public class Visitor extends Walker {
 	@Override
 	public void caseClassMember_Method(NClassMember_Method node) {
 		ValueFunction function = this.readValue(node.get_Function()).castFunction();
-		this.type.addMethod(function.getName(), function);
+		this.type.setMethod(function.getName(), function);
 	}
 	
 	private void operationBinary(Node operator, Node left, Node right) {
-		this.setValue(this.engine.operation(operator.getText(), this.readValue(left), this.readValue(right)));
+		ArrayList<Value> arguments = new ArrayList<Value>();
+		arguments.add(this.readValue(left));
+		arguments.add(this.readValue(right));
+		this.setValue(arguments.get(0).getOperator(operator.getText()).call(this.engine, arguments));
 	}
 }

@@ -14,6 +14,14 @@ public abstract class Value implements IValue {
 		return this.type;
 	}
 	
+	public ValueFunction getMethod(String name) {
+		return this.getType().getMethod(name);
+	}
+	
+	public ValueFunction getOperator(String name) {
+		return this.getType().getOperator(name);
+	}
+	
 	@Override
 	public Value read() {
 		return this;

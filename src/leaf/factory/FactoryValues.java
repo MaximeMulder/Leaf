@@ -46,8 +46,8 @@ public class FactoryValues {
 		return this.getBoolean(false);
 	}
 	
-	public ValueClass getType(String name) {
-		return new ValueClass(this.engine.getTypeObject(), name);
+	public ValueClass getType(String name, ValueClass parent) {
+		return new ValueClass(this.engine.getTypeClass(), name, parent);
 	}
 	
 	public ValueFunction getFunction(String name, List<String> parameters, NBlock body) {

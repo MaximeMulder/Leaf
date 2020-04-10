@@ -3,7 +3,7 @@ package leaf.structure;
 public class ValueReference extends Value {
 	private Value value;
 	
-	ValueReference(ValueClass type, Value value) {
+	public ValueReference(ValueClass type, Value value) {
 		super(type);
 		this.value = value;
 	}

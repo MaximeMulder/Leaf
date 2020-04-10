@@ -13,61 +13,69 @@ public class FactoryTypes {
 	}
 	
 	public ValueClass getBoolean() {
-		ValueClass type = new ValueClass(this.engine.getTypeClass(), "Boolean");
+		ValueClass type = this.get("Boolean");
 		
-		type.addOperator("==", this.primitives.getBinaryBooleanComparison());
+		type.setOperator("==", this.primitives.getBinaryBooleanComparison());
 		
-		type.addMethod("to_string", this.primitives.getMethodBooleanToString());
+		type.setMethod("to_string", this.primitives.getMethodBooleanToString());
 		
 		return type;
 	}
 	
 	public ValueClass getType() {
-		return new ValueClass(this.engine.getTypeClass(), "Class");
+		return this.get("Class");
 	}
 	
 	public ValueClass getFunction() {
-		return new ValueClass(this.engine.getTypeClass(), "Function");
+		return this.get("Function");
 	}
 	
 	public ValueClass getInteger() {
-		ValueClass type = new ValueClass(this.engine.getTypeClass(), "Integer");
+		ValueClass type = this.get("Integer");
 		
-		type.addOperator("+",  this.primitives.getBinaryIntegerAddition());
-		type.addOperator("-",  this.primitives.getBinaryIntegerSubtraction());
-		type.addOperator("*",  this.primitives.getBinaryIntegerMultiplication());
-		type.addOperator("/",  this.primitives.getBinaryIntegerDivision());
-		type.addOperator("<",  this.primitives.getBinaryIntegerOrderLesser());
-		type.addOperator("==", this.primitives.getBinaryIntegerComparison());
+		type.setOperator("+",  this.primitives.getBinaryIntegerAddition());
+		type.setOperator("-",  this.primitives.getBinaryIntegerSubtraction());
+		type.setOperator("*",  this.primitives.getBinaryIntegerMultiplication());
+		type.setOperator("/",  this.primitives.getBinaryIntegerDivision());
+		type.setOperator("<",  this.primitives.getBinaryIntegerOrderLesser());
+		type.setOperator("==", this.primitives.getBinaryIntegerComparison());
 		
-		type.addMethod("to_string", this.primitives.getMethodIntegerToString());
+		type.setMethod("to_string", this.primitives.getMethodIntegerToString());
 		
 		return type;
 	}
 	
 	public ValueClass getObject() {
-		ValueClass type = new ValueClass(this.engine.getTypeClass(), "Object");
+		ValueClass type = this.get("Object", null);
 
-		type.addOperator(">",  this.primitives.getBinaryObjectOrderGreater());
-		type.addOperator("<=", this.primitives.getBinaryObjectOrderLesserEqual());
-		type.addOperator(">=", this.primitives.getBinaryObjectOrderGreaterEqual());
-		type.addOperator("==", this.primitives.getBinaryObjectComparison());
-		type.addOperator("!=", this.primitives.getBinaryObjectDifference());
+		type.setOperator(">",  this.primitives.getBinaryObjectOrderGreater());
+		type.setOperator("<=", this.primitives.getBinaryObjectOrderLesserEqual());
+		type.setOperator(">=", this.primitives.getBinaryObjectOrderGreaterEqual());
+		type.setOperator("==", this.primitives.getBinaryObjectComparison());
+		type.setOperator("!=", this.primitives.getBinaryObjectDifference());
 		
 		return type;
 	}
 	
 	public ValueClass getReference() {
-		return new ValueClass(this.engine.getTypeClass(), "Reference");
+		return this.get("Reference");
 	}
 	
 	public ValueClass getString() {
-		ValueClass type = new ValueClass(this.engine.getTypeClass(), "String");
+		ValueClass type = this.get("String");
 		
-		type.addOperator("+",  this.primitives.getBinaryStringAddition());
-		type.addOperator("<",  this.primitives.getBinaryStringOrderLesser());
-		type.addOperator("==", this.primitives.getBinaryStringComparison());
+		type.setOperator("+",  this.primitives.getBinaryStringAddition());
+		type.setOperator("<",  this.primitives.getBinaryStringOrderLesser());
+		type.setOperator("==", this.primitives.getBinaryStringComparison());
 		
 		return type;
+	}
+	
+	private ValueClass get(String name) {
+		return this.get(name, this.engine.getTypeObject());
+	}
+	
+	private ValueClass get(String name, ValueClass parent) {
+		return new ValueClass(this.engine.getTypeClass(), name, parent);
 	}
 }

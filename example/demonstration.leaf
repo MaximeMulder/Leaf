@@ -4,13 +4,34 @@
  *
  */
 
+class Animal {
+	function speak(self) {
+		print("I am " + self.name + ".");
+	};
+};
+
+class Dog : Animal {
+	function speak(self) {
+		print("WOOF WOOF, I am " + self.name + ".");
+	};
+};
+
+function new_dog(name) {
+	dog = new(Dog);
+	dog.name = name;
+	return dog;	
+};
+
+dog = new_dog("Woofie");
+dog.speak();
+
 class Person {
 	function say_hello(self) {
 		print("I am " + self.forename + " " + self.surname + ".");
-		if self.age < 19 {
-			print("I am not yet an adult");
-		} else {
+		if self.age >= 18 {
 			print("I am " + self.age.to_string() + " years old.");
+		} else {
+			print("I am not yet an adult");
 		};
 	};
 };
@@ -23,6 +44,5 @@ function new_person(forename, surname, age) {
 	return person;
 };
 
-object = new_person("Jean", "Tremblay", 27);
-
-object.say_hello();
+person = new_person("Jean", "Tremblay", 27);
+person.say_hello();

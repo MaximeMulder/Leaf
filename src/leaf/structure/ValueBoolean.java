@@ -8,12 +8,12 @@ public class ValueBoolean extends Value {
 		this.primitive = primitive;
 	}
 	
+	public boolean getPrimitive() {
+		return this.primitive;
+	}
+	
 	@Override
 	public ValueBoolean castBoolean() {
 		return this;
-	}
-	
-	public boolean getPrimitive() {
-		return this.primitive;
 	}
 }

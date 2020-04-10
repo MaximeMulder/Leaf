@@ -9,6 +9,10 @@ public class Variable implements IValue {
 		this.value = value;
 	}
 	
+	public String getName() {
+		return this.name;
+	}
+	
 	@Override
 	public Value read() {
 		return this.value;
@@ -17,9 +21,5 @@ public class Variable implements IValue {
 	@Override
 	public void write(Value value) {
 		this.value = value;
-	}
-	
-	public String getName() {
-		return this.name;
 	}
 }

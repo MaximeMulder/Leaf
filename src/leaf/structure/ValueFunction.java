@@ -12,16 +12,16 @@ public class ValueFunction extends ValueName {
 		this.callable = callable;
 	}
 	
-	@Override
-	public ValueFunction castFunction() {
-		return this;
-	}
-	
 	public Value call(Engine engine, List<Value> arguments) {
 		if (!this.callable.arguments(arguments)) {
 			throw new ErrorArguments();
 		}
 		
 		return this.callable.execute(engine, arguments);
+	}
+	
+	@Override
+	public ValueFunction castFunction() {
+		return this;
 	}
 }
