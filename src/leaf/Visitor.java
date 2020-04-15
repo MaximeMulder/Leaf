@@ -3,99 +3,30 @@ package leaf;
 import java.util.ArrayList;
 import java.util.List;
 
-import leaf.exception.*;
-import leaf.factory.FactoryValues;
 import leaf.language_leaf.*;
 import leaf.structure.*;
 
+@SuppressWarnings("unchecked")
 public class Visitor extends Walker {
-	private Engine engine;
-	private FactoryValues values;
+	private Object register;
 	
-	private IValue value;
-	private String name;
-	private ValueClass type;
-	private Value self;
-	private List<Value> arguments;
-	private List<String> parameters;
-	
-	public Visitor(Engine engine) {
-		this.engine = engine;
-		this.values = this.engine.getValues();
-		this.value = null;
-		this.name = null;
-		this.self = null;
-		this.arguments = null;
-		this.parameters = new ArrayList<String>();;
+	public Visitor() {
+		this.register = null;
 	}
 	
-	private IValue getValue(Node node) {
-		node.apply(this);
-		IValue value = this.value;
-		this.value = null;
-		if (value == null) {
-			throw new ErrorUndefined();
-		}
-		
-		return value;
+	private Object get() {
+		Object register = this.register;
+		this.register = null;
+		return register;
 	}
 	
-	private Value readValue(Node node) {
-		Value value = this.getValue(node).read();
-		if (value == null) {
-			throw new ErrorUndefined();
-		}
-		
-		return value;
+	private Object get(Node node) {
+		this.visit(node);
+		return this.get();
 	}
 	
-	private void setValue(IValue value) {
-		this.value = value;
-	}
-	
-	private String getName(Node node) {
-		node.apply(this);
-		String name = this.name;
-		this.name = null;
-		return name;
-	}
-	
-	private void setName(String name) {
-		this.name = name;
-	}
-	
-	private ValueClass pushType(ValueClass type) {
-		ValueClass old = this.type;
-		this.type = type;
-		return old;
-	}
-	
-	private void popType(ValueClass type) {
-		this.type = type;
-	}
-	
-	private Value getSelf() {
-		Value self = this.self;
-		this.self = null;
-		return self;
-	}
-	
-	private void setSelf(Value self) {
-		this.self = self;
-	}
-	
-	private void addArgument(Value value) {
-		this.arguments.add(value);
-	}
-	
-	private void addParameter(String parameter) {
-		this.parameters.add(parameter);
-	}
-	
-	private List<String> getParameters() {
-		List<String> parameters = this.parameters;
-		this.parameters = new ArrayList<String>();
-		return parameters;
+	public Program program() {
+		return (Program) this.register;
 	}
 	
 	public void visit(Node tree) {
@@ -104,219 +35,192 @@ public class Visitor extends Walker {
 	
 	@Override
 	public void caseIdentifier(NIdentifier node) {
-		this.setName(node.getText());
+		this.register = node.getText();
 	}
 	
 	@Override
-	public void outStatement_Expression(NStatement_Expression node) {
-		this.setValue(null);
+	public void caseFile(NFile node) {
+		this.register = new ArrayList<Statement>();
+		this.register = new Program((List<Statement>) this.get(node.get_Statements()));
+	}
+	
+	@Override
+	public void caseStatement_Expression(NStatement_Expression node) {
+		List<Statement> statements = (List<Statement>) this.get();
+		statements.add(new Statement((Expression) this.get(node.get_Expression())));
+		this.register = statements;
 	}
 	
 	@Override
 	public void caseStructure_If(NStructure_If node) {
-		if (this.readValue(node.get_Condition()).castBoolean().getPrimitive()) {
-			this.visit(node.get_Block());
-		} else {
-			this.visit(node.get_ElseOption());
-		}
+		this.register = new If(
+			(Expression) this.get(node.get_Condition()),
+			(Expression) this.get(node.get_Block()),
+			(Expression) this.get(node.get_ElseOption())
+		);
 	}
 	
 	@Override
 	public void caseStructure_Loop(NStructure_Loop node) {
-		try {
-			while (true) {
-				try {
-					this.visit(node.get_Block());
-				} catch (ControlContinue control) {}
-			}
-		} catch (ControlBreak control) {}
+		this.register = new Loop((Expression) this.get(node.get_Block()));
 	}
 	
 	@Override
 	public void caseStructure_While(NStructure_While node) {
-		try {
-			while (this.readValue(node.get_Condition()).castBoolean().getPrimitive()) {
-				try {
-					this.visit(node.get_Block());
-				} catch (ControlContinue control) {}
-			}
-		} catch (ControlBreak control) {}
+		this.register = new While((Expression) this.get(node.get_Condition()), (Expression) this.get(node.get_Block()));
 	}
 	
 	@Override
 	public void caseBlock(NBlock node) {
-		this.engine.pushScope();
-		this.visit(node.get_Statements());
-		this.engine.popScope();
+		this.register = new ArrayList<Statement>();
+		this.register = new Block((List<Statement>) this.get(node.get_Statements()));
 	}
 	
 	@Override
 	public void caseExpression_Null(NExpression_Null node) {
-		this.setValue(this.values.getNull());
+		this.register = new Null();
 	}
 	
 	@Override
 	public void caseExpression_True(NExpression_True node) {
-		this.setValue(this.values.getBooleanTrue());
+		this.register = new True();
 	}
 	
 	@Override
 	public void caseExpression_False(NExpression_False node) {
-		this.setValue(this.values.getBooleanFalse());
+		this.register = new False();
 	}
 	
 	@Override
 	public void caseExpression_Number(NExpression_Number node) {
-		this.setValue(this.values.getInteger(Integer.parseInt(node.get_Number().getText())));
+		this.register = new Decimal(node.get_Number().getText());
 	}
 	
 	@Override
 	public void caseExpression_String(NExpression_String node) {
 		String string = node.get_String().getText();
-		this.setValue(this.values.getString(string.substring(1, string.length() - 1)));
+		this.register = new Text(string.substring(1, string.length() - 1));
 	}
 	
 	@Override
 	public void caseExpression_Variable(NExpression_Variable node) {
-		this.setValue(this.engine.getVariable(this.getName(node.get_Identifier())));
+		this.register = new Identifier((String) this.get(node.get_Identifier()));
 	}
 	
 	@Override
 	public void outExpression_Return(NExpression_Return node) {
-		throw new ControlReturn(this.readValue(node.get_Expression()));
+		this.register = new Return((Expression) this.get(node.get_Expression()));
 	}
 	
 	@Override
 	public void outExpression_Break(NExpression_Break node) {
-		throw new ControlBreak(this.readValue(node.get_Expression()));
+		this.register = new Break((Expression) this.get(node.get_Expression()));
 	}
 	
 	@Override
 	public void outExpression_Continue(NExpression_Continue node) {
-		throw new ControlContinue(this.readValue(node.get_Expression()));
+		this.register = new Continue((Expression) this.get(node.get_Expression()));
 	}
 	
 	@Override
 	public void caseExpression_Chain(NExpression_Chain node) {
-		Value value = this.readValue(node.get_Expression());
-		String name = this.getName(node.get_Identifier());
-		ValueFunction method = value.getMethod(name);
-		if (method != null) {
-			this.setValue(method);
-			this.setSelf(value);
-			return;
-		}
-		
-		if (value instanceof ValueInstance) {
-			ValueInstance instance = value.castInstance();
-			Variable attribute = instance.getAttribute(name);
-			if (attribute == null) {
-				attribute = this.values.getVariable(name);
-				instance.setAttribute(attribute);
-			}
-
-			this.setValue(attribute);
-		}
+		this.register = new Chain((Expression) this.get(node.get_Expression()), (String) this.get(node.get_Identifier()));
 	}
 	
 	@Override
 	public void caseExpression_Call(NExpression_Call node) {
-		Value expression = this.readValue(node.get_Expression());
-		List<Value> arguments = this.arguments;
-		this.arguments = new ArrayList<Value>();
-		Value self = this.getSelf();
-		if (self != null) {
-			this.addArgument(self);
-		}
-		
-		this.visit(node.get_Arguments());
-		this.setValue(expression.castFunction().call(this.engine, this.arguments));
-		this.arguments = arguments;
-	}
-	
-	@Override
-	public void caseExpression_Assignment(NExpression_Assignment node) {
-		this.getValue(node.get_Reference()).write(this.readValue(node.get_Expression()));
-	}
-	
-	@Override
-	public void caseExpression_Operation1(NExpression_Operation1 node) {
-		this.operationBinary(node.get_Operator(), node.get_Left(), node.get_Right());
-	}
-	
-	@Override
-	public void caseExpression_Operation2(NExpression_Operation2 node) {
-		this.operationBinary(node.get_Operator(), node.get_Left(), node.get_Right());
-	}
-	
-	@Override
-	public void caseExpression_Operation3(NExpression_Operation3 node) {
-		this.operationBinary(node.get_Operator(), node.get_Left(), node.get_Right());
-	}
-	
-	@Override
-	public void caseExpression_Operation4(NExpression_Operation4 node) {
-		this.operationBinary(node.get_Operator(), node.get_Left(), node.get_Right());
-	}
-	
-	@Override
-	public void caseExpression_Operation5(NExpression_Operation5 node) {
-		this.operationBinary(node.get_Operator(), node.get_Left(), node.get_Right());
+		Expression expression = (Expression) this.get(node.get_Expression());
+		this.register = new ArrayList<Expression>();
+		List<Expression> arguments = (List<Expression>) this.get(node.get_Arguments());
+		this.register = new Call(expression, arguments);
 	}
 	
 	@Override
 	public void caseArgument(NArgument node) {
-		this.addArgument(this.readValue(node.get_Expression()));
+		List<Expression> arguments = (List<Expression>) this.get();
+		arguments.add((Expression) this.get(node.get_Expression()));
+		this.register = arguments;
+	}
+	
+	@Override
+	public void caseExpression_Assignment(NExpression_Assignment node) {
+		this.register = new Assignment((Expression) this.get(node.get_Reference()), (Expression) this.get(node.get_Expression()));
+	}
+	
+	@Override
+	public void caseExpression_Operation1(NExpression_Operation1 node) {
+		this.register = new Operation(
+			node.get_Operator().getText(),
+			(Expression) this.get(node.get_Left()),
+			(Expression) this.get(node.get_Right())
+		);
+	}
+	
+	@Override
+	public void caseExpression_Operation2(NExpression_Operation2 node) {
+		this.register = new Operation(
+			node.get_Operator().getText(),
+			(Expression) this.get(node.get_Left()),
+			(Expression) this.get(node.get_Right())
+		);
+	}
+	
+	@Override
+	public void caseExpression_Operation3(NExpression_Operation3 node) {
+		this.register = new Operation(
+			node.get_Operator().getText(),
+			(Expression) this.get(node.get_Left()),
+			(Expression) this.get(node.get_Right())
+		);
+	}
+	
+	@Override
+	public void caseExpression_Operation4(NExpression_Operation4 node) {
+		this.register = new Operation(
+			node.get_Operator().getText(),
+			(Expression) this.get(node.get_Left()),
+			(Expression) this.get(node.get_Right())
+		);
+	}
+	
+	@Override
+	public void caseExpression_Operation5(NExpression_Operation5 node) {
+		this.register = new Operation(
+			node.get_Operator().getText(),
+			(Expression) this.get(node.get_Left()),
+			(Expression) this.get(node.get_Right())
+		);
 	}
 	
 	@Override
 	public void caseFunction(NFunction node) {
-		this.visit(node.get_Parameters());
-		String name = this.getName(node.get_FunctionName());
-		ValueFunction function = this.values.getFunction(name, this.getParameters(), node.get_Block());
-		if (name != null) {
-			this.engine.setVariable(name, function);
-		}
-
-		this.setValue(function);
+		String name = (String) this.get(node.get_FunctionName());
+		this.register = new ArrayList<String>();
+		List<String> parameters = (List<String>) this.get(node.get_Parameters());
+		Expression body = (Expression) this.get(node.get_Block());
+		this.register = new Function(name, parameters, body);
 	}
 	
 	@Override
 	public void caseParameter(NParameter node) {
-		this.addParameter(this.getName(node.get_Identifier()));
+		List<String> parameters = (List<String>) this.get();
+		parameters.add((String) this.get(node.get_Identifier()));
+		this.register = parameters;
 	}
 
 	@Override
 	public void caseClass(NClass node) {
-		String nameClass  = this.getName(node.get_ClassName());
-		String nameParent = this.getName(node.get_ClassParent());
-		ValueClass parent;
-		if (nameParent != null) {
-			parent = this.engine.getVariable(nameParent).read().castClass();
-		} else {
-			parent = this.engine.getTypeObject();
-		}
-		
-		ValueClass type = this.pushType(this.values.getType(nameClass, parent));
-		this.visit(node.get_ClassStatements());
-		if (nameClass != null) {
-			this.engine.setVariable(nameClass, this.type);
-		}
-		
-		this.setValue(this.type);
-		this.popType(type);
+		String name = (String) this.get(node.get_ClassName());
+		String parent = (String) this.get(node.get_ClassParent());
+		this.register = new ArrayList<Function>();
+		List<Function> methods = (List<Function>) this.get(node.get_ClassStatements());
+		this.register = new Type(name, parent, methods);
 	}
 	
 	@Override
 	public void caseClassMember_Method(NClassMember_Method node) {
-		ValueFunction function = this.readValue(node.get_Function()).castFunction();
-		this.type.setMethod(function.getName(), function);
-	}
-	
-	private void operationBinary(Node operator, Node left, Node right) {
-		ArrayList<Value> arguments = new ArrayList<Value>();
-		arguments.add(this.readValue(left));
-		arguments.add(this.readValue(right));
-		this.setValue(arguments.get(0).getOperator(operator.getText()).call(this.engine, arguments));
+		List<Function> methods = (List<Function>) this.get();
+		methods.add((Function) this.get(node.get_Function()));
+		this.register = methods;
 	}
 }

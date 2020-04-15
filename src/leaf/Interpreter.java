@@ -10,7 +10,7 @@ import leaf.language_leaf.LexerException;
 import leaf.language_leaf.Node;
 import leaf.language_leaf.Parser;
 import leaf.language_leaf.ParserException;
-import leaf.structure.Engine;
+import leaf.runtime.Engine;
 
 public class Interpreter {
 	public static void main(String[] arguments) {
@@ -53,7 +53,9 @@ public class Interpreter {
 		
 		Engine engine = new Engine();
 		try {
-			engine.visit(tree);
+			Visitor visitor = new Visitor();
+			visitor.visit(tree);
+			visitor.program().run(engine);
 		} catch (Exception exception) {
 			System.err.println("INTERPRETER ERROR: " + exception.getMessage() + ".");
 			exception.printStackTrace();
