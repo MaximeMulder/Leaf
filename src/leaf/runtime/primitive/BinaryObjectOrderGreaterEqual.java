@@ -12,8 +12,8 @@ public class BinaryObjectOrderGreaterEqual extends Binary {
 		arguments.add(left);
 		arguments.add(right);
 		return engine.getValues().getBoolean(
-			left.getType().getOperator(">").call(engine, arguments).castBoolean().getPrimitive() ||
-			right.getType().getOperator("==").call(engine, arguments).castBoolean().getPrimitive()
+			left.getType().getBinary(">").call(engine, arguments).castBoolean().getPrimitive() ||
+			right.getType().getBinary("==").call(engine, arguments).castBoolean().getPrimitive()
 		);
 	}
 }

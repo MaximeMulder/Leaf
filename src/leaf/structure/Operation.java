@@ -23,7 +23,7 @@ public class Operation extends Expression {
 		List<Value> arguments = new ArrayList<Value>();
 		arguments.add(this.left.run(engine).read());
 		arguments.add(this.right.run(engine).read());
-		return arguments.get(0).getType().getOperator(this.operator).call(engine, arguments);
+		return arguments.get(0).getType().getBinary(this.operator).call(engine, arguments);
 	}
 
 	public void setOperator(String operator) {

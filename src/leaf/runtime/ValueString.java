@@ -8,12 +8,12 @@ public class ValueString extends Value {
 		this.primitive = primitive;
 	}
 	
-	public String getPrimitive() {
-		return this.primitive;
-	}
-	
 	@Override
 	public ValueString castString() {
 		return this;
+	}
+	
+	public String getPrimitive() {
+		return this.primitive;
 	}
 }

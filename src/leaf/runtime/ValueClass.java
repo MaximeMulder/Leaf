@@ -6,13 +6,20 @@ import java.util.Map;
 public class ValueClass extends ValueName {
 	private ValueClass parent;
 	private Map<String, ValueFunction> methods;
-	private Map<String, ValueFunction> operators;
+	private Map<String, ValueFunction> binaries;
+	private Map<String, ValueFunction> pres;
+	private Map<String, ValueFunction> posts;
 	
 	public ValueClass(ValueClass type,  String name, ValueClass parent) {
 		super(type, name);
 		this.parent = parent;
-		this.methods   = new HashMap<String, ValueFunction>();
-		this.operators = new HashMap<String, ValueFunction>();
+		this.methods = new HashMap<String, ValueFunction>();
+		this.binaries = new HashMap<String, ValueFunction>();
+	}
+	
+	@Override
+	public ValueClass castClass() {
+		return this;
 	}
 	
 	public ValueClass getParent() {
@@ -36,21 +43,24 @@ public class ValueClass extends ValueName {
 		this.methods.put(name, function);
 	}
 	
-	public ValueFunction getOperator(String symbol) {
-		ValueFunction operator = this.operators.get(symbol);
+	public ValueFunction getBinary(String symbol) {
+		ValueFunction operator = this.binaries.get(symbol);
 		if (operator == null && this.parent != null) {
-			operator = this.parent.getOperator(symbol);
+			operator = this.parent.getBinary(symbol);
 		}
 
 		return operator;
 	}
 	
-	public void setOperator(String operator, ValueFunction function) {
-		this.operators.put(operator, function);
+	public void setBinary(String operator, ValueFunction function) {
+		this.binaries.put(operator, function);
 	}
 	
-	@Override
-	public ValueClass castClass() {
-		return this;
+	public void setPre(String operator, ValueFunction function) {
+		this.pres.put(operator, function);
+	}
+	
+	public void setPost(String operator, ValueFunction function) {
+		this.posts.put(operator, function);
 	}
 }

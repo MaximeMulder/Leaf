@@ -15,7 +15,7 @@ public class FactoryTypes {
 	public ValueClass getBoolean() {
 		ValueClass type = this.get("Boolean");
 		
-		type.setOperator("==", this.primitives.getBinaryBooleanComparison());
+		type.setBinary("==", this.primitives.getBinaryBooleanComparison());
 		
 		type.setMethod("to_string", this.primitives.getMethodBooleanToString());
 		
@@ -33,12 +33,12 @@ public class FactoryTypes {
 	public ValueClass getInteger() {
 		ValueClass type = this.get("Integer");
 		
-		type.setOperator("+",  this.primitives.getBinaryIntegerAddition());
-		type.setOperator("-",  this.primitives.getBinaryIntegerSubtraction());
-		type.setOperator("*",  this.primitives.getBinaryIntegerMultiplication());
-		type.setOperator("/",  this.primitives.getBinaryIntegerDivision());
-		type.setOperator("<",  this.primitives.getBinaryIntegerOrderLesser());
-		type.setOperator("==", this.primitives.getBinaryIntegerComparison());
+		type.setBinary("+",  this.primitives.getBinaryIntegerAddition());
+		type.setBinary("-",  this.primitives.getBinaryIntegerSubtraction());
+		type.setBinary("*",  this.primitives.getBinaryIntegerMultiplication());
+		type.setBinary("/",  this.primitives.getBinaryIntegerDivision());
+		type.setBinary("<",  this.primitives.getBinaryIntegerOrderLesser());
+		type.setBinary("==", this.primitives.getBinaryIntegerComparison());
 		
 		type.setMethod("to_string", this.primitives.getMethodIntegerToString());
 		
@@ -48,11 +48,11 @@ public class FactoryTypes {
 	public ValueClass getObject() {
 		ValueClass type = this.get("Object", null);
 
-		type.setOperator(">",  this.primitives.getBinaryObjectOrderGreater());
-		type.setOperator("<=", this.primitives.getBinaryObjectOrderLesserEqual());
-		type.setOperator(">=", this.primitives.getBinaryObjectOrderGreaterEqual());
-		type.setOperator("==", this.primitives.getBinaryObjectComparison());
-		type.setOperator("!=", this.primitives.getBinaryObjectDifference());
+		type.setBinary(">",  this.primitives.getBinaryObjectOrderGreater());
+		type.setBinary("<=", this.primitives.getBinaryObjectOrderLesserEqual());
+		type.setBinary(">=", this.primitives.getBinaryObjectOrderGreaterEqual());
+		type.setBinary("==", this.primitives.getBinaryObjectComparison());
+		type.setBinary("!=", this.primitives.getBinaryObjectDifference());
 		
 		return type;
 	}
@@ -64,9 +64,9 @@ public class FactoryTypes {
 	public ValueClass getString() {
 		ValueClass type = this.get("String");
 		
-		type.setOperator("+",  this.primitives.getBinaryStringAddition());
-		type.setOperator("<",  this.primitives.getBinaryStringOrderLesser());
-		type.setOperator("==", this.primitives.getBinaryStringComparison());
+		type.setBinary("+",  this.primitives.getBinaryStringAddition());
+		type.setBinary("<",  this.primitives.getBinaryStringOrderLesser());
+		type.setBinary("==", this.primitives.getBinaryStringComparison());
 		
 		return type;
 	}

@@ -11,6 +11,6 @@ public class BinaryObjectDifference extends Binary {
 		ArrayList<Value> arguments = new ArrayList<Value>();
 		arguments.add(left);
 		arguments.add(right);
-		return engine.getValues().getBooleanOpposite(left.getType().getOperator("==").call(engine, arguments).castBoolean());
+		return engine.getValues().getBooleanOpposite(left.getType().getBinary("==").call(engine, arguments).castBoolean());
 	}
 }

@@ -10,10 +10,6 @@ public abstract class Value implements IValue {
 		this.type = type;
 	}
 	
-	public ValueClass getType() {
-		return this.type;
-	}
-	
 	@Override
 	public Value read() {
 		return this;
@@ -22,6 +18,10 @@ public abstract class Value implements IValue {
 	@Override
 	public void write(Value value) {
 		throw new ErrorWrite();
+	}
+	
+	public ValueClass getType() {
+		return this.type;
 	}
 
 	private <ValueType extends Value> ValueType castError() {
