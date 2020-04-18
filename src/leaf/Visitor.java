@@ -137,8 +137,8 @@ public class Visitor extends Walker {
 	
 	@Override
 	public void caseExpression_Call(NExpression_Call node) {
-		this.set(new Call((Expression) this.get(
-			node.get_Expression()),
+		this.set(new Call(
+			(Expression) this.get(node.get_Expression()),
 			(List<Expression>) this.push(new ArrayList<Expression>(), node.get_Arguments())
 		));
 	}
