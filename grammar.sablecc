@@ -35,50 +35,38 @@ Parser
 		| {none:}
 		;
 
-	statement
-		= {expression:} expression ';'
-		;
-
-	structure
-		= {class:} class
-		| {function:} function
-		| {block:} block
-		| {if:} 'if' [condition:] expression block else_option
-		| {loop:} 'loop' block
-		| {while:} 'while' [condition:] expression block
-		| {for:} 'for' identifier 'in' expression block
-		;
-
-	else_option
-		= {some:} 'else' block
-		| {none:}
-		;
-
-	block = '{' statements '}';
+	statement = expression ';';
 
 	// Expressions
 
 	expression
-		= {null:} 'null'
+		= {class:}    class
+		| {function:} function
+		| {block:}    block
+
+		| {if:} 'if' [condition:] expression block [else:] else_option
+		| {loop:} 'loop' block
+		| {while:} 'while' [condition:] expression block
+		| {for:} 'for' identifier 'in' expression block
+
+		| {return:}   'return'   expression
+		| {break:}    'break'    expression
+		| {continue:} 'continue' expression
+
+		| {null:}  'null'
 		| {true:}  'true' 
 		| {false:} 'false'
 
-		| {number:}   number
-		| {string:}   string
-		| {variable:} identifier
+		| {number:}   [content:] number
+		| {string:}   [content:] string
+		| {variable:} [content:] identifier
 
-		| {structure:} structure
-
-		| {return:} 'return' expression
-		| {break:} 'break' expression
-		| {continue:} 'continue' expression
-		
 		| {group:} '(' expression ')'
 		| {chain:} expression '.' identifier
 		| {call:} expression '(' arguments ')'
-		
+
 		| {assignment:} [reference:] expression '=' expression
-		
+
 		| {operation1:} [left:] expression [operator:] operator1 [right:] expression
 		| {operation2:} [left:] expression [operator:] operator2 [right:] expression
 		| {operation3:} [left:] expression [operator:] operator3 [right:] expression
@@ -98,6 +86,13 @@ Parser
 		Right return, break, continue;
 		Left assignment;
 
+	else_option
+		= {some:} 'else' block
+		| {none:}
+		;
+
+	block = '{' statements '}';
+
 	arguments
 		= {some:} argument arguments_more
 		| {none:}
@@ -112,12 +107,7 @@ Parser
 
 	// Functions
 
-	function = 'function' function_name '(' parameters ')' block;
-
-	function_name
-		= {some:} identifier
-		| {none:}
-		;
+	function = 'function' [name:] name_option '(' parameters ')' block;
 
 	parameters
 		= {some:} parameter parameters_more
@@ -133,34 +123,34 @@ Parser
 
 	// Classes
 
-	class = 'class' class_name class_parent '{' class_statements '}';
+	class = 'class' [name:] name_option parent '{' members '}';
 
-	class_name
-		= {some:} identifier
+	parent
+		= {some:} ':' expression
 		| {none:}
 		;
 
-	class_parent
-		= {some:} ':' identifier
+	members
+		= {some:} members visibility member ';'
 		| {none:}
 		;
 
-	class_statements
-		= {some:} class_statements class_statement
-		| {none:}
-		;
-
-	class_statement = class_visibility class_member ';';
-
-	class_visibility
+	visibility
 		= {public:}    'public'
 		| {protected:} 'protected'
 		| {private:}   'private'
 		| {default:}
 		; 
 
-	class_member
+	member
 		= {method:} function
 		| {class:} class
 		| {attribute:} identifier
+		;
+
+	// Miscellaneous
+
+	name_option
+		= {some:} identifier
+		| {none:}
 		;

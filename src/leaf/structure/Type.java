@@ -9,10 +9,10 @@ import leaf.runtime.ValueFunction;
 
 public class Type extends Expression {
 	private String name;
-	private String parent;
+	private Expression parent;
 	private List<Function> methods;
 	
-	public Type(String name, String parent, List<Function> methods) {
+	public Type(String name, Expression parent, List<Function> methods) {
 		this.name = name;
 		this.parent = parent;
 		this.methods = methods;
@@ -22,7 +22,7 @@ public class Type extends Expression {
 	public IValue run(Engine engine) {
 		ValueClass parent;
 		if (this.parent != null) {
-			parent = engine.getVariable(this.parent).read().castClass();
+			parent = this.parent.run(engine).read().castClass();
 		} else {
 			parent = engine.getTypeObject();
 		}
@@ -44,7 +44,7 @@ public class Type extends Expression {
 		this.name = name;
 	}
 	
-	public void setParent(String parent) {
+	public void setParent(Expression parent) {
 		this.parent = parent;
 	}
 	

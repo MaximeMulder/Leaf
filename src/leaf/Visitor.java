@@ -46,7 +46,47 @@ public class Visitor extends Walker {
 	}
 	
 	@Override
+	public void caseNumber(NNumber node) {
+		this.set(node.getText());
+	}
+	
+	@Override
+	public void caseString(NString node) {
+		this.set(node.getText());
+	}
+	
+	@Override
 	public void caseIdentifier(NIdentifier node) {
+		this.set(node.getText());
+	}
+	
+	@Override
+	public void caseOperator1(NOperator1 node) {
+		this.set(node.getText());
+	}
+	
+	@Override
+	public void caseOperator2(NOperator2 node) {
+		this.set(node.getText());
+	}
+	
+	@Override
+	public void caseOperator3(NOperator3 node) {
+		this.set(node.getText());
+	}
+	
+	@Override
+	public void caseOperator4(NOperator4 node) {
+		this.set(node.getText());
+	}
+	
+	@Override
+	public void caseOperator5(NOperator5 node) {
+		this.set(node.getText());
+	}
+	
+	@Override
+	public void caseOperator6(NOperator6 node) {
 		this.set(node.getText());
 	}
 	
@@ -56,32 +96,32 @@ public class Visitor extends Walker {
 	}
 	
 	@Override
-	public void caseStatement_Expression(NStatement_Expression node) {
+	public void caseStatement(NStatement node) {
 		((List<Statement>) this.pop()).add(new Statement((Expression) this.get(node.get_Expression())));
-	}
-	
-	@Override
-	public void caseStructure_If(NStructure_If node) {
-		this.set(new If(
-			(Expression) this.get(node.get_Condition()),
-			(Expression) this.get(node.get_Block()),
-			(Expression) this.get(node.get_ElseOption())
-		));
-	}
-	
-	@Override
-	public void caseStructure_Loop(NStructure_Loop node) {
-		this.set(new Loop((Expression) this.get(node.get_Block())));
-	}
-	
-	@Override
-	public void caseStructure_While(NStructure_While node) {
-		this.set(new While((Expression) this.get(node.get_Condition()), (Expression) this.get(node.get_Block())));
 	}
 	
 	@Override
 	public void caseBlock(NBlock node) {
 		this.set(new Block((List<Statement>) this.push(new ArrayList<Statement>(), node.get_Statements())));
+	}
+	
+	@Override
+	public void caseExpression_If(NExpression_If node) {
+		this.set(new If(
+			(Expression) this.get(node.get_Condition()),
+			(Expression) this.get(node.get_Block()),
+			(Expression) this.get(node.get_Else())
+		));
+	}
+	
+	@Override
+	public void caseExpression_Loop(NExpression_Loop node) {
+		this.set(new Loop((Expression) this.get(node.get_Block())));
+	}
+	
+	@Override
+	public void caseExpression_While(NExpression_While node) {
+		this.set(new While((Expression) this.get(node.get_Condition()), (Expression) this.get(node.get_Block())));
 	}
 	
 	@Override
@@ -101,18 +141,17 @@ public class Visitor extends Walker {
 	
 	@Override
 	public void caseExpression_Number(NExpression_Number node) {
-		this.set(new Decimal(node.get_Number().getText()));
+		this.set(new Decimal((String) this.get(node.get_Content())));
 	}
 	
 	@Override
 	public void caseExpression_String(NExpression_String node) {
-		String string = node.get_String().getText();
-		this.set(new Text(string.substring(1, string.length() - 1)));
+		this.set(new Text((String) this.get(node.get_Content())));
 	}
 	
 	@Override
 	public void caseExpression_Variable(NExpression_Variable node) {
-		this.set(new Identifier((String) this.get(node.get_Identifier())));
+		this.set(new Identifier((String) this.get(node.get_Content())));
 	}
 	
 	@Override
@@ -156,7 +195,7 @@ public class Visitor extends Walker {
 	@Override
 	public void caseExpression_Operation1(NExpression_Operation1 node) {
 		this.set(new Operation(
-			node.get_Operator().getText(),
+			(String) this.get(node.get_Operator()),
 			(Expression) this.get(node.get_Left()),
 			(Expression) this.get(node.get_Right())
 		));
@@ -165,7 +204,7 @@ public class Visitor extends Walker {
 	@Override
 	public void caseExpression_Operation2(NExpression_Operation2 node) {
 		this.set(new Operation(
-			node.get_Operator().getText(),
+			(String) this.get(node.get_Operator()),
 			(Expression) this.get(node.get_Left()),
 			(Expression) this.get(node.get_Right())
 		));
@@ -174,7 +213,7 @@ public class Visitor extends Walker {
 	@Override
 	public void caseExpression_Operation3(NExpression_Operation3 node) {
 		this.set(new Operation(
-			node.get_Operator().getText(),
+			(String) this.get(node.get_Operator()),
 			(Expression) this.get(node.get_Left()),
 			(Expression) this.get(node.get_Right())
 		));
@@ -183,7 +222,7 @@ public class Visitor extends Walker {
 	@Override
 	public void caseExpression_Operation4(NExpression_Operation4 node) {
 		this.set(new Operation(
-			node.get_Operator().getText(),
+			(String) this.get(node.get_Operator()),
 			(Expression) this.get(node.get_Left()),
 			(Expression) this.get(node.get_Right())
 		));
@@ -192,7 +231,7 @@ public class Visitor extends Walker {
 	@Override
 	public void caseExpression_Operation5(NExpression_Operation5 node) {
 		this.set(new Operation(
-			node.get_Operator().getText(),
+			(String) this.get(node.get_Operator()),
 			(Expression) this.get(node.get_Left()),
 			(Expression) this.get(node.get_Right())
 		));
@@ -201,7 +240,7 @@ public class Visitor extends Walker {
 	@Override
 	public void caseFunction(NFunction node) {
 		this.set(new Function(
-			(String) this.get(node.get_FunctionName()),
+			(String) this.get(node.get_Name()),
 			(List<String>) this.push(new ArrayList<String>(), node.get_Parameters()),
 			(Expression) this.get(node.get_Block())
 		));
@@ -215,14 +254,14 @@ public class Visitor extends Walker {
 	@Override
 	public void caseClass(NClass node) {
 		this.set(new Type(
-			(String) this.get(node.get_ClassName()),
-			(String) this.get(node.get_ClassParent()),
-			(List<Function>) this.push(new ArrayList<Function>(), node.get_ClassStatements())
+			(String) this.get(node.get_Name()),
+			(Expression) this.get(node.get_Parent()),
+			(List<Function>) this.push(new ArrayList<Function>(), node.get_Members())
 		));
 	}
 	
 	@Override
-	public void caseClassMember_Method(NClassMember_Method node) {
+	public void caseMember_Method(NMember_Method node) {
 		((List<Function>) this.pop()).add((Function) this.get(node.get_Function()));
 	}
 }
