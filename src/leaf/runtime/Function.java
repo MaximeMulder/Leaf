@@ -2,7 +2,9 @@ package leaf.runtime;
 
 import java.util.List;
 
+import leaf.runtime.exception.Control;
 import leaf.runtime.exception.ControlReturn;
+import leaf.runtime.exception.ErrorControl;
 import leaf.structure.Expression;
 
 public class Function extends Callable {
@@ -34,10 +36,12 @@ public class Function extends Callable {
 			this.body.run(engine);
 		} catch (ControlReturn control) {
 			value = control.getValue();
+		} catch (Control control) {
+			throw new ErrorControl();
 		}
 		
 		engine.setScope(this.scope);
-			
+		
 		return value;
 	}
 }
