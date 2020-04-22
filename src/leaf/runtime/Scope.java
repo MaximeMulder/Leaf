@@ -3,21 +3,23 @@ package leaf.runtime;
 import java.util.HashMap;
 import java.util.Map;
 
+import leaf.runtime.value.Value;
+
 public class Scope {
 	private Scope parent;
-	private Map<String, Variable> variables;
+	private Map<String, Reference> variables;
 	
-	Scope(Scope parent) {
+	public Scope(Scope parent) {
 		this.parent = parent;
-		this.variables = new HashMap<String, Variable>();
+		this.variables = new HashMap<String, Reference>();
 	}
 	
-	Scope getParent() {
+	public Scope getParent() {
 		return this.parent;
 	}
 	
-	Variable getVariable(String name) {
-		Variable variable = this.variables.get(name);
+	public Reference getVariable(String name) {
+		Reference variable = this.variables.get(name);
 		if (variable != null) {
 			return variable;
 		}
@@ -29,7 +31,9 @@ public class Scope {
 		return null;
 	}
 	
-	void addVariable(Variable variable) {
-		this.variables.put(variable.getName(), variable);
+	public Reference newVariable(String name, Value value) {
+		Reference variable = new Reference(value);
+		this.variables.put(name, variable);
+		return variable;
 	}
 }

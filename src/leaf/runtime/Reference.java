@@ -1,14 +1,14 @@
 package leaf.runtime;
 
-public class Variable implements IValue {
-	private String name;
+import leaf.runtime.value.Value;
+
+public class Reference implements IValue {
 	private Value value;
 	
-	public Variable(String name, Value value) {
-		this.name = name;
+	public Reference(Value value) {
 		this.value = value;
 	}
-	
+
 	@Override
 	public Value read() {
 		return this.value;
@@ -17,9 +17,5 @@ public class Variable implements IValue {
 	@Override
 	public void write(Value value) {
 		this.value = value;
-	}
-	
-	public String getName() {
-		return this.name;
 	}
 }

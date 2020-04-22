@@ -2,8 +2,8 @@ package leaf.structure;
 
 import leaf.runtime.Engine;
 import leaf.runtime.IValue;
-import leaf.runtime.Value;
 import leaf.runtime.exception.ControlContinue;
+import leaf.runtime.value.Value;
 
 public class Continue extends Expression {
 	private Expression expression;

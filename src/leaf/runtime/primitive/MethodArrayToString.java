@@ -3,8 +3,8 @@ package leaf.runtime.primitive;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.Value;
-import leaf.runtime.Variable;
+import leaf.runtime.Reference;
+import leaf.runtime.value.Value;
 
 public class MethodArrayToString extends Method {
 	@Override
@@ -15,9 +15,9 @@ public class MethodArrayToString extends Method {
 	@Override
 	public Value execute(Engine engine, Value self, List<Value> parameters) {
 		String string = "[";
-		List<Variable> elements = self.castArray().getElements();
-		for (Variable variable : elements) {
-			Value value = variable.read();
+		List<Reference> elements = self.castArray().getElements();
+		for (Reference element : elements) {
+			Value value = element.read();
 			string += value.getType().getMethod("to_string").call(engine, value).castString().getPrimitive() + ", ";
 		}
 		

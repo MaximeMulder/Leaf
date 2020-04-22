@@ -3,8 +3,8 @@ package leaf.runtime.primitive;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.Value;
-import leaf.runtime.Variable;
+import leaf.runtime.Reference;
+import leaf.runtime.value.Value;
 
 public class MethodArrayInsert extends Method {
 	@Override
@@ -14,7 +14,7 @@ public class MethodArrayInsert extends Method {
 
 	@Override
 	public Value execute(Engine engine, Value self, List<Value> arguments) {
-		self.castArray().getElements().add(arguments.get(0).castInteger().getPrimitive(), new Variable(null, arguments.get(1)));
+		self.castArray().getElements().add(arguments.get(0).castInteger().getPrimitive(), new Reference(arguments.get(1)));
 		return null;
 	}
 }

@@ -1,4 +1,4 @@
-package leaf.runtime;
+package leaf.runtime.value;
 
 public class ValueReference extends Value {
 	private Value value;
@@ -6,6 +6,11 @@ public class ValueReference extends Value {
 	public ValueReference(ValueClass type, Value value) {
 		super(type);
 		this.value = value;
+	}
+	
+	@Override
+	public ValueReference castReference() {
+		return this;
 	}
 	
 	@Override

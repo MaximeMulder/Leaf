@@ -1,4 +1,4 @@
-package leaf.runtime;
+package leaf.runtime.value;
 
 public class ValueString extends Value {
 	private String primitive;

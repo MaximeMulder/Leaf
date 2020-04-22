@@ -2,6 +2,7 @@ package leaf.runtime.primitive;
 
 import leaf.runtime.*;
 import leaf.runtime.exception.Error;
+import leaf.runtime.value.Value;
 
 public class BinaryStringComparison extends Binary {
 	@Override

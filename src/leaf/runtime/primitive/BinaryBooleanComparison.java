@@ -1,8 +1,8 @@
 package leaf.runtime.primitive;
 
 import leaf.runtime.Engine;
-import leaf.runtime.Value;
 import leaf.runtime.exception.Error;
+import leaf.runtime.value.Value;
 
 public class BinaryBooleanComparison extends Binary {
 	@Override

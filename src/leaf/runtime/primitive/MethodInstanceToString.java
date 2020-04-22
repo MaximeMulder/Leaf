@@ -6,8 +6,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import leaf.runtime.Engine;
-import leaf.runtime.Value;
-import leaf.runtime.Variable;
+import leaf.runtime.Reference;
+import leaf.runtime.value.Value;
 
 public class MethodInstanceToString extends Method {
 	@Override
@@ -18,8 +18,8 @@ public class MethodInstanceToString extends Method {
 	@Override
 	public Value execute(Engine engine, Value self, List<Value> parameters) {
 		String string = "{";
-		Map<String, Variable> attributes = new TreeMap<String, Variable>(self.castInstance().getAttributes());
-		for (Entry<String, Variable> attribute : attributes.entrySet()) {
+		Map<String, Reference> attributes = new TreeMap<String, Reference>(self.castInstance().getAttributes());
+		for (Entry<String, Reference> attribute : attributes.entrySet()) {
 			Value value = attribute.getValue().read();
 			string += attribute.getKey() + ": " + value.getType().getMethod("to_string").call(engine, value).castString().getPrimitive() + ", ";
 		}

@@ -1,18 +1,19 @@
-package leaf.runtime;
+package leaf.runtime.value;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import leaf.runtime.Reference;
 import leaf.runtime.exception.ErrorArguments;
 
 public class ValueArray extends Value {
-	private List<Variable> elements;
+	private List<Reference> elements;
 	
 	public ValueArray(ValueClass type, List<Value> values) {
 		super(type);
-		List<Variable> elements = new ArrayList<Variable>();
+		List<Reference> elements = new ArrayList<Reference>();
 		for (Value value : values) {
-			elements.add(new Variable(null, value));
+			elements.add(new Reference(value));
 		}
 		
 		this.elements = elements;
@@ -23,11 +24,11 @@ public class ValueArray extends Value {
 		return this;
 	}
 	
-	public List<Variable> getElements() {
+	public List<Reference> getElements() {
 		return this.elements;
 	}
 	
-	public IValue access(List<Value> arguments) {
+	public Reference access(List<Value> arguments) {
 		if (arguments.size() != 1) {
 			throw new ErrorArguments();
 		}

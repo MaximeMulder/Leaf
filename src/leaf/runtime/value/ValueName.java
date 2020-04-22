@@ -1,4 +1,4 @@
-package leaf.runtime;
+package leaf.runtime.value;
 
 public abstract class ValueName extends Value {
 	private String name;

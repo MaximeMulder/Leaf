@@ -3,8 +3,8 @@ package leaf.structure;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.Value;
-import leaf.runtime.ValueFunction;
+import leaf.runtime.value.Value;
+import leaf.runtime.value.ValueFunction;
 
 public class Function extends Expression {
 	private String name;

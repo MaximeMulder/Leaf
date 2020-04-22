@@ -1,12 +1,14 @@
-package leaf.runtime;
+package leaf.runtime.value;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import leaf.runtime.Callable;
+import leaf.runtime.Engine;
 import leaf.runtime.exception.ErrorArguments;
 
 public class ValueFunction extends ValueName {
-	Callable callable;
+	private Callable callable;
 	
 	public ValueFunction(ValueClass type, String name, Callable callable) {
 		super(type, name);

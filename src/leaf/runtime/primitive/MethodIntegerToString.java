@@ -3,7 +3,7 @@ package leaf.runtime.primitive;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.Value;
+import leaf.runtime.value.Value;
 
 public class MethodIntegerToString extends Method {
 	@Override

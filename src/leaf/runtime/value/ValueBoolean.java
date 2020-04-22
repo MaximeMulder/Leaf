@@ -1,4 +1,4 @@
-package leaf.runtime;
+package leaf.runtime.value;
 
 public class ValueBoolean extends Value {
 	private boolean primitive;

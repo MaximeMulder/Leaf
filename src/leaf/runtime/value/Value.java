@@ -1,5 +1,6 @@
-package leaf.runtime;
+package leaf.runtime.value;
 
+import leaf.runtime.IValue;
 import leaf.runtime.exception.ErrorType;
 import leaf.runtime.exception.ErrorWrite;
 
@@ -44,11 +45,11 @@ public abstract class Value implements IValue {
 		return this.castError();
 	}
 	
-	public ValueInteger castInteger() {
+	public ValueInstance castInstance() {
 		return this.castError();
 	}
 	
-	public ValueInstance castInstance() {
+	public ValueInteger castInteger() {
 		return this.castError();
 	}
 	

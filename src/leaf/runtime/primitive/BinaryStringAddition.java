@@ -1,6 +1,7 @@
 package leaf.runtime.primitive;
 
 import leaf.runtime.*;
+import leaf.runtime.value.Value;
 
 public class BinaryStringAddition extends Binary {
 	@Override

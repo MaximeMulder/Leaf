@@ -4,8 +4,8 @@ import java.util.List;
 
 import leaf.runtime.Callable;
 import leaf.runtime.Engine;
-import leaf.runtime.Value;
-import leaf.runtime.ValueClass;
+import leaf.runtime.value.Value;
+import leaf.runtime.value.ValueClass;
 
 public class PrimitiveNew extends Callable {
 	@Override
@@ -19,7 +19,7 @@ public class PrimitiveNew extends Callable {
 		if (arguments.size() == 1) {
 			type = arguments.get(0).castClass();
 		} else {
-			type = engine.getTypeInstance();
+			type = engine.getTypes().getInstance();
 		}
 		
 		return engine.getValues().getInstance(type);

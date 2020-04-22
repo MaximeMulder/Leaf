@@ -16,10 +16,15 @@ public class If extends Expression {
 	
 	@Override
 	public IValue run(Engine engine) {
+		IValue value = null;
 		if (this.condition.run(engine).read().castBoolean().getPrimitive()) {
-			return this.accept.run(engine).read();
+			value = this.accept.run(engine);
 		} else if (this.reject != null) {
-			return this.reject.run(engine).read();
+			value = this.reject.run(engine);
+		}
+		
+		if (value != null) {
+			return value.read();
 		}
 		
 		return null;

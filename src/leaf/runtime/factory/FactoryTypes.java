@@ -1,104 +1,73 @@
 package leaf.runtime.factory;
 
-import leaf.runtime.Engine;
-import leaf.runtime.ValueClass;
+import leaf.runtime.value.ValueClass;
 
 public class FactoryTypes {
-	private Engine engine;
-	private FactoryPrimitives primitives;
+	private ValueClass array;
+	private ValueClass binary;
+	private ValueClass type;
+	private ValueClass function;
+	private ValueClass instance;
+	private ValueClass integer;
+	private ValueClass object;
+	private ValueClass reference;
+	private ValueClass string;
 	
-	public FactoryTypes(Engine engine) {
-		this.engine = engine;
-		this.primitives = this.engine.getPrimitives();
+	public FactoryTypes() {
+		this.type      = this.newType("Class");
+		this.object    = this.newType("Object");
+		this.array     = this.newType("Array");
+		this.binary    = this.newType("Boolean");
+		this.function  = this.newType("Function");
+		this.instance  = this.newType("Instance");
+		this.integer   = this.newType("Integer");
+		this.reference = this.newType("Refernece");
+		this.string    = this.newType("String");
+		
+		this.type.setParent(this.getObject());
 	}
 	
 	public ValueClass getArray() {
-		ValueClass type = this.get("Boolean");
-		
-		type.setMethod("to_string", this.primitives.getMethodArrayToString());
-		type.setMethod("copy",      this.primitives.getMethodArrayCopy());
-		type.setMethod("append",    this.primitives.getMethodArrayAppend());
-		type.setMethod("prepend",   this.primitives.getMethodArrayPrepend());
-		type.setMethod("insert",    this.primitives.getMethodArrayInsert());
-		type.setMethod("remove",    this.primitives.getMethodArrayRemove());
-		
-		return type;
+		return this.array;
 	}
 	
 	public ValueClass getBoolean() {
-		ValueClass type = this.get("Boolean");
-		
-		type.setBinary("==", this.primitives.getBinaryBooleanComparison());
-		
-		type.setMethod("to_string", this.primitives.getMethodBooleanToString());
-		
-		return type;
+		return this.binary;
 	}
 	
 	public ValueClass getType() {
-		return this.get("Class");
+		return this.type;
 	}
 	
 	public ValueClass getFunction() {
-		return this.get("Function");
+		return this.function;
 	}
 	
 	public ValueClass getInstance() {
-		ValueClass type = this.get("Instance");
-		
-		type.setMethod("to_string", this.primitives.getMethodInstanceToString());
-		
-		return type;
+		return this.instance;
 	}
 	
 	public ValueClass getInteger() {
-		ValueClass type = this.get("Integer");
-		
-		type.setBinary("+",  this.primitives.getBinaryIntegerAddition());
-		type.setBinary("-",  this.primitives.getBinaryIntegerSubtraction());
-		type.setBinary("*",  this.primitives.getBinaryIntegerMultiplication());
-		type.setBinary("/",  this.primitives.getBinaryIntegerDivision());
-		type.setBinary("<",  this.primitives.getBinaryIntegerOrderLesser());
-		type.setBinary("==", this.primitives.getBinaryIntegerComparison());
-		
-		type.setMethod("to_string", this.primitives.getMethodIntegerToString());
-		
-		return type;
+		return this.integer;
+	}
+	
+	public ValueClass getNull() {
+		return null;
 	}
 	
 	public ValueClass getObject() {
-		ValueClass type = this.get("Object", null);
-
-		type.setBinary(">",  this.primitives.getBinaryObjectOrderGreater());
-		type.setBinary("<=", this.primitives.getBinaryObjectOrderLesserEqual());
-		type.setBinary(">=", this.primitives.getBinaryObjectOrderGreaterEqual());
-		type.setBinary("==", this.primitives.getBinaryObjectComparison());
-		type.setBinary("!=", this.primitives.getBinaryObjectDifference());
-		
-		return type;
+		return this.object;
 	}
 	
 	public ValueClass getReference() {
-		return this.get("Reference");
+		return this.reference;
 	}
 	
 	public ValueClass getString() {
-		ValueClass type = this.get("String");
-		
-		type.setBinary("+",  this.primitives.getBinaryStringAddition());
-		type.setBinary("<",  this.primitives.getBinaryStringOrderLesser());
-		type.setBinary("==", this.primitives.getBinaryStringComparison());
-		
-		type.setMethod("to_string", this.primitives.getMethodStringToString());
-		
-		return type;
+		return this.string;
 	}
 	
-	private ValueClass get(String name) {
-		return this.get(name, this.engine.getTypeObject());
-	}
-	
-	private ValueClass get(String name, ValueClass parent) {
-		return new ValueClass(this.engine.getTypeClass(), name, parent);
+	private ValueClass newType(String name) {
+		return new ValueClass(this.getType(), name, this.getObject());
 	}
 }

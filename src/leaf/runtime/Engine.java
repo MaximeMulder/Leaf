@@ -1,47 +1,22 @@
 package leaf.runtime;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import leaf.runtime.factory.*;
+import leaf.runtime.value.Value;
 
 public class Engine {
-	private FactoryPrimitives primitives;
-	private FactoryTypes      types;
-	private FactoryValues     values;
-
-	private ValueClass typeArray;
-	private ValueClass typeBoolean;
-	private ValueClass typeClass;
-	private ValueClass typeFunction;
-	private ValueClass typeInstance;
-	private ValueClass typeInteger;
-	private ValueClass typeObject;
-	private ValueClass typeReference;
-	private ValueClass typeString;
-	
 	private Scope scope;
 	private Value self;
+	private FactoryTypes      types;
+	private FactoryPrimitives primitives;
+	private FactoryValues     values;
 	
 	public Engine() {
-		this.primitives = new FactoryPrimitives(this);
-		this.types      = new FactoryTypes(this);
-		this.values     = new FactoryValues(this);
-
-		this.typeClass     = this.types.getType();
-		this.typeObject    = this.types.getObject();
-		this.typeArray     = this.types.getArray();
-		this.typeBoolean   = this.types.getBoolean();
-		this.typeFunction  = this.types.getFunction();
-		this.typeInstance  = this.types.getInstance();
-		this.typeInteger   = this.types.getInteger();
-		this.typeReference = this.types.getReference();
-		this.typeString    = this.types.getString();
-		
-		this.typeClass.setParent(this.typeObject);
-		
-		this.scope = this.newScope();
+		this.scope = new Scope(null);
 		this.self = null;
+		
+		this.types      = new FactoryTypes();
+		this.primitives = new FactoryPrimitives(this);
+		this.values     = new FactoryValues(this);
 	}
 	
 	public FactoryPrimitives getPrimitives() {
@@ -56,64 +31,21 @@ public class Engine {
 		return this.values;
 	}
 	
-	// Getters for type objects.
-	
-	public ValueClass getTypeArray() {
-		return this.typeArray;
-	}
-	
-	public ValueClass getTypeBoolean() {
-		return this.typeBoolean;
-	}
-	
-	public ValueClass getTypeClass() {
-		return this.typeClass;
-	}
-	
-	public ValueClass getTypeFunction() {
-		return this.typeFunction;
-	}
-	
-	public ValueClass getTypeInstance() {
-		return this.typeInstance;
-	}
-	
-	public ValueClass getTypeInteger() {
-		return this.typeInteger;
-	}
-	
-	public ValueClass getTypeNull() {
-		return null;
-	}
-	
-	public ValueClass getTypeObject() {
-		return this.typeObject;
-	}
-	
-	public ValueClass getTypeReference() {
-		return this.typeReference;
-	}
-	
-	public ValueClass getTypeString() {
-		return this.typeString;
-	}
-	
 	// Complex getters.
 	
-	public Variable getVariable(String name) {
-		Variable variable = this.scope.getVariable(name);
+	public Reference getVariable(String name) {
+		Reference variable = this.scope.getVariable(name);
 		if (variable != null) {
 			return variable;
 		}
 		
-		variable = this.values.getVariable(name);
-		this.scope.addVariable(variable);
+		variable = this.scope.newVariable(name, null);
 		
 		return variable;
 	}
 	
 	public void setVariable(String name, Value value) {
-		this.scope.addVariable(this.values.getVariable(name, value));
+		this.scope.newVariable(name, value);
 	}
 	
 	// Scope operations.
@@ -146,30 +78,5 @@ public class Engine {
 		Value self = this.self;
 		this.self = null;
 		return self;
-	}
-	
-	// Private utilities.
-	
-	private Scope newScope() {
-		Scope scope = new Scope(null);
-		List<ValueName> values = new ArrayList<ValueName>();
-		values.add(this.getTypeArray());
-		values.add(this.getTypeBoolean());
-		values.add(this.getTypeClass());
-		values.add(this.getTypeFunction());
-		values.add(this.getTypeInteger());
-		values.add(this.getTypeObject());
-		values.add(this.getTypeString());
-		values.add(this.getTypeReference());
-		values.add(this.getPrimitives().getPrimitiveAssert());
-		values.add(this.getPrimitives().getPrimitiveError());
-		values.add(this.getPrimitives().getPrimitiveExit());
-		values.add(this.getPrimitives().getPrimitiveNew());
-		values.add(this.getPrimitives().getPrimitivePrint());
-		for (ValueName value : values) {
-			scope.addVariable(this.values.getVariable(value.getName(), value));
-		}
-		
-		return scope;
 	}
 }

@@ -4,16 +4,7 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.Function;
-import leaf.runtime.Value;
-import leaf.runtime.ValueArray;
-import leaf.runtime.ValueBoolean;
-import leaf.runtime.ValueClass;
-import leaf.runtime.ValueFunction;
-import leaf.runtime.ValueInstance;
-import leaf.runtime.ValueInteger;
-import leaf.runtime.ValueNull;
-import leaf.runtime.ValueString;
-import leaf.runtime.Variable;
+import leaf.runtime.value.*;
 import leaf.structure.Expression;
 
 public class FactoryValues {
@@ -23,20 +14,12 @@ public class FactoryValues {
 		this.engine = engine;
 	}
 	
-	public Variable getVariable(String name) {
-		return this.getVariable(name, null);
-	}
-	
-	public Variable getVariable(String name, Value value) {
-		return new Variable(name, value);
-	}
-	
 	public ValueArray getArray(List<Value> values) {		
-		return new ValueArray(this.engine.getTypeArray(), values);
+		return new ValueArray(this.engine.getTypes().getArray(), values);
 	}
 	
 	public ValueBoolean getBoolean(boolean primitive) {
-		return new ValueBoolean(this.engine.getTypeBoolean(), primitive);
+		return new ValueBoolean(this.engine.getTypes().getBoolean(), primitive);
 	}
 	
 	public ValueBoolean getBooleanOpposite(ValueBoolean value) {
@@ -52,15 +35,15 @@ public class FactoryValues {
 	}
 	
 	public ValueClass getType(String name, ValueClass parent) {
-		return new ValueClass(this.engine.getTypeClass(), name, parent);
+		return new ValueClass(this.engine.getTypes().getType(), name, parent);
 	}
 	
 	public ValueFunction getFunction(String name, List<String> parameters, Expression body) {
-		return new ValueFunction(this.engine.getTypeFunction(), name, new Function(this.engine.getScope(), parameters, body));
+		return new ValueFunction(this.engine.getTypes().getFunction(), name, new Function(this.engine.getScope(), parameters, body));
 	}
 	
 	public ValueInteger getInteger(int primitive) {
-		return new ValueInteger(this.engine.getTypeInteger(), primitive);
+		return new ValueInteger(this.engine.getTypes().getInteger(), primitive);
 	}
 	
 	public ValueInstance getInstance(ValueClass type) {
@@ -72,6 +55,6 @@ public class FactoryValues {
 	}
 	
 	public ValueString getString(String primitive) {
-		return new ValueString(this.engine.getTypeString(), primitive);
+		return new ValueString(this.engine.getTypes().getString(), primitive);
 	}
 }

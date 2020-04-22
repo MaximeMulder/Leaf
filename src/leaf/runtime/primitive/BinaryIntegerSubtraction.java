@@ -1,7 +1,7 @@
 package leaf.runtime.primitive;
 
 import leaf.runtime.Engine;
-import leaf.runtime.Value;
+import leaf.runtime.value.Value;
 
 public class BinaryIntegerSubtraction extends Binary {
 	@Override

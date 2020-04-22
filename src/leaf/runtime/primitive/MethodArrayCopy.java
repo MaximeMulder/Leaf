@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.Value;
-import leaf.runtime.Variable;
+import leaf.runtime.Reference;
+import leaf.runtime.value.Value;
 
 public class MethodArrayCopy extends Method {
 	@Override
@@ -16,7 +16,7 @@ public class MethodArrayCopy extends Method {
 	@Override
 	public Value execute(Engine engine, Value self, List<Value> arguments) {
 		List<Value> values = new ArrayList<Value>();
-		for (Variable element : self.castArray().getElements()) {
+		for (Reference element : self.castArray().getElements()) {
 			values.add(element.read());
 		}
 		

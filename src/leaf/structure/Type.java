@@ -4,8 +4,8 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.IValue;
-import leaf.runtime.ValueClass;
-import leaf.runtime.ValueFunction;
+import leaf.runtime.value.ValueClass;
+import leaf.runtime.value.ValueFunction;
 
 public class Type extends Expression {
 	private String name;
@@ -24,7 +24,7 @@ public class Type extends Expression {
 		if (this.parent != null) {
 			parent = this.parent.run(engine).read().castClass();
 		} else {
-			parent = engine.getTypeInstance();
+			parent = engine.getTypes().getInstance();
 		}
 		
 		ValueClass type = engine.getValues().getType(this.name, parent);

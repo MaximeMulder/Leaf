@@ -1,142 +1,126 @@
 package leaf.runtime.factory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import leaf.runtime.Callable;
 import leaf.runtime.Engine;
-import leaf.runtime.ValueFunction;
+import leaf.runtime.Scope;
 import leaf.runtime.primitive.*;
+import leaf.runtime.value.ValueClass;
+import leaf.runtime.value.ValueFunction;
+import leaf.runtime.value.ValueName;
 
 public class FactoryPrimitives {
-	private Engine engine;
+	private FactoryTypes types;
+	private Scope scope;
 	
 	public FactoryPrimitives(Engine engine) {
-		this.engine = engine;
+		this.types = engine.getTypes();
+		this.scope = engine.getScope();
+		
+		this.setArray();
+		this.setBoolean();
+		this.setInstance();
+		this.setInteger();
+		this.setObject();
+		this.setString();
+		
+		this.setScope();
 	}
 	
-	public ValueFunction getBinaryBooleanComparison() {
-		return this.get(new BinaryBooleanComparison());
+	private void setArray() {
+		ValueClass type = this.types.getArray();
+
+		this.setMethod(type, "copy",      new MethodArrayCopy());
+		this.setMethod(type, "append",    new MethodArrayAppend());
+		this.setMethod(type, "prepend",   new MethodArrayPrepend());
+		this.setMethod(type, "insert",    new MethodArrayInsert());
+		this.setMethod(type, "remove",    new MethodArrayRemove());
+		this.setMethod(type, "to_string", new MethodArrayToString());
+	}
+
+	private void setBoolean() {
+		ValueClass type = this.types.getBoolean();
+
+		this.setMethod(type, "to_string", new MethodBooleanToString());
+		
+		this.setBinary(type, "==", new BinaryBooleanComparison());
 	}
 	
-	public ValueFunction getBinaryIntegerAddition() {
-		return this.get(new BinaryIntegerAddition());
-	}
+	private void setInstance() {
+		ValueClass type = this.types.getInstance();
 
-	public ValueFunction getBinaryIntegerSubtraction() {
-		return this.get(new BinaryIntegerSubtraction());
-	}
-
-	public ValueFunction getBinaryIntegerMultiplication() {
-		return this.get(new BinaryIntegerMultiplication());
-	}
-
-	public ValueFunction getBinaryIntegerDivision() {
-		return this.get(new BinaryIntegerDivision());
-	}
-
-	public ValueFunction getBinaryIntegerOrderLesser() {
-		return this.get(new BinaryIntegerOrderLesser());
-	}
-
-	public ValueFunction getBinaryIntegerComparison() {
-		return this.get(new BinaryIntegerComparison());
-	}
-
-	public ValueFunction getBinaryObjectOrderGreater() {
-		return this.get(new BinaryObjectOrderGreater());
-	}
-
-	public ValueFunction getBinaryObjectOrderLesserEqual() {
-		return this.get(new BinaryObjectOrderLesserEqual());
-	}
-
-	public ValueFunction getBinaryObjectOrderGreaterEqual() {
-		return this.get(new BinaryObjectOrderGreaterEqual());
-	}
-
-	public ValueFunction getBinaryObjectComparison() {
-		return this.get(new BinaryObjectComparison());
-	}
-
-	public ValueFunction getBinaryObjectDifference() {
-		return this.get(new BinaryObjectDifference());
-	}
-
-	public ValueFunction getBinaryStringAddition() {
-		return this.get(new BinaryStringAddition());
-	}
-
-	public ValueFunction getBinaryStringOrderLesser() {
-		return this.get(new BinaryStringOrderLesser());
-	}
-
-	public ValueFunction getBinaryStringComparison() {
-		return this.get(new BinaryStringComparison());
-	}
-
-	public ValueFunction getMethodArrayToString() {
-		return this.get("to_string", new MethodArrayToString());
-	}
-
-	public ValueFunction getMethodArrayCopy() {
-		return this.get("copy", new MethodArrayCopy());
-	}
-
-	public ValueFunction getMethodArrayAppend() {
-		return this.get("append", new MethodArrayAppend());
-	}
-
-	public ValueFunction getMethodArrayPrepend() {
-		return this.get("prepend", new MethodArrayPrepend());
-	}
-
-	public ValueFunction getMethodArrayInsert() {
-		return this.get("insert", new MethodArrayInsert());
-	}
-
-	public ValueFunction getMethodArrayRemove() {
-		return this.get("remove", new MethodArrayRemove());
+		this.setMethod(type, "to_string", new MethodInstanceToString());
 	}
 	
-	public ValueFunction getMethodBooleanToString() {
-		return this.get("to_string", new MethodBooleanToString());
+	private void setInteger() {
+		ValueClass type = this.types.getInteger();
+		
+		this.setMethod(type, "to_string", new MethodIntegerToString());
+		
+		this.setBinary(type, "+",  new BinaryIntegerAddition());
+		this.setBinary(type, "-",  new BinaryIntegerSubtraction());
+		this.setBinary(type, "*",  new BinaryIntegerMultiplication());
+		this.setBinary(type, "/",  new BinaryIntegerDivision());
+		this.setBinary(type, "<",  new BinaryIntegerOrderLesser());
+		this.setBinary(type, "==", new BinaryIntegerComparison());
 	}
 	
-	public ValueFunction getMethodInstanceToString() {
-		return this.get("to_string", new MethodInstanceToString());
+	private void setObject() {
+		ValueClass type = this.types.getObject();
+
+		this.setBinary(type, ">",  new BinaryObjectOrderGreater());
+		this.setBinary(type, "<=", new BinaryObjectOrderLesserEqual());
+		this.setBinary(type, ">=", new BinaryObjectOrderGreaterEqual());
+		this.setBinary(type, "==", new BinaryObjectComparison());
+		this.setBinary(type, "!=", new BinaryObjectDifference());
+	}
+		
+	private void setString() {
+		ValueClass type = this.types.getString();
+		
+		this.setMethod(type, "to_string", new MethodStringToString());
+		
+		this.setBinary(type, "+" , new BinaryStringAddition());
+		this.setBinary(type, "<",  new BinaryStringOrderLesser());
+		this.setBinary(type, "==", new BinaryStringComparison());
 	}
 	
-	public ValueFunction getMethodIntegerToString() {
-		return this.get("to_string", new MethodIntegerToString());
+	private void setScope() {
+		List<ValueName> values = new ArrayList<ValueName>();
+		
+		values.add(this.types.getArray());
+		values.add(this.types.getBoolean());
+		values.add(this.types.getType());
+		values.add(this.types.getFunction());
+		values.add(this.types.getInstance());
+		values.add(this.types.getInteger());
+		values.add(this.types.getObject());
+		values.add(this.types.getReference());
+		values.add(this.types.getString());
+		
+		values.add(this.newFunction("assert", new PrimitiveAssert()));
+		values.add(this.newFunction("error",  new PrimitiveError()));
+		values.add(this.newFunction("exit",   new PrimitiveExit()));
+		values.add(this.newFunction("new",    new PrimitiveNew()));
+		values.add(this.newFunction("print",  new PrimitivePrint()));
+		
+		for (ValueName value : values) {
+			this.scope.newVariable(value.getName(), value);
+		}
 	}
 	
-	public ValueFunction getMethodStringToString() {
-		return this.get("to_string", new MethodStringToString());
+	private void setMethod(ValueClass type, String name, Callable callable) {
+		ValueFunction function = newFunction(name, callable);
+		type.setMethod(function.getName(), function);
 	}
 	
-	public ValueFunction getPrimitiveAssert() {
-		return this.get("assert", new PrimitiveAssert());
+	private void setBinary(ValueClass type, String operator, Callable callable) {
+		type.setBinary(operator, newFunction(null, callable));
 	}
 	
-	public ValueFunction getPrimitiveError() {
-		return this.get("error", new PrimitiveError());
-	}
-	
-	public ValueFunction getPrimitiveExit() {
-		return this.get("exit", new PrimitiveExit());
-	}
-	
-	public ValueFunction getPrimitiveNew() {
-		return this.get("new", new PrimitiveNew());
-	}
-	
-	public ValueFunction getPrimitivePrint() {
-		return this.get("print", new PrimitivePrint());
-	}
-	
-	private ValueFunction get(Callable callable) {
-		return this.get(null, callable);
-	}
-	
-	private ValueFunction get(String name, Callable callable) {
-		return new ValueFunction(this.engine.getTypeFunction(), name, callable);
+	private ValueFunction newFunction(String name, Callable callable) {
+		return new ValueFunction(this.types.getFunction(), name, callable);
 	}
 }

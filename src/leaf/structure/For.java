@@ -5,10 +5,10 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.IValue;
-import leaf.runtime.Value;
-import leaf.runtime.Variable;
+import leaf.runtime.Reference;
 import leaf.runtime.exception.ControlBreak;
 import leaf.runtime.exception.ControlContinue;
+import leaf.runtime.value.Value;
 
 public class For extends Expression {
 	private String element;
@@ -24,7 +24,7 @@ public class For extends Expression {
 	@Override
 	public IValue run(Engine engine) {
 		List<Value> values = new ArrayList<Value>();
-		for (Variable element : this.array.run(engine).read().castArray().getElements()) {
+		for (Reference element : this.array.run(engine).read().castArray().getElements()) {
 			Value value = null;
 			try {
 				engine.pushScope();

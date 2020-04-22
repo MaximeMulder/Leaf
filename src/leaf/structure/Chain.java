@@ -2,10 +2,10 @@ package leaf.structure;
 
 import leaf.runtime.Engine;
 import leaf.runtime.IValue;
-import leaf.runtime.Value;
-import leaf.runtime.ValueFunction;
-import leaf.runtime.ValueInstance;
-import leaf.runtime.Variable;
+import leaf.runtime.Reference;
+import leaf.runtime.value.Value;
+import leaf.runtime.value.ValueFunction;
+import leaf.runtime.value.ValueInstance;
 
 public class Chain extends Expression {
 	private Expression expression;
@@ -27,10 +27,9 @@ public class Chain extends Expression {
 		
 		if (value instanceof ValueInstance) {
 			ValueInstance instance = value.castInstance();
-			Variable attribute = instance.getAttribute(this.member);
+			Reference attribute = instance.getAttribute(this.member);
 			if (attribute == null) {
-				attribute = engine.getValues().getVariable(this.member);
-				instance.setAttribute(attribute);
+				attribute = instance.newAttribute(this.member, null);
 			}
 
 			return attribute;

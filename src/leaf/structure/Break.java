@@ -2,8 +2,8 @@ package leaf.structure;
 
 import leaf.runtime.Engine;
 import leaf.runtime.IValue;
-import leaf.runtime.Value;
 import leaf.runtime.exception.ControlBreak;
+import leaf.runtime.value.Value;
 
 public class Break extends Expression {
 	private Expression expression;
