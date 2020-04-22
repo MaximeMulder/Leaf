@@ -1,6 +1,7 @@
 package leaf.runtime;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import leaf.runtime.factory.*;
 
@@ -13,6 +14,7 @@ public class Engine {
 	private ValueClass typeBoolean;
 	private ValueClass typeClass;
 	private ValueClass typeFunction;
+	private ValueClass typeInstance;
 	private ValueClass typeInteger;
 	private ValueClass typeObject;
 	private ValueClass typeReference;
@@ -31,6 +33,7 @@ public class Engine {
 		this.typeArray     = this.types.getArray();
 		this.typeBoolean   = this.types.getBoolean();
 		this.typeFunction  = this.types.getFunction();
+		this.typeInstance  = this.types.getInstance();
 		this.typeInteger   = this.types.getInteger();
 		this.typeReference = this.types.getReference();
 		this.typeString    = this.types.getString();
@@ -69,6 +72,10 @@ public class Engine {
 	
 	public ValueClass getTypeFunction() {
 		return this.typeFunction;
+	}
+	
+	public ValueClass getTypeInstance() {
+		return this.typeInstance;
 	}
 	
 	public ValueClass getTypeInteger() {
@@ -145,7 +152,7 @@ public class Engine {
 	
 	private Scope newScope() {
 		Scope scope = new Scope(null);
-		ArrayList<ValueName> values = new ArrayList<ValueName>();
+		List<ValueName> values = new ArrayList<ValueName>();
 		values.add(this.getTypeArray());
 		values.add(this.getTypeBoolean());
 		values.add(this.getTypeClass());

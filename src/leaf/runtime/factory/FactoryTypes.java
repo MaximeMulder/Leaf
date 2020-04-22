@@ -43,6 +43,14 @@ public class FactoryTypes {
 		return this.get("Function");
 	}
 	
+	public ValueClass getInstance() {
+		ValueClass type = this.get("Instance");
+		
+		type.setMethod("to_string", this.primitives.getMethodInstanceToString());
+		
+		return type;
+	}
+	
 	public ValueClass getInteger() {
 		ValueClass type = this.get("Integer");
 		

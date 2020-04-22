@@ -14,7 +14,7 @@ public class PrimitiveError extends Callable {
 	
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
-		System.err.println(arguments.get(0));
+		System.err.println(arguments.get(0).getType().getMethod("to_string").call(engine, arguments).castString().getPrimitive());
 		return null;
 	}
 }

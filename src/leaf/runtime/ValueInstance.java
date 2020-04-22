@@ -16,6 +16,10 @@ public class ValueInstance extends Value {
 		return this;
 	}
 	
+	public Map<String, Variable> getAttributes() {
+		return this.attributes;
+	}
+	
 	public Variable getAttribute(String name) {
 		return this.attributes.get(name);
 	}

@@ -100,6 +100,10 @@ public class FactoryPrimitives {
 		return this.get("to_string", new MethodBooleanToString());
 	}
 	
+	public ValueFunction getMethodInstanceToString() {
+		return this.get("to_string", new MethodInstanceToString());
+	}
+	
 	public ValueFunction getMethodIntegerToString() {
 		return this.get("to_string", new MethodIntegerToString());
 	}

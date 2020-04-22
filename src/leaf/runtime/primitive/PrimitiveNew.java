@@ -19,7 +19,7 @@ public class PrimitiveNew extends Callable {
 		if (arguments.size() == 1) {
 			type = arguments.get(0).castClass();
 		} else {
-			type = engine.getTypeObject();
+			type = engine.getTypeInstance();
 		}
 		
 		return engine.getValues().getInstance(type);

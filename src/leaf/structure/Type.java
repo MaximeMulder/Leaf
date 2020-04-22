@@ -24,7 +24,7 @@ public class Type extends Expression {
 		if (this.parent != null) {
 			parent = this.parent.run(engine).read().castClass();
 		} else {
-			parent = engine.getTypeObject();
+			parent = engine.getTypeInstance();
 		}
 		
 		ValueClass type = engine.getValues().getType(this.name, parent);

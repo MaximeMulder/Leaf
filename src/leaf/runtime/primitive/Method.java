@@ -9,7 +9,7 @@ import leaf.runtime.Value;
 public abstract class Method extends Callable {
 	@Override
 	public boolean arguments(List<Value> arguments) {
-		return arguments.size() > 0 && this.arguments(arguments.get(0), arguments.subList(1, arguments.size()));
+		return arguments.size() >= 1 && this.arguments(arguments.get(0), arguments.subList(1, arguments.size()));
 	}
 	
 	@Override
