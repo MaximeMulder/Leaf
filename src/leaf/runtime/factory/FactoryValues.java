@@ -5,6 +5,7 @@ import java.util.List;
 import leaf.runtime.Engine;
 import leaf.runtime.Function;
 import leaf.runtime.Value;
+import leaf.runtime.ValueArray;
 import leaf.runtime.ValueBoolean;
 import leaf.runtime.ValueClass;
 import leaf.runtime.ValueFunction;
@@ -28,6 +29,10 @@ public class FactoryValues {
 	
 	public Variable getVariable(String name, Value value) {
 		return new Variable(name, value);
+	}
+	
+	public ValueArray getArray(List<Value> values) {		
+		return new ValueArray(this.engine.getTypeArray(), values);
 	}
 	
 	public ValueBoolean getBoolean(boolean primitive) {

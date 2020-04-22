@@ -62,9 +62,12 @@ Parser
 		| {variable:} [content:] identifier
 
 		| {group:} '(' expression ')'
-		| {chain:} expression '.' identifier
-		| {call:} expression '(' arguments ')'
+		| {array:} '[' arguments  ']'
 
+		| {call:}   expression '(' arguments ')'
+		| {access:} expression '[' arguments ']'
+
+		| {chain:} expression '.' identifier
 		| {assignment:} [reference:] expression '=' expression
 
 		| {operation1:} [left:] expression [operator:] operator1 [right:] expression
@@ -76,7 +79,7 @@ Parser
 		;
 
 	Priority
-		Left chain, call;
+		Left access, call, chain;
 		Left operation1;
 		Left operation2;
 		Left operation3;

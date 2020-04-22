@@ -1,5 +1,6 @@
 package leaf.runtime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.exception.ErrorArguments;
@@ -15,6 +16,12 @@ public class ValueFunction extends ValueName {
 	@Override
 	public ValueFunction castFunction() {
 		return this;
+	}
+	
+	public Value call(Engine engine, Value argument) {
+		List<Value> arguments = new ArrayList<Value>();
+		arguments.add(argument);
+		return this.callable.execute(engine, arguments);
 	}
 	
 	public Value call(Engine engine, List<Value> arguments) {

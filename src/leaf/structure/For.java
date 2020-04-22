@@ -6,24 +6,29 @@ import java.util.List;
 import leaf.runtime.Engine;
 import leaf.runtime.IValue;
 import leaf.runtime.Value;
+import leaf.runtime.Variable;
 import leaf.runtime.exception.ControlBreak;
 import leaf.runtime.exception.ControlContinue;
 
-public class While extends Expression {
-	private Expression condition;
+public class For extends Expression {
+	private String element;
+	private Expression array;
 	private Expression body;
 	
-	public While(Expression condition, Expression body) {
-		this.condition = condition;
+	public For(String element, Expression array, Expression body) {
+		this.element = element;
+		this.array = array;
 		this.body = body;
 	}
 	
 	@Override
 	public IValue run(Engine engine) {
 		List<Value> values = new ArrayList<Value>();
-		while (this.condition.run(engine).read().castBoolean().getPrimitive()) {
+		for (Variable element : this.array.run(engine).read().castArray().getElements()) {
 			Value value = null;
 			try {
+				engine.pushScope();
+				engine.setVariable(this.element, element.read());
 				IValue variable = this.body.run(engine);
 				if (variable != null) {
 					value = variable.read();
@@ -35,6 +40,7 @@ public class While extends Expression {
 				value = control.getValue();
 				break;
 			} finally {
+				engine.popScope();
 				if (value != null) {
 					values.add(value);
 				}
@@ -43,7 +49,15 @@ public class While extends Expression {
 		
 		return engine.getValues().getArray(values);
 	}
-	
+
+	public void setElement(String element) {
+		this.element = element;
+	}
+
+	public void setArray(Expression array) {
+		this.array = array;
+	}
+
 	public void setBody(Expression body) {
 		this.body = body;
 	}

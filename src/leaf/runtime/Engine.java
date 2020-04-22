@@ -8,7 +8,8 @@ public class Engine {
 	private FactoryPrimitives primitives;
 	private FactoryTypes      types;
 	private FactoryValues     values;
-	
+
+	private ValueClass typeArray;
 	private ValueClass typeBoolean;
 	private ValueClass typeClass;
 	private ValueClass typeFunction;
@@ -27,6 +28,7 @@ public class Engine {
 
 		this.typeClass     = this.types.getType();
 		this.typeObject    = this.types.getObject();
+		this.typeArray     = this.types.getArray();
 		this.typeBoolean   = this.types.getBoolean();
 		this.typeFunction  = this.types.getFunction();
 		this.typeInteger   = this.types.getInteger();
@@ -52,6 +54,10 @@ public class Engine {
 	}
 	
 	// Getters for type objects.
+	
+	public ValueClass getTypeArray() {
+		return this.typeArray;
+	}
 	
 	public ValueClass getTypeBoolean() {
 		return this.typeBoolean;
@@ -140,6 +146,7 @@ public class Engine {
 	private Scope newScope() {
 		Scope scope = new Scope(null);
 		ArrayList<ValueName> values = new ArrayList<ValueName>();
+		values.add(this.getTypeArray());
 		values.add(this.getTypeBoolean());
 		values.add(this.getTypeClass());
 		values.add(this.getTypeFunction());

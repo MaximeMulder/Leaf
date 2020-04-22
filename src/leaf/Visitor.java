@@ -125,6 +125,30 @@ public class Visitor extends Walker {
 	}
 	
 	@Override
+	public void caseExpression_For(NExpression_For node) {
+		this.set(new For(
+			(String) this.get(node.get_Identifier()),
+			(Expression) this.get(node.get_Expression()),
+			(Expression) this.get(node.get_Block())
+		));
+	}
+	
+	@Override
+	public void outExpression_Return(NExpression_Return node) {
+		this.set(new Return((Expression) this.get(node.get_Expression())));
+	}
+	
+	@Override
+	public void outExpression_Break(NExpression_Break node) {
+		this.set(new Break((Expression) this.get(node.get_Expression())));
+	}
+	
+	@Override
+	public void outExpression_Continue(NExpression_Continue node) {
+		this.set(new Continue((Expression) this.get(node.get_Expression())));
+	}
+	
+	@Override
 	public void caseExpression_Null(NExpression_Null node) {
 		this.set(new Null());
 	}
@@ -155,18 +179,8 @@ public class Visitor extends Walker {
 	}
 	
 	@Override
-	public void outExpression_Return(NExpression_Return node) {
-		this.set(new Return((Expression) this.get(node.get_Expression())));
-	}
-	
-	@Override
-	public void outExpression_Break(NExpression_Break node) {
-		this.set(new Break((Expression) this.get(node.get_Expression())));
-	}
-	
-	@Override
-	public void outExpression_Continue(NExpression_Continue node) {
-		this.set(new Continue((Expression) this.get(node.get_Expression())));
+	public void caseExpression_Array(NExpression_Array node) {
+		this.set(new Array((List<Expression>) this.push(new ArrayList<Expression>(), node.get_Arguments())));
 	}
 	
 	@Override
@@ -177,6 +191,14 @@ public class Visitor extends Walker {
 	@Override
 	public void caseExpression_Call(NExpression_Call node) {
 		this.set(new Call(
+			(Expression) this.get(node.get_Expression()),
+			(List<Expression>) this.push(new ArrayList<Expression>(), node.get_Arguments())
+		));
+	}
+	
+	@Override
+	public void caseExpression_Access(NExpression_Access node) {
+		this.set(new Access(
 			(Expression) this.get(node.get_Expression()),
 			(List<Expression>) this.push(new ArrayList<Expression>(), node.get_Arguments())
 		));

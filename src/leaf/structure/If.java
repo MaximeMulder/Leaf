@@ -17,9 +17,9 @@ public class If extends Expression {
 	@Override
 	public IValue run(Engine engine) {
 		if (this.condition.run(engine).read().castBoolean().getPrimitive()) {
-			return this.accept.run(engine);
+			return this.accept.run(engine).read();
 		} else if (this.reject != null) {
-			return this.reject.run(engine);
+			return this.reject.run(engine).read();
 		}
 		
 		return null;

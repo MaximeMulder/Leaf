@@ -15,7 +15,6 @@ public class PrimitivePrint extends Callable {
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
 		System.out.println(arguments.get(0).castString().getPrimitive());
-		
 		return null;
 	}
 }

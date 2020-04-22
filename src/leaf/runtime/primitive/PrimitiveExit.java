@@ -15,7 +15,6 @@ public class PrimitiveExit extends Callable {
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
 		int code;
-		
 		if (arguments.size() == 1) {
 			code = arguments.get(0).castInteger().getPrimitive();
 		} else {

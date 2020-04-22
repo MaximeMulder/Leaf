@@ -28,6 +28,10 @@ public abstract class Value implements IValue {
 		throw new ErrorType();
 	}
 	
+	public ValueArray castArray() {
+		return this.castError();
+	}
+	
 	public ValueBoolean castBoolean() {
 		return this.castError();
 	}

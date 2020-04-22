@@ -72,12 +72,40 @@ public class FactoryPrimitives {
 		return this.get(new BinaryStringComparison());
 	}
 
+	public ValueFunction getMethodArrayToString() {
+		return this.get("to_string", new MethodArrayToString());
+	}
+
+	public ValueFunction getMethodArrayCopy() {
+		return this.get("copy", new MethodArrayCopy());
+	}
+
+	public ValueFunction getMethodArrayAppend() {
+		return this.get("append", new MethodArrayAppend());
+	}
+
+	public ValueFunction getMethodArrayPrepend() {
+		return this.get("prepend", new MethodArrayPrepend());
+	}
+
+	public ValueFunction getMethodArrayInsert() {
+		return this.get("insert", new MethodArrayInsert());
+	}
+
+	public ValueFunction getMethodArrayRemove() {
+		return this.get("remove", new MethodArrayRemove());
+	}
+	
 	public ValueFunction getMethodBooleanToString() {
 		return this.get("to_string", new MethodBooleanToString());
 	}
 	
 	public ValueFunction getMethodIntegerToString() {
 		return this.get("to_string", new MethodIntegerToString());
+	}
+	
+	public ValueFunction getMethodStringToString() {
+		return this.get("to_string", new MethodStringToString());
 	}
 	
 	public ValueFunction getPrimitiveAssert() {

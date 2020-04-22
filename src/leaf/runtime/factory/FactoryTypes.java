@@ -12,6 +12,19 @@ public class FactoryTypes {
 		this.primitives = this.engine.getPrimitives();
 	}
 	
+	public ValueClass getArray() {
+		ValueClass type = this.get("Boolean");
+		
+		type.setMethod("to_string", this.primitives.getMethodArrayToString());
+		type.setMethod("copy",      this.primitives.getMethodArrayCopy());
+		type.setMethod("append",    this.primitives.getMethodArrayAppend());
+		type.setMethod("prepend",   this.primitives.getMethodArrayPrepend());
+		type.setMethod("insert",    this.primitives.getMethodArrayInsert());
+		type.setMethod("remove",    this.primitives.getMethodArrayRemove());
+		
+		return type;
+	}
+	
 	public ValueClass getBoolean() {
 		ValueClass type = this.get("Boolean");
 		
@@ -67,6 +80,8 @@ public class FactoryTypes {
 		type.setBinary("+",  this.primitives.getBinaryStringAddition());
 		type.setBinary("<",  this.primitives.getBinaryStringOrderLesser());
 		type.setBinary("==", this.primitives.getBinaryStringComparison());
+		
+		type.setMethod("to_string", this.primitives.getMethodStringToString());
 		
 		return type;
 	}

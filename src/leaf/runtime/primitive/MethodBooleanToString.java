@@ -2,18 +2,17 @@ package leaf.runtime.primitive;
 
 import java.util.List;
 
-import leaf.runtime.Callable;
 import leaf.runtime.Engine;
 import leaf.runtime.Value;
 
-public class MethodBooleanToString extends Callable {
+public class MethodBooleanToString extends Method {
 	@Override
-	public boolean arguments(List<Value> arguments) {
-		return arguments.size() == 1;
+	public boolean arguments(Value self, List<Value> arguments) {
+		return arguments.size() == 0;
 	}
 	
 	@Override
-	public Value execute(Engine engine, List<Value> arguments) {
-		return engine.getValues().getString(Boolean.toString(arguments.get(0).castBoolean().getPrimitive()));
+	public Value execute(Engine engine, Value self, List<Value> arguments) {
+		return engine.getValues().getString(Boolean.toString(self.castBoolean().getPrimitive()));
 	}
 }
