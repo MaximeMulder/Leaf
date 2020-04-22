@@ -9,19 +9,19 @@ import leaf.runtime.Value;
 import leaf.runtime.exception.ControlBreak;
 import leaf.runtime.exception.ControlContinue;
 
-public class While extends Expression {
-	private Expression condition;
+public class DoWhile extends Expression {
 	private Expression body;
+	private Expression condition;
 	
-	public While(Expression condition, Expression body) {
-		this.condition = condition;
+	public DoWhile(Expression body, Expression condition) {
 		this.body = body;
+		this.condition = condition;
 	}
 	
 	@Override
 	public IValue run(Engine engine) {
 		List<Value> values = new ArrayList<Value>();
-		while (this.condition.run(engine).read().castBoolean().getPrimitive()) {
+		do {
 			Value value = null;
 			try {
 				IValue variable = this.body.run(engine);
@@ -39,16 +39,16 @@ public class While extends Expression {
 					values.add(value);
 				}
 			}
-		}
+		} while (this.condition.run(engine).read().castBoolean().getPrimitive());
 		
 		return engine.getValues().getArray(values);
 	}
 	
-	public void setCondition(Expression condition) {
-		this.condition = condition;
-	}
-	
 	public void setBody(Expression body) {
 		this.body = body;
+	}
+	
+	public void setCondition(Expression condition) {
+		this.condition = condition;
 	}
 }

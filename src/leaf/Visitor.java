@@ -109,27 +109,55 @@ public class Visitor extends Walker {
 	public void caseExpression_If(NExpression_If node) {
 		this.set(new If(
 			(Expression) this.get(node.get_Condition()),
-			(Expression) this.get(node.get_Block()),
+			(Expression) this.get(node.get_Body()),
+			(Expression) this.get(null)
+		));
+	}
+	
+	@Override
+	public void caseExpression_IfBlock(NExpression_IfBlock node) {
+		this.set(new If(
+			(Expression) this.get(node.get_Condition()),
+			(Expression) this.get(node.get_Body()),
 			(Expression) this.get(node.get_Else())
 		));
 	}
 	
 	@Override
 	public void caseExpression_Loop(NExpression_Loop node) {
-		this.set(new Loop((Expression) this.get(node.get_Block())));
+		this.set(new Loop((Expression) this.get(node.get_Body())));
 	}
 	
 	@Override
 	public void caseExpression_While(NExpression_While node) {
-		this.set(new While((Expression) this.get(node.get_Condition()), (Expression) this.get(node.get_Block())));
+		this.set(new While((Expression) this.get(node.get_Condition()), (Expression) this.get(node.get_Body())));
+	}
+	
+	@Override
+	public void caseExpression_WhileBlock(NExpression_WhileBlock node) {
+		this.set(new While((Expression) this.get(node.get_Condition()), (Expression) this.get(node.get_Body())));
+	}
+	
+	@Override
+	public void caseExpression_DoWhile(NExpression_DoWhile node) {
+		this.set(new DoWhile((Expression) this.get(node.get_Body()), (Expression) this.get(node.get_Condition())));
 	}
 	
 	@Override
 	public void caseExpression_For(NExpression_For node) {
 		this.set(new For(
-			(String) this.get(node.get_Identifier()),
-			(Expression) this.get(node.get_Expression()),
-			(Expression) this.get(node.get_Block())
+			(String) this.get(node.get_Element()),
+			(Expression) this.get(node.get_Array()),
+			(Expression) this.get(node.get_Body())
+		));
+	}
+	
+	@Override
+	public void caseExpression_ForBlock(NExpression_ForBlock node) {
+		this.set(new For(
+			(String) this.get(node.get_Element()),
+			(Expression) this.get(node.get_Array()),
+			(Expression) this.get(node.get_Body())
 		));
 	}
 	
