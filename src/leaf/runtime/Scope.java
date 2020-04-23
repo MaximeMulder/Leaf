@@ -24,7 +24,7 @@ public class Scope {
 			return variable;
 		}
 		
-		if (parent != null) {
+		if (this.parent != null) {
 			return this.parent.getVariable(name);
 		}
 		

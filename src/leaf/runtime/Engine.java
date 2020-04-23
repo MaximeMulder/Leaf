@@ -31,7 +31,27 @@ public class Engine {
 		return this.values;
 	}
 	
-	// Complex getters.
+	public Scope getScope() {
+		return this.scope;
+	}
+	
+	public Scope pushFrame(Scope frame) {
+		Scope scope = this.scope;
+		this.scope = new Scope(frame);
+		return scope;
+	}
+	
+	public void popFrame(Scope frame) {
+		this.scope = frame;
+	}
+
+	public void pushScope() {
+		this.scope = new Scope(this.scope);
+	}
+	
+	public void popScope() {
+		this.scope = this.scope.getParent();
+	}
 	
 	public Reference getVariable(String name) {
 		Reference variable = this.scope.getVariable(name);
@@ -48,35 +68,13 @@ public class Engine {
 		this.scope.newVariable(name, value);
 	}
 	
-	// Scope operations.
-	
-	public void setFrame(Scope scope) {
-		this.scope = new Scope(scope);
-	}
-	
-	public Scope getScope() {
-		return this.scope;
-	}
-	
-	public void setScope(Scope scope) {
-		this.scope = scope;
-	}
-	
-	public void pushScope() {
-		this.scope = new Scope(this.scope);
-	}
-	
-	public void popScope() {
-		this.scope = this.scope.getParent();
-	}
-	
-	public void setSelf(Value self) {
-		this.self = self;
-	}
-	
 	public Value getSelf() {
 		Value self = this.self;
 		this.self = null;
 		return self;
+	}
+	
+	public void setSelf(Value self) {
+		this.self = self;
 	}
 }

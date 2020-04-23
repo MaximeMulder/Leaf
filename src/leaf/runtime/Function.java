@@ -26,7 +26,7 @@ public class Function extends Callable {
 	
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
-		engine.setFrame(this.scope);
+		Scope scope = engine.pushFrame(this.scope);
 		for (int i = 0; i < this.parameters.size(); i++) {
 			engine.setVariable(this.parameters.get(i), arguments.get(i));
 		}
@@ -41,7 +41,7 @@ public class Function extends Callable {
 			throw new ErrorControl();
 		}
 		
-		engine.setScope(this.scope);
+		engine.popFrame(scope);
 		
 		return value;
 	}
