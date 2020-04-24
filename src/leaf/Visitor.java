@@ -110,15 +110,6 @@ public class Visitor extends Walker {
 		this.set(new If(
 			(Expression) this.get(node.get_Condition()),
 			(Expression) this.get(node.get_Body()),
-			(Expression) this.get(null)
-		));
-	}
-	
-	@Override
-	public void caseExpression_IfBlock(NExpression_IfBlock node) {
-		this.set(new If(
-			(Expression) this.get(node.get_Condition()),
-			(Expression) this.get(node.get_Body()),
 			(Expression) this.get(node.get_Else())
 		));
 	}
