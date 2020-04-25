@@ -18,28 +18,28 @@ public class Loop extends Expression {
 	
 	@Override
 	public IValue run(Engine engine) {
-		List<Value> values = new ArrayList<Value>();
+		List<Value> results = new ArrayList<Value>();
 		while (true) {
-			Value value = null;
+			Value result = null;
 			try {
-				IValue variable = this.body.run(engine);
-				if (variable != null) {
-					value = variable.read();
+				IValue value = this.body.run(engine);
+				if (value != null) {
+					result = value.read();
 				}
 			} catch (ControlContinue control) {
-				value = control.getValue();
+				result = control.getValue();
 				continue;
 			} catch (ControlBreak control) {
-				value = control.getValue();
+				result = control.getValue();
 				break;
 			} finally {
-				if (value != null) {
-					values.add(value);
+				if (result != null) {
+					results.add(result);
 				}
 			}
 		}
 		
-		return engine.getValues().getArray(null, values);
+		return engine.getValues().getArray(null, results);
 	}
 	
 	public void setBody(Expression body) {

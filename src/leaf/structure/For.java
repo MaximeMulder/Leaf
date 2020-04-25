@@ -23,31 +23,31 @@ public class For extends Expression {
 	
 	@Override
 	public IValue run(Engine engine) {
-		List<Value> values = new ArrayList<Value>();
+		List<Value> results = new ArrayList<Value>();
 		for (Reference element : this.array.run(engine).read().castArray().getElements()) {
-			Value value = null;
+			Value result = null;
 			try {
 				engine.pushScope();
 				this.element.run(engine).write(element.read());
-				IValue variable = this.body.run(engine);
-				if (variable != null) {
-					value = variable.read();
+				IValue value = this.body.run(engine);
+				if (value != null) {
+					result = value.read();
 				}
 			} catch (ControlContinue control) {
-				value = control.getValue();
+				result = control.getValue();
 				continue;
 			} catch (ControlBreak control) {
-				value = control.getValue();
+				result = control.getValue();
 				break;
 			} finally {
 				engine.popScope();
-				if (value != null) {
-					values.add(value);
+				if (result != null) {
+					results.add(result);
 				}
 			}
 		}
 		
-		return engine.getValues().getArray(null, values);
+		return engine.getValues().getArray(null, results);
 	}
 
 	public void setElement(Variable element) {
