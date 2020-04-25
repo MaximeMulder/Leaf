@@ -34,7 +34,7 @@ public class Type extends Expression {
 		}
 		
 		if (this.name != null) {
-			engine.setVariable(this.name, type);
+			engine.newVariable(this.name, null, type);
 		}
 		
 		return type;

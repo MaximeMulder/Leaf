@@ -11,11 +11,11 @@ import leaf.runtime.exception.ControlContinue;
 import leaf.runtime.value.Value;
 
 public class For extends Expression {
-	private String element;
+	private Variable element;
 	private Expression array;
 	private Expression body;
 	
-	public For(String element, Expression array, Expression body) {
+	public For(Variable element, Expression array, Expression body) {
 		this.element = element;
 		this.array = array;
 		this.body = body;
@@ -28,7 +28,7 @@ public class For extends Expression {
 			Value value = null;
 			try {
 				engine.pushScope();
-				engine.setVariable(this.element, element.read());
+				this.element.run(engine).write(element.read());
 				IValue variable = this.body.run(engine);
 				if (variable != null) {
 					value = variable.read();
@@ -47,10 +47,10 @@ public class For extends Expression {
 			}
 		}
 		
-		return engine.getValues().getArray(values);
+		return engine.getValues().getArray(null, values);
 	}
 
-	public void setElement(String element) {
+	public void setElement(Variable element) {
 		this.element = element;
 	}
 

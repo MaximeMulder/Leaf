@@ -6,6 +6,7 @@ import leaf.runtime.Engine;
 import leaf.runtime.Function;
 import leaf.runtime.value.*;
 import leaf.structure.Expression;
+import leaf.structure.Variable;
 
 public class FactoryValues {
 	private Engine engine;
@@ -14,8 +15,8 @@ public class FactoryValues {
 		this.engine = engine;
 	}
 	
-	public ValueArray getArray(List<Value> values) {		
-		return new ValueArray(this.engine.getTypes().getArray(), values);
+	public ValueArray getArray(ValueClass generic, List<Value> values) {
+		return new ValueArray(this.engine.getTypes().getArray(), generic, values);
 	}
 	
 	public ValueBoolean getBoolean(boolean primitive) {
@@ -38,8 +39,8 @@ public class FactoryValues {
 		return new ValueClass(this.engine.getTypes().getType(), name, parent);
 	}
 	
-	public ValueFunction getFunction(String name, List<String> parameters, Expression body) {
-		return new ValueFunction(this.engine.getTypes().getFunction(), name, new Function(this.engine.getScope(), parameters, body));
+	public ValueFunction getFunction(String name, ValueClass type, List<Variable> parameters, Expression body) {
+		return new ValueFunction(this.engine.getTypes().getFunction(), name, new Function(this.engine.getScope(), type, parameters, body));
 	}
 	
 	public ValueInteger getInteger(int primitive) {

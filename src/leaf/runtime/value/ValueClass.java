@@ -63,4 +63,16 @@ public class ValueClass extends ValueName {
 	public void setPost(String operator, ValueFunction function) {
 		this.posts.put(operator, function);
 	}
+	
+	public boolean is(ValueClass type) {
+		if (this == type) {
+			return true;
+		}
+		
+		if (this.parent != null) {
+			return this.parent.is(type);
+		}
+		
+		return false;
+	}
 }

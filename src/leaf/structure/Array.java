@@ -21,7 +21,7 @@ public class Array extends Expression {
 			values.add(value.run(engine).read());
 		}
 		
-		return engine.getValues().getArray(values);
+		return engine.getValues().getArray(null, values);
 	}
 	
 	public void setValues(List<Expression> values) {

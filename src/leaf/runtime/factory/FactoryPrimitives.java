@@ -107,7 +107,7 @@ public class FactoryPrimitives {
 		values.add(this.newFunction("print",  new PrimitivePrint()));
 		
 		for (ValueName value : values) {
-			this.scope.newVariable(value.getName(), value);
+			this.scope.newVariable(value.getName(), null, value);
 		}
 	}
 	

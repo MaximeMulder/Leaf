@@ -45,16 +45,15 @@ Parser
 		| {block:}    block
 
 		| {if:} 'if' [condition:] expression [body:] block else
-		
 		| {loop:} 'loop' [body:] expression
-		
 		| {while:}       'while' [condition:] expression 'do' [body:] expression
 		| {while_block:} 'while' [condition:] expression      [body:] block
-		
 		| {do_while:} 'do' [body:] expression 'while' [condition:] expression
+		| {for:}       'for' [element:] variable 'in' [array:] expression 'do' [body:] expression
+		| {for_block:} 'for' [element:] variable 'in' [array:] expression      [body:] block
 
-		| {for:}       'for' [element:] identifier 'in' [array:] expression 'do' [body:] expression
-		| {for_block:} 'for' [element:] identifier 'in' [array:] expression      [body:] block
+		| {declaration:} 'let' identifier
+		| {declaration_type:} 'let' identifier ':' [type:] expression
 
 		| {return:}   'return'   expression
 		| {break:}    'break'    expression
@@ -86,7 +85,7 @@ Parser
 		;
 
 	Priority
-		Left loop, while, do_while, for, access, call, chain;
+		Left declaration_type, loop, while, do_while, for, access, call, chain;
 		Left operation1;
 		Left operation2;
 		Left operation3;
@@ -117,7 +116,7 @@ Parser
 
 	// Functions
 
-	function = 'function' [name:] name_option '(' parameters ')' block;
+	function = 'function' name '(' parameters ')' type block;
 
 	parameters
 		= {some:} parameter parameters_more
@@ -129,16 +128,11 @@ Parser
 		| {none:}
 		;
 
-	parameter = identifier;
+	parameter = variable;
 
 	// Classes
 
-	class = 'class' [name:] name_option parent '{' members '}';
-
-	parent
-		= {some:} ':' expression
-		| {none:}
-		;
+	class = 'class' name [parent:] type '{' members '}';
 
 	members
 		= {some:} members visibility member ';'
@@ -160,7 +154,14 @@ Parser
 
 	// Miscellaneous
 
-	name_option
+	name
 		= {some:} identifier
+		| {none:}
+		;
+
+	variable = identifier type;
+
+	type
+		= {some:} ':' expression
 		| {none:}
 		;

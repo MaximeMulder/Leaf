@@ -39,7 +39,7 @@ public class Loop extends Expression {
 			}
 		}
 		
-		return engine.getValues().getArray(values);
+		return engine.getValues().getArray(null, values);
 	}
 	
 	public void setBody(Expression body) {

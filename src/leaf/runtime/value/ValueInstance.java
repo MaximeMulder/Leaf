@@ -27,7 +27,7 @@ public class ValueInstance extends Value {
 	}
 	
 	public Reference newAttribute(String name, Value value) {
-		Reference reference = new Reference(value);
+		Reference reference = new Reference(null, value);
 		this.attributes.put(name, reference);
 		return reference;
 	}

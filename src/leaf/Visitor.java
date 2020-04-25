@@ -137,7 +137,7 @@ public class Visitor extends Walker {
 	@Override
 	public void caseExpression_For(NExpression_For node) {
 		this.set(new For(
-			(String) this.get(node.get_Element()),
+			(Variable) this.get(node.get_Element()),
 			(Expression) this.get(node.get_Array()),
 			(Expression) this.get(node.get_Body())
 		));
@@ -146,9 +146,25 @@ public class Visitor extends Walker {
 	@Override
 	public void caseExpression_ForBlock(NExpression_ForBlock node) {
 		this.set(new For(
-			(String) this.get(node.get_Element()),
+			(Variable) this.get(node.get_Element()),
 			(Expression) this.get(node.get_Array()),
 			(Expression) this.get(node.get_Body())
+		));
+	}
+	
+	@Override
+	public void caseExpression_Declaration(NExpression_Declaration node) {
+		this.set(new Variable(
+			(String) this.get(node.get_Identifier()),
+			null
+		));
+	}
+	
+	@Override
+	public void caseExpression_DeclarationType(NExpression_DeclarationType node) {
+		this.set(new Variable(
+			(String) this.get(node.get_Identifier()),
+			(Expression) this.get(node.get_Type())
 		));
 	}
 	
@@ -282,14 +298,15 @@ public class Visitor extends Walker {
 	public void caseFunction(NFunction node) {
 		this.set(new Function(
 			(String) this.get(node.get_Name()),
-			(List<String>) this.push(new ArrayList<String>(), node.get_Parameters()),
+			(Expression) this.get(node.get_Type()),
+			(List<Variable>) this.push(new ArrayList<Variable>(), node.get_Parameters()),
 			(Expression) this.get(node.get_Block())
 		));
 	}
 	
 	@Override
 	public void caseParameter(NParameter node) {
-		((List<String>) this.pop()).add((String) this.get(node.get_Identifier()));
+		((List<Variable>) this.pop()).add((Variable) this.get(node.get_Variable()));
 	}
 
 	@Override
@@ -304,5 +321,13 @@ public class Visitor extends Walker {
 	@Override
 	public void caseMember_Method(NMember_Method node) {
 		((List<Function>) this.pop()).add((Function) this.get(node.get_Function()));
+	}
+	
+	@Override
+	public void caseVariable(NVariable node) {
+		this.set(new Variable(
+			(String) this.get(node.get_Identifier()),
+			(Expression) this.get(node.get_Type())
+		));
 	}
 }

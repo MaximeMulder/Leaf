@@ -41,7 +41,7 @@ public class While extends Expression {
 			}
 		}
 		
-		return engine.getValues().getArray(values);
+		return engine.getValues().getArray(null, values);
 	}
 	
 	public void setCondition(Expression condition) {

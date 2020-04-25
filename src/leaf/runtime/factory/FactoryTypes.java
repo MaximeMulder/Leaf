@@ -25,6 +25,7 @@ public class FactoryTypes {
 		this.string    = this.newType("String");
 		
 		this.type.setParent(this.getObject());
+		this.type.setType(this.getType());
 	}
 	
 	public ValueClass getArray() {

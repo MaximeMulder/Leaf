@@ -2,6 +2,7 @@ package leaf.runtime;
 
 import leaf.runtime.factory.*;
 import leaf.runtime.value.Value;
+import leaf.runtime.value.ValueClass;
 
 public class Engine {
 	private Scope scope;
@@ -54,18 +55,11 @@ public class Engine {
 	}
 	
 	public Reference getVariable(String name) {
-		Reference variable = this.scope.getVariable(name);
-		if (variable != null) {
-			return variable;
-		}
-		
-		variable = this.scope.newVariable(name, null);
-		
-		return variable;
+		return this.scope.getVariable(name);
 	}
 	
-	public void setVariable(String name, Value value) {
-		this.scope.newVariable(name, value);
+	public Reference newVariable(String name, ValueClass type, Value value) {
+		return this.scope.newVariable(name, type, value);
 	}
 	
 	public Value getSelf() {

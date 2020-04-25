@@ -41,7 +41,7 @@ public class DoWhile extends Expression {
 			}
 		} while (this.condition.run(engine).read().castBoolean().getPrimitive());
 		
-		return engine.getValues().getArray(values);
+		return engine.getValues().getArray(null, values);
 	}
 	
 	public void setBody(Expression body) {

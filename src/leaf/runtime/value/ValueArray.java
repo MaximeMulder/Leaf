@@ -7,13 +7,14 @@ import leaf.runtime.Reference;
 import leaf.runtime.exception.ErrorArguments;
 
 public class ValueArray extends Value {
+	private ValueClass generic;
 	private List<Reference> elements;
 	
-	public ValueArray(ValueClass type, List<Value> values) {
+	public ValueArray(ValueClass type, ValueClass generic, List<Value> values) {
 		super(type);
 		List<Reference> elements = new ArrayList<Reference>();
 		for (Value value : values) {
-			elements.add(new Reference(value));
+			elements.add(new Reference(generic, value));
 		}
 		
 		this.elements = elements;
@@ -22,6 +23,10 @@ public class ValueArray extends Value {
 	@Override
 	public ValueArray castArray() {
 		return this;
+	}
+	
+	public ValueClass getGeneric() {
+		return this.generic;
 	}
 	
 	public List<Reference> getElements() {

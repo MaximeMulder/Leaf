@@ -24,6 +24,10 @@ public abstract class Value implements IValue {
 	public ValueClass getType() {
 		return this.type;
 	}
+	
+	public void setType(ValueClass type) {
+		this.type = type;
+	}
 
 	private <ValueType extends Value> ValueType castError() {
 		throw new ErrorType();

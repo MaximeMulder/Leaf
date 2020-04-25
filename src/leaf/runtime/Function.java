@@ -6,15 +6,19 @@ import leaf.runtime.exception.Control;
 import leaf.runtime.exception.ControlReturn;
 import leaf.runtime.exception.ErrorControl;
 import leaf.runtime.value.Value;
+import leaf.runtime.value.ValueClass;
 import leaf.structure.Expression;
+import leaf.structure.Variable;
 
 public class Function extends Callable {
 	Scope scope;
-	List<String> parameters;
+	ValueClass type;
+	List<Variable> parameters;
 	Expression body;
 	
-	public Function(Scope scope, List<String> parameters, Expression body) {
+	public Function(Scope scope, ValueClass type, List<Variable> parameters, Expression body) {
 		this.scope = scope;
+		this.type = type;
 		this.parameters = parameters;
 		this.body = body;
 	}
@@ -28,21 +32,21 @@ public class Function extends Callable {
 	public Value execute(Engine engine, List<Value> arguments) {
 		Scope scope = engine.pushFrame(this.scope);
 		for (int i = 0; i < this.parameters.size(); i++) {
-			engine.setVariable(this.parameters.get(i), arguments.get(i));
+			this.parameters.get(i).run(engine).write(arguments.get(i));
 		}
 		
-		Value value = null;
+		Reference result = new Reference(this.type, null);
 		
 		try {
 			this.body.run(engine);
 		} catch (ControlReturn control) {
-			value = control.getValue();
+			result.write(control.getValue());
 		} catch (Control control) {
 			throw new ErrorControl();
 		}
 		
 		engine.popFrame(scope);
 		
-		return value;
+		return result.read();
 	}
 }
