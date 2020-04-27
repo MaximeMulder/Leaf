@@ -3,19 +3,40 @@ package leaf.runtime.value;
 import java.util.HashMap;
 import java.util.Map;
 
+import leaf.runtime.Engine;
+import leaf.runtime.IValue;
+import leaf.runtime.Reference;
+
 public class ValueClass extends ValueName {
 	private ValueClass parent;
+	private Map<String, Reference> statics;
 	private Map<String, ValueFunction> methods;
 	private Map<String, ValueFunction> binaries;
-	private Map<String, ValueFunction> pres;
-	private Map<String, ValueFunction> posts;
 	
 	public ValueClass(ValueClass type,  String name, ValueClass parent) {
 		super(type, name);
 		this.parent = parent;
+		this.statics = new HashMap<String, Reference>();
 		this.methods = new HashMap<String, ValueFunction>();
 		this.binaries = new HashMap<String, ValueFunction>();
 	}
+	
+	@Override
+	public IValue member(Engine engine, String name) {
+		IValue member;
+		member = super.member(engine, name);
+		if (member != null) {
+			return member;
+		}
+		
+		member = this.getStatic(name);
+		if (member != null) {
+			return member;
+		}
+
+		return this.newStatic(name, null);
+	}
+	
 	
 	@Override
 	public ValueClass castClass() {
@@ -56,12 +77,14 @@ public class ValueClass extends ValueName {
 		this.binaries.put(operator, function);
 	}
 	
-	public void setPre(String operator, ValueFunction function) {
-		this.pres.put(operator, function);
+	public Reference getStatic(String name) {
+		return this.statics.get(name);
 	}
 	
-	public void setPost(String operator, ValueFunction function) {
-		this.posts.put(operator, function);
+	public Reference newStatic(String name, Value value) {
+		Reference reference = new Reference(null, value);
+		this.statics.put(name, reference);
+		return reference;
 	}
 	
 	public boolean is(ValueClass type) {

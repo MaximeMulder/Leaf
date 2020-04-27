@@ -1,5 +1,6 @@
 package leaf.runtime.value;
 
+import leaf.runtime.Engine;
 import leaf.runtime.IValue;
 import leaf.runtime.exception.ErrorType;
 import leaf.runtime.exception.ErrorWrite;
@@ -19,6 +20,16 @@ public abstract class Value implements IValue {
 	@Override
 	public void write(Value value) {
 		throw new ErrorWrite();
+	}
+	
+	public IValue member(Engine engine, String name) {
+		ValueFunction method = this.getType().getMethod(name);
+		if (method != null) {
+			engine.setSelf(this);
+			return method;
+		}
+		
+		return null;
 	}
 	
 	public ValueClass getType() {

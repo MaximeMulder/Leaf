@@ -3,6 +3,8 @@ package leaf.runtime.value;
 import java.util.HashMap;
 import java.util.Map;
 
+import leaf.runtime.Engine;
+import leaf.runtime.IValue;
 import leaf.runtime.Reference;
 
 public class ValueInstance extends Value {
@@ -11,6 +13,22 @@ public class ValueInstance extends Value {
 	public ValueInstance(ValueClass type) {
 		super(type);
 		this.attributes = new HashMap<String, Reference>();
+	}
+	
+	@Override
+	public IValue member(Engine engine, String name) {
+		IValue member;
+		member = super.member(engine, name);
+		if (member != null) {
+			return member;
+		}
+		
+		member = this.getAttribute(name);
+		if (member != null) {
+			return member;
+		}
+
+		return this.newAttribute(name, null);
 	}
 	
 	@Override
