@@ -7,7 +7,7 @@ import leaf.runtime.Engine;
 import leaf.runtime.value.Value;
 import leaf.runtime.value.ValueClass;
 
-public class PrimitiveNew extends Callable {
+public class FunctionNew extends Callable {
 	@Override
 	public boolean arguments(List<Value> arguments) {
 		return arguments.size() <= 1;

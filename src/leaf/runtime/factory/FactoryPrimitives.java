@@ -45,7 +45,7 @@ public class FactoryPrimitives {
 
 		this.setMethod(type, "to_string", new MethodBooleanToString());
 		
-		this.setBinary(type, "==", new BinaryBooleanComparison());
+		this.setBinary(type, "==", new MethodBooleanComparison());
 	}
 	
 	private void setInstance() {
@@ -59,22 +59,22 @@ public class FactoryPrimitives {
 		
 		this.setMethod(type, "to_string", new MethodIntegerToString());
 		
-		this.setBinary(type, "+",  new BinaryIntegerAddition());
-		this.setBinary(type, "-",  new BinaryIntegerSubtraction());
-		this.setBinary(type, "*",  new BinaryIntegerMultiplication());
-		this.setBinary(type, "/",  new BinaryIntegerDivision());
-		this.setBinary(type, "<",  new BinaryIntegerOrderLesser());
-		this.setBinary(type, "==", new BinaryIntegerComparison());
+		this.setBinary(type, "+",  new MethodIntegerAddition());
+		this.setBinary(type, "-",  new MethodIntegerSubtraction());
+		this.setBinary(type, "*",  new MethodIntegerMultiplication());
+		this.setBinary(type, "/",  new MethodIntegerDivision());
+		this.setBinary(type, "<",  new MethodIntegerOrderLesser());
+		this.setBinary(type, "==", new MethodIntegerComparison());
 	}
 	
 	private void setObject() {
 		ValueClass type = this.types.getObject();
 
-		this.setBinary(type, ">",  new BinaryObjectOrderGreater());
-		this.setBinary(type, "<=", new BinaryObjectOrderLesserEqual());
-		this.setBinary(type, ">=", new BinaryObjectOrderGreaterEqual());
-		this.setBinary(type, "==", new BinaryObjectComparison());
-		this.setBinary(type, "!=", new BinaryObjectDifference());
+		this.setBinary(type, ">",  new MethodObjectOrderGreater());
+		this.setBinary(type, "<=", new MethodObjectOrderLesserEqual());
+		this.setBinary(type, ">=", new MethodObjectOrderGreaterEqual());
+		this.setBinary(type, "==", new MethodObjectComparison());
+		this.setBinary(type, "!=", new MethodObjectDifference());
 	}
 		
 	private void setString() {
@@ -82,9 +82,9 @@ public class FactoryPrimitives {
 		
 		this.setMethod(type, "to_string", new MethodStringToString());
 		
-		this.setBinary(type, "+" , new BinaryStringAddition());
-		this.setBinary(type, "<",  new BinaryStringOrderLesser());
-		this.setBinary(type, "==", new BinaryStringComparison());
+		this.setBinary(type, "+" , new MethodStringAddition());
+		this.setBinary(type, "<",  new MethodStringOrderLesser());
+		this.setBinary(type, "==", new MethodStringComparison());
 	}
 	
 	private void setScope() {
@@ -100,11 +100,11 @@ public class FactoryPrimitives {
 		values.add(this.types.getReference());
 		values.add(this.types.getString());
 		
-		values.add(this.newFunction("assert", new PrimitiveAssert()));
-		values.add(this.newFunction("error",  new PrimitiveError()));
-		values.add(this.newFunction("exit",   new PrimitiveExit()));
-		values.add(this.newFunction("new",    new PrimitiveNew()));
-		values.add(this.newFunction("print",  new PrimitivePrint()));
+		values.add(this.newFunction("assert", new FunctionAssert()));
+		values.add(this.newFunction("error",  new FunctionError()));
+		values.add(this.newFunction("exit",   new FunctionExit()));
+		values.add(this.newFunction("new",    new FunctionNew()));
+		values.add(this.newFunction("print",  new FunctionPrint()));
 		
 		for (ValueName value : values) {
 			this.scope.newVariable(value.getName(), null, value);

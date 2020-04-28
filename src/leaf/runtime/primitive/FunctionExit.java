@@ -6,15 +6,22 @@ import leaf.runtime.Callable;
 import leaf.runtime.Engine;
 import leaf.runtime.value.Value;
 
-public class PrimitiveError extends Callable {
+public class FunctionExit extends Callable {
 	@Override
 	public boolean arguments(List<Value> arguments) {
-		return true;
+		return arguments.size() <= 1;
 	}
-	
+
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
-		System.err.println(arguments.get(0).getType().getMethod("to_string").call(engine, arguments).castString().getPrimitive());
+		int code;
+		if (arguments.size() == 1) {
+			code = arguments.get(0).castInteger().getPrimitive();
+		} else {
+			code = 0;
+		}
+
+		System.exit(code);
 		return null;
 	}
 }

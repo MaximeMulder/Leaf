@@ -6,7 +6,7 @@ import leaf.runtime.Callable;
 import leaf.runtime.Engine;
 import leaf.runtime.value.Value;
 
-public class PrimitivePrint extends Callable {
+public class FunctionPrint extends Callable {
 	@Override
 	public boolean arguments(List<Value> arguments) {
 		return arguments.size() == 1;

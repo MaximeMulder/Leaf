@@ -7,7 +7,7 @@ import leaf.runtime.Engine;
 import leaf.runtime.exception.ErrorAssertion;
 import leaf.runtime.value.Value;
 
-public class PrimitiveAssert extends Callable {
+public class FunctionAssert extends Callable {
 	@Override
 	public boolean arguments(List<Value> arguments) {
 		return arguments.size() == 1;
