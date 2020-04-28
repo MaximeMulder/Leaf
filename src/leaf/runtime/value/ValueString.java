@@ -3,7 +3,7 @@ package leaf.runtime.value;
 public class ValueString extends Value {
 	private String primitive;
 	
-	public ValueString(ValueClass type, String primitive) {
+	public ValueString(ValueType type, String primitive) {
 		super(type);
 		this.primitive = primitive;
 	}

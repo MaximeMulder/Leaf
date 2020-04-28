@@ -3,7 +3,7 @@ package leaf.runtime.value;
 public class ValueInteger extends Value {
 	private int primitive;
 	
-	public ValueInteger(ValueClass type, int primitive) {
+	public ValueInteger(ValueType type, int primitive) {
 		super(type);
 		this.primitive = primitive;
 	}

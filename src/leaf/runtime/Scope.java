@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import leaf.runtime.value.Value;
-import leaf.runtime.value.ValueClass;
+import leaf.runtime.value.ValueType;
 
 public class Scope {
 	private Scope parent;
@@ -32,7 +32,7 @@ public class Scope {
 		return null;
 	}
 	
-	public Reference newVariable(String name, ValueClass type, Value value) {
+	public Reference newVariable(String name, ValueType type, Value value) {
 		Reference variable = new Reference(type, value);
 		this.variables.put(name, variable);
 		return variable;

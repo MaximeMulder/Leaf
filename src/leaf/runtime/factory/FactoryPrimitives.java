@@ -8,7 +8,7 @@ import leaf.runtime.Engine;
 import leaf.runtime.Index;
 import leaf.runtime.Scope;
 import leaf.runtime.primitive.*;
-import leaf.runtime.value.ValueClass;
+import leaf.runtime.value.ValueType;
 import leaf.runtime.value.ValueFunction;
 import leaf.runtime.value.ValueName;
 
@@ -31,7 +31,7 @@ public class FactoryPrimitives {
 	}
 	
 	private void setArray() {
-		ValueClass type = this.types.getArray();
+		ValueType type = this.types.getArray();
 
 		this.setMethod(type, "copy",      new MethodArrayCopy());
 		this.setMethod(type, "append",    new MethodArrayAppend());
@@ -42,7 +42,7 @@ public class FactoryPrimitives {
 	}
 
 	private void setBoolean() {
-		ValueClass type = this.types.getBoolean();
+		ValueType type = this.types.getBoolean();
 
 		this.setMethod(type, "to_string", new MethodBooleanToString());
 		
@@ -50,13 +50,13 @@ public class FactoryPrimitives {
 	}
 	
 	private void setInstance() {
-		ValueClass type = this.types.getInstance();
+		ValueType type = this.types.getInstance();
 
 		this.setMethod(type, "to_string", new MethodInstanceToString());
 	}
 	
 	private void setInteger() {
-		ValueClass type = this.types.getInteger();
+		ValueType type = this.types.getInteger();
 		
 		this.setMethod(type, "to_string", new MethodIntegerToString());
 		
@@ -69,7 +69,7 @@ public class FactoryPrimitives {
 	}
 	
 	private void setObject() {
-		ValueClass type = this.types.getObject();
+		ValueType type = this.types.getObject();
 
 		this.setBinary(type, ">",  new MethodObjectOrderGreater());
 		this.setBinary(type, "<=", new MethodObjectOrderLesserEqual());
@@ -79,7 +79,7 @@ public class FactoryPrimitives {
 	}
 		
 	private void setString() {
-		ValueClass type = this.types.getString();
+		ValueType type = this.types.getString();
 		
 		this.setMethod(type, "to_string", new MethodStringToString());
 		
@@ -112,12 +112,12 @@ public class FactoryPrimitives {
 		}
 	}
 	
-	private void setMethod(ValueClass type, String name, Callable callable) {
+	private void setMethod(ValueType type, String name, Callable callable) {
 		ValueFunction function = newFunction(name, callable);
 		type.newMethod(Index.name(function.getName()), function);
 	}
 	
-	private void setBinary(ValueClass type, String operator, Callable callable) {
+	private void setBinary(ValueType type, String operator, Callable callable) {
 		type.newMethod(Index.binary(operator), newFunction(null, callable));
 	}
 	

@@ -3,7 +3,7 @@ package leaf.runtime.value;
 public abstract class ValueName extends Value {
 	private String name;
 	
-	protected ValueName(ValueClass type, String name) {
+	protected ValueName(ValueType type, String name) {
 		super(type);
 		this.name = name;
 	}

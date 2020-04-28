@@ -3,7 +3,7 @@ package leaf.runtime.value;
 public class ValueReference extends Value {
 	private Value value;
 	
-	public ValueReference(ValueClass type, Value value) {
+	public ValueReference(ValueType type, Value value) {
 		super(type);
 		this.value = value;
 	}

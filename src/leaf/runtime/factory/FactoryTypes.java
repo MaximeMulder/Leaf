@@ -1,20 +1,20 @@
 package leaf.runtime.factory;
 
-import leaf.runtime.value.ValueClass;
+import leaf.runtime.value.ValueType;
 
 public class FactoryTypes {
-	private ValueClass array;
-	private ValueClass binary;
-	private ValueClass type;
-	private ValueClass function;
-	private ValueClass instance;
-	private ValueClass integer;
-	private ValueClass object;
-	private ValueClass reference;
-	private ValueClass string;
-	
+	private ValueType array;
+	private ValueType binary;
+	private ValueType function;
+	private ValueType instance;
+	private ValueType integer;
+	private ValueType object;
+	private ValueType reference;
+	private ValueType string;
+	private ValueType type;
+
 	public FactoryTypes() {
-		this.type      = this.newType("Class");
+		this.type      = this.newType("Type");
 		this.object    = this.newType("Object");
 		this.array     = this.newType("Array");
 		this.binary    = this.newType("Boolean");
@@ -23,52 +23,52 @@ public class FactoryTypes {
 		this.integer   = this.newType("Integer");
 		this.reference = this.newType("Refernece");
 		this.string    = this.newType("String");
-		
+
 		this.type.setParent(this.getObject());
 		this.type.setType(this.getType());
 	}
-	
-	public ValueClass getArray() {
+
+	public ValueType getArray() {
 		return this.array;
 	}
-	
-	public ValueClass getBoolean() {
+
+	public ValueType getBoolean() {
 		return this.binary;
 	}
-	
-	public ValueClass getType() {
-		return this.type;
-	}
-	
-	public ValueClass getFunction() {
+
+	public ValueType getFunction() {
 		return this.function;
 	}
-	
-	public ValueClass getInstance() {
+
+	public ValueType getInstance() {
 		return this.instance;
 	}
-	
-	public ValueClass getInteger() {
+
+	public ValueType getInteger() {
 		return this.integer;
 	}
-	
-	public ValueClass getNull() {
+
+	public ValueType getNull() {
 		return null;
 	}
-	
-	public ValueClass getObject() {
+
+	public ValueType getObject() {
 		return this.object;
 	}
-	
-	public ValueClass getReference() {
+
+	public ValueType getReference() {
 		return this.reference;
 	}
-	
-	public ValueClass getString() {
+
+	public ValueType getString() {
 		return this.string;
 	}
-	
-	private ValueClass newType(String name) {
-		return new ValueClass(this.getType(), name, this.getObject());
+
+	public ValueType getType() {
+		return this.type;
+	}
+
+	private ValueType newType(String name) {
+		return new ValueType(this.getType(), name, this.getObject());
 	}
 }

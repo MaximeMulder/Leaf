@@ -11,7 +11,7 @@ import leaf.runtime.Reference;
 public class ValueInstance extends Value {
 	private Map<Index, Reference> attributes;
 	
-	public ValueInstance(ValueClass type) {
+	public ValueInstance(ValueType type) {
 		super(type);
 		this.attributes = new HashMap<Index, Reference>();
 	}

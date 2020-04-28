@@ -15,7 +15,7 @@ public class FactoryValues {
 		this.engine = engine;
 	}
 	
-	public ValueArray getArray(ValueClass generic, List<Value> values) {
+	public ValueArray getArray(ValueType generic, List<Value> values) {
 		return new ValueArray(this.engine.getTypes().getArray(), generic, values);
 	}
 	
@@ -35,11 +35,11 @@ public class FactoryValues {
 		return this.getBoolean(false);
 	}
 	
-	public ValueClass getType(String name, ValueClass parent) {
-		return new ValueClass(this.engine.getTypes().getType(), name, parent);
+	public ValueType getType(String name, ValueType parent) {
+		return new ValueType(this.engine.getTypes().getType(), name, parent);
 	}
 	
-	public ValueFunction getFunction(String name, ValueClass type, List<Variable> parameters, Expression body) {
+	public ValueFunction getFunction(String name, ValueType type, List<Variable> parameters, Expression body) {
 		return new ValueFunction(this.engine.getTypes().getFunction(), name, new Function(this.engine.getScope(), type, parameters, body));
 	}
 	
@@ -47,7 +47,7 @@ public class FactoryValues {
 		return new ValueInteger(this.engine.getTypes().getInteger(), primitive);
 	}
 	
-	public ValueInstance getInstance(ValueClass type) {
+	public ValueInstance getInstance(ValueType type) {
 		return new ValueInstance(type);
 	}
 	

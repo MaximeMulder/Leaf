@@ -6,17 +6,17 @@ import leaf.runtime.exception.Control;
 import leaf.runtime.exception.ControlReturn;
 import leaf.runtime.exception.ErrorControl;
 import leaf.runtime.value.Value;
-import leaf.runtime.value.ValueClass;
+import leaf.runtime.value.ValueType;
 import leaf.structure.Expression;
 import leaf.structure.Variable;
 
 public class Function extends Callable {
 	Scope scope;
-	ValueClass type;
+	ValueType type;
 	List<Variable> parameters;
 	Expression body;
 	
-	public Function(Scope scope, ValueClass type, List<Variable> parameters, Expression body) {
+	public Function(Scope scope, ValueType type, List<Variable> parameters, Expression body) {
 		this.scope = scope;
 		this.type = type;
 		this.parameters = parameters;

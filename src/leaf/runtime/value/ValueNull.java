@@ -1,7 +1,7 @@
 package leaf.runtime.value;
 
 public class ValueNull extends Value {
-	public ValueNull(ValueClass type) {
+	public ValueNull(ValueType type) {
 		super(type);
 	}
 	

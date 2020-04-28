@@ -10,7 +10,7 @@ import leaf.runtime.exception.ErrorArguments;
 public class ValueFunction extends ValueName {
 	private Callable callable;
 	
-	public ValueFunction(ValueClass type, String name, Callable callable) {
+	public ValueFunction(ValueType type, String name, Callable callable) {
 		super(type, name);
 		this.callable = callable;
 	}

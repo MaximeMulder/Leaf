@@ -2,13 +2,13 @@ package leaf.runtime;
 
 import leaf.runtime.exception.ErrorType;
 import leaf.runtime.value.Value;
-import leaf.runtime.value.ValueClass;
+import leaf.runtime.value.ValueType;
 
 public class Reference implements IValue {
-	private ValueClass type;
+	private ValueType type;
 	private Value value;
 	
-	public Reference(ValueClass type, Value value) {
+	public Reference(ValueType type, Value value) {
 		this.type = type;
 		this.value = null;
 		if (value != null) {
