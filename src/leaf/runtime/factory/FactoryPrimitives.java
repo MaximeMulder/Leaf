@@ -5,6 +5,7 @@ import java.util.List;
 
 import leaf.runtime.Callable;
 import leaf.runtime.Engine;
+import leaf.runtime.Index;
 import leaf.runtime.Scope;
 import leaf.runtime.primitive.*;
 import leaf.runtime.value.ValueClass;
@@ -113,11 +114,11 @@ public class FactoryPrimitives {
 	
 	private void setMethod(ValueClass type, String name, Callable callable) {
 		ValueFunction function = newFunction(name, callable);
-		type.setMethod(function.getName(), function);
+		type.newMethod(Index.name(function.getName()), function);
 	}
 	
 	private void setBinary(ValueClass type, String operator, Callable callable) {
-		type.setBinary(operator, newFunction(null, callable));
+		type.newMethod(Index.binary(operator), newFunction(null, callable));
 	}
 	
 	private ValueFunction newFunction(String name, Callable callable) {

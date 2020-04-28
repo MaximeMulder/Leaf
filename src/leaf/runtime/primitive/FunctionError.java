@@ -4,6 +4,7 @@ import java.util.List;
 
 import leaf.runtime.Callable;
 import leaf.runtime.Engine;
+import leaf.runtime.Index;
 import leaf.runtime.value.Value;
 
 public class FunctionError extends Callable {
@@ -14,7 +15,7 @@ public class FunctionError extends Callable {
 	
 	@Override
 	public Value execute(Engine engine, List<Value> arguments) {
-		System.err.println(arguments.get(0).getType().getMethod("to_string").call(engine, arguments).castString().getPrimitive());
+		System.err.println(arguments.get(0).getType().getMethod(Index.name("to_string")).call(engine, arguments).castString().getPrimitive());
 		return null;
 	}
 }

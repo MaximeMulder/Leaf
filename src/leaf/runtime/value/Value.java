@@ -2,6 +2,7 @@ package leaf.runtime.value;
 
 import leaf.runtime.Engine;
 import leaf.runtime.IValue;
+import leaf.runtime.Index;
 import leaf.runtime.exception.ErrorType;
 import leaf.runtime.exception.ErrorWrite;
 
@@ -22,8 +23,8 @@ public abstract class Value implements IValue {
 		throw new ErrorWrite();
 	}
 	
-	public IValue member(Engine engine, String name) {
-		ValueFunction method = this.getType().getMethod(name);
+	public IValue chain(Engine engine, Index index) {
+		ValueFunction method = this.getType().getMethod(index);
 		if (method != null) {
 			engine.setSelf(this);
 			return method;

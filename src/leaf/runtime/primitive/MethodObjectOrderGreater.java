@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.Engine;
+import leaf.runtime.Index;
 import leaf.runtime.value.Value;
 
 public class MethodObjectOrderGreater extends Method {
@@ -18,8 +19,8 @@ public class MethodObjectOrderGreater extends Method {
 		arguments.add(self);
 		arguments.add(parameters.get(0));
 		return engine.getValues().getBoolean(
-			!self.getType().getBinary("<").call(engine, arguments).castBoolean().getPrimitive() &&
-			!self.getType().getBinary("==").call(engine, arguments).castBoolean().getPrimitive()
+			!self.getType().getMethod(Index.binary("<")).call(engine, arguments).castBoolean().getPrimitive() &&
+			!self.getType().getMethod(Index.binary("==")).call(engine, arguments).castBoolean().getPrimitive()
 		);
 	}
 }

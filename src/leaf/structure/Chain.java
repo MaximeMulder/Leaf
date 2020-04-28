@@ -2,6 +2,7 @@ package leaf.structure;
 
 import leaf.runtime.Engine;
 import leaf.runtime.IValue;
+import leaf.runtime.Index;
 
 public class Chain extends Expression {
 	private Expression expression;
@@ -14,7 +15,7 @@ public class Chain extends Expression {
 	
 	@Override
 	public IValue run(Engine engine) {
-		return expression.run(engine).read().member(engine, this.member);
+		return expression.run(engine).read().chain(engine, Index.name(this.member));
 	}
 	
 	public void setExpression(Expression expression) {

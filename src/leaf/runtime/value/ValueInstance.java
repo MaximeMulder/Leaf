@@ -5,30 +5,31 @@ import java.util.Map;
 
 import leaf.runtime.Engine;
 import leaf.runtime.IValue;
+import leaf.runtime.Index;
 import leaf.runtime.Reference;
 
 public class ValueInstance extends Value {
-	private Map<String, Reference> attributes;
+	private Map<Index, Reference> attributes;
 	
 	public ValueInstance(ValueClass type) {
 		super(type);
-		this.attributes = new HashMap<String, Reference>();
+		this.attributes = new HashMap<Index, Reference>();
 	}
 	
 	@Override
-	public IValue member(Engine engine, String name) {
+	public IValue chain(Engine engine, Index index) {
 		IValue member;
-		member = super.member(engine, name);
+		member = super.chain(engine, index);
 		if (member != null) {
 			return member;
 		}
 		
-		member = this.getAttribute(name);
+		member = this.getAttribute(index);
 		if (member != null) {
 			return member;
 		}
 
-		return this.newAttribute(name, null);
+		return this.newAttribute(index, null);
 	}
 	
 	@Override
@@ -36,17 +37,17 @@ public class ValueInstance extends Value {
 		return this;
 	}
 	
-	public Map<String, Reference> getAttributes() {
+	public Map<Index, Reference> getAttributes() {
 		return this.attributes;
 	}
 	
-	public Reference getAttribute(String name) {
-		return this.attributes.get(name);
+	public Reference getAttribute(Index index) {
+		return this.attributes.get(index);
 	}
 	
-	public Reference newAttribute(String name, Value value) {
+	public Reference newAttribute(Index index, Value value) {
 		Reference reference = new Reference(null, value);
-		this.attributes.put(name, reference);
+		this.attributes.put(index, reference);
 		return reference;
 	}
 }

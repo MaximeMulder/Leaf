@@ -3,6 +3,7 @@ package leaf.runtime.primitive;
 import java.util.List;
 
 import leaf.runtime.Engine;
+import leaf.runtime.Index;
 import leaf.runtime.Reference;
 import leaf.runtime.value.Value;
 import leaf.runtime.value.ValueArray;
@@ -19,7 +20,7 @@ public class MethodArrayToString extends MethodArray {
 		List<Reference> elements = self.getElements();
 		for (Reference element : elements) {
 			Value value = element.read();
-			string += value.getType().getMethod("to_string").call(engine, value).castString().getPrimitive() + ", ";
+			string += value.getType().getMethod(Index.name("to_string")).call(engine, value).castString().getPrimitive() + ", ";
 		}
 		
 		if (elements.size() > 0) {

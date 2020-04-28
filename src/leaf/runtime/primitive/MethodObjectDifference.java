@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.Engine;
+import leaf.runtime.Index;
 import leaf.runtime.value.Value;
 
 public class MethodObjectDifference extends Method {
@@ -17,6 +18,6 @@ public class MethodObjectDifference extends Method {
 		ArrayList<Value> arguments = new ArrayList<Value>();
 		arguments.add(self);
 		arguments.add(parameters.get(0));
-		return engine.getValues().getBooleanOpposite(self.getType().getBinary("==").call(engine, arguments).castBoolean());
+		return engine.getValues().getBooleanOpposite(self.getType().getMethod(Index.binary("==")).call(engine, arguments).castBoolean());
 	}
 }

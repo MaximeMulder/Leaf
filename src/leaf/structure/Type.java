@@ -4,6 +4,7 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.IValue;
+import leaf.runtime.Index;
 import leaf.runtime.value.ValueClass;
 import leaf.runtime.value.ValueFunction;
 
@@ -30,7 +31,7 @@ public class Type extends Expression {
 		ValueClass type = engine.getValues().getType(this.name, parent);
 		for (Function method : this.methods) {
 			ValueFunction function = method.run(engine).read().castFunction();
-			type.setMethod(function.getName(), function);
+			type.newMethod(Index.name(function.getName()), function);
 		}
 		
 		if (this.name != null) {

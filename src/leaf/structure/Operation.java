@@ -5,6 +5,7 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.IValue;
+import leaf.runtime.Index;
 import leaf.runtime.value.Value;
 
 public class Operation extends Expression {
@@ -23,7 +24,7 @@ public class Operation extends Expression {
 		List<Value> arguments = new ArrayList<Value>();
 		arguments.add(this.left.run(engine).read());
 		arguments.add(this.right.run(engine).read());
-		return arguments.get(0).getType().getBinary(this.operator).call(engine, arguments);
+		return arguments.get(0).getType().getMethod(Index.binary(this.operator)).call(engine, arguments);
 	}
 
 	public void setOperator(String operator) {

@@ -1,0 +1,40 @@
+package leaf.runtime;
+
+public class Index {
+	private static enum Type {
+		NAME,
+		PRE,
+		POST,
+		BINARY,
+	};
+	
+	private String string;
+	private Type type;
+	
+	private Index(Type type, String string) {
+		this.string = string;
+		this.type = type;
+	}
+	
+	public static Index name(String string) {
+		return new Index(Type.NAME, string);
+	}
+	
+	public static Index pre(String string) {
+		return new Index(Type.PRE, string);
+	}
+	
+	public static Index post(String string) {
+		return new Index(Type.POST, string);
+	}
+	
+	public static Index binary(String string) {
+		return new Index(Type.BINARY, string);
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		Index index = (Index) object;
+		return this.string == index.string && this.type == index.type;
+	}
+}
