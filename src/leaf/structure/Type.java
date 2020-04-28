@@ -3,12 +3,12 @@ package leaf.structure;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
 import leaf.runtime.Index;
 import leaf.runtime.value.ValueClass;
 import leaf.runtime.value.ValueFunction;
+import leaf.runtime.value.ValueName;
 
-public class Type extends Expression {
+public class Type extends Structure {
 	private String name;
 	private Expression parent;
 	private List<Function> methods;
@@ -20,7 +20,7 @@ public class Type extends Expression {
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
+	public ValueName run(Engine engine) {
 		ValueClass parent;
 		if (this.parent != null) {
 			parent = this.parent.run(engine).read().castClass();
@@ -32,10 +32,6 @@ public class Type extends Expression {
 		for (Function method : this.methods) {
 			ValueFunction function = method.run(engine).read().castFunction();
 			type.newMethod(Index.name(function.getName()), function);
-		}
-		
-		if (this.name != null) {
-			engine.newVariable(this.name, null, type);
 		}
 		
 		return type;

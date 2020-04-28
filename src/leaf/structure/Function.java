@@ -3,11 +3,10 @@ package leaf.structure;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.value.Value;
 import leaf.runtime.value.ValueClass;
-import leaf.runtime.value.ValueFunction;
+import leaf.runtime.value.ValueName;
 
-public class Function extends Expression {
+public class Function extends Structure {
 	private String name;
 	private Expression type;
 	private List<Variable> parameters;
@@ -21,7 +20,7 @@ public class Function extends Expression {
 	}
 	
 	@Override
-	public Value run(Engine engine) {
+	public ValueName run(Engine engine) {
 		ValueClass type;
 		if (this.type != null) {
 			type = this.type.run(engine).read().castClass();
@@ -29,12 +28,7 @@ public class Function extends Expression {
 			type = null;
 		}
 		
-		ValueFunction function = engine.getValues().getFunction(this.name, type, this.parameters, this.body);
-		if (this.name != null) {
-			engine.newVariable(this.name, null, function);
-		}
-		
-		return function;
+		return engine.getValues().getFunction(this.name, type, this.parameters, this.body);
 	}
 	
 	public void setName(String name) {
