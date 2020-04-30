@@ -137,7 +137,7 @@ public class Visitor extends Walker {
 	@Override
 	public void caseExpression_For(NExpression_For node) {
 		this.set(new For(
-			(Variable) this.get(node.get_Element()),
+			(Declaration) this.get(node.get_Element()),
 			(Expression) this.get(node.get_Array()),
 			(Expression) this.get(node.get_Body())
 		));
@@ -146,7 +146,7 @@ public class Visitor extends Walker {
 	@Override
 	public void caseExpression_ForBlock(NExpression_ForBlock node) {
 		this.set(new For(
-			(Variable) this.get(node.get_Element()),
+			(Declaration) this.get(node.get_Element()),
 			(Expression) this.get(node.get_Array()),
 			(Expression) this.get(node.get_Body())
 		));
@@ -154,7 +154,7 @@ public class Visitor extends Walker {
 	
 	@Override
 	public void caseExpression_Declaration(NExpression_Declaration node) {
-		this.set(new Variable(
+		this.set(new Declaration(
 			(String) this.get(node.get_Identifier()),
 			null
 		));
@@ -162,7 +162,7 @@ public class Visitor extends Walker {
 	
 	@Override
 	public void caseExpression_DeclarationType(NExpression_DeclarationType node) {
-		this.set(new Variable(
+		this.set(new Declaration(
 			(String) this.get(node.get_Identifier()),
 			(Expression) this.get(node.get_Type())
 		));
@@ -299,14 +299,14 @@ public class Visitor extends Walker {
 		this.set(new Function(
 			(String) this.get(node.get_Name()),
 			(Expression) this.get(node.get_Type()),
-			(List<Variable>) this.push(new ArrayList<Variable>(), node.get_Parameters()),
+			(List<Declaration>) this.push(new ArrayList<Declaration>(), node.get_Parameters()),
 			(Expression) this.get(node.get_Block())
 		));
 	}
 	
 	@Override
 	public void caseParameter(NParameter node) {
-		((List<Variable>) this.pop()).add((Variable) this.get(node.get_Variable()));
+		((List<Declaration>) this.pop()).add((Declaration) this.get(node.get_Variable()));
 	}
 
 	@Override
@@ -325,7 +325,7 @@ public class Visitor extends Walker {
 	
 	@Override
 	public void caseVariable(NVariable node) {
-		this.set(new Variable(
+		this.set(new Declaration(
 			(String) this.get(node.get_Identifier()),
 			(Expression) this.get(node.get_Type())
 		));

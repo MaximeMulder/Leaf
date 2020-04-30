@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
-import leaf.runtime.value.Value;
+import leaf.runtime.Value;
+import leaf.runtime.value.Reference;
 
 public class Call extends Expression {
 	private Expression expression;
@@ -17,7 +17,7 @@ public class Call extends Expression {
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
+	public Reference run(Engine engine) {
 		Value value = this.expression.run(engine).read();
 		List<Value> arguments = new ArrayList<Value>();
 		Value self = engine.getSelf();
@@ -29,7 +29,7 @@ public class Call extends Expression {
 			arguments.add(argument.run(engine).read());
 		}
 		
-		return value.castFunction().call(engine, arguments);
+		return value.cast(engine.getTypes().getFunction()).getData().asFunction().call(engine, arguments);
 	}
 	
 	public void setExpression(Expression expression) {

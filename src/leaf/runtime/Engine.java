@@ -1,8 +1,9 @@
 package leaf.runtime;
 
-import leaf.runtime.factory.*;
-import leaf.runtime.value.Value;
-import leaf.runtime.value.ValueType;
+import leaf.runtime.factory.FactoryPrimitives;
+import leaf.runtime.factory.FactoryTypes;
+import leaf.runtime.factory.FactoryValues;
+import leaf.runtime.value.Reference;
 
 public class Engine {
 	private Scope scope;
@@ -58,8 +59,8 @@ public class Engine {
 		return this.scope.getVariable(name);
 	}
 	
-	public Reference newVariable(String name, ValueType type, Value value) {
-		return this.scope.newVariable(name, type, value);
+	public void setVariable(String name, Reference reference) {
+		this.scope.setVariable(name, reference);
 	}
 	
 	public Value getSelf() {

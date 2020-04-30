@@ -1,8 +1,12 @@
 package leaf.structure;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
 import leaf.runtime.Index;
+import leaf.runtime.Value;
+import leaf.runtime.value.Reference;
 
 public class Chain extends Expression {
 	private Expression expression;
@@ -14,8 +18,10 @@ public class Chain extends Expression {
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
-		return expression.run(engine).read().chain(engine, Index.name(this.member));
+	public Reference run(Engine engine) {
+		List<Value> arguments = new ArrayList<Value>();
+		arguments.add(engine.getValues().getString(this.member));
+		return expression.run(engine).read().callMethod(Index.special("."), engine, arguments);
 	}
 	
 	public void setExpression(Expression expression) {

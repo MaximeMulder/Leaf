@@ -1,8 +1,7 @@
 package leaf.structure;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
-import leaf.runtime.value.ValueName;
+import leaf.runtime.value.Reference;
 
 public class Statement extends Expression {
 	private Expression expression;
@@ -12,17 +11,15 @@ public class Statement extends Expression {
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
+	public Reference run(Engine engine) {
+		Reference reference = this.expression.run(engine);
 		if (this.expression instanceof Structure) {
-			ValueName value = ((Structure) this.expression).run(engine);
-			String name = value.getName();
+			String name = reference.read().getData().asName().getName();
 			if (name != null) {
-				engine.newVariable(name, null, value);
+				engine.setVariable(name, reference);
 			}
-			
-			return value;
 		}
 		
-		return this.expression.run(engine);
+		return reference;
 	}
 }

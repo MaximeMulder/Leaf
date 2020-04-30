@@ -3,16 +3,17 @@ package leaf.structure;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.value.ValueType;
-import leaf.runtime.value.ValueName;
+import leaf.runtime.Value;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
 public class Function extends Structure {
 	private String name;
 	private Expression type;
-	private List<Variable> parameters;
+	private List<Declaration> parameters;
 	private Expression body;
 
-	public Function(String name, Expression type, List<Variable> parameters, Expression body) {
+	public Function(String name, Expression type, List<Declaration> parameters, Expression body) {
 		this.name = name;
 		this.type = type;
 		this.parameters = parameters;
@@ -20,22 +21,22 @@ public class Function extends Structure {
 	}
 
 	@Override
-	public ValueName run(Engine engine) {
-		ValueType type;
+	public Reference run(Engine engine) {
+		Value type;
 		if (this.type != null) {
-			type = this.type.run(engine).read().castType();
+			type = this.type.run(engine).read().cast(engine.getTypes().getType());
 		} else {
 			type = null;
 		}
 
-		return engine.getValues().getFunction(this.name, type, this.parameters, this.body);
+		return new Constant(engine.getValues().getFunction(this.name, type, this.parameters, this.body));
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void addParameter(Variable parameter) {
+	public void addParameter(Declaration parameter) {
 		this.parameters.add(parameter);
 	}
 

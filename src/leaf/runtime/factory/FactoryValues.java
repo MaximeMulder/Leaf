@@ -4,9 +4,10 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.Function;
-import leaf.runtime.value.*;
+import leaf.runtime.Value;
+import leaf.runtime.data.*;
 import leaf.structure.Expression;
-import leaf.structure.Variable;
+import leaf.structure.Declaration;
 
 public class FactoryValues {
 	private Engine engine;
@@ -15,47 +16,43 @@ public class FactoryValues {
 		this.engine = engine;
 	}
 	
-	public ValueArray getArray(ValueType generic, List<Value> values) {
-		return new ValueArray(this.engine.getTypes().getArray(), generic, values);
+	public Value getArray(Value type, List<Value> values) {
+		return new Value(this.engine.getTypes().getArray(), new DataArray(type, values));
 	}
 	
-	public ValueBoolean getBoolean(boolean primitive) {
-		return new ValueBoolean(this.engine.getTypes().getBoolean(), primitive);
+	public Value getBoolean(boolean primitive) {
+		return new Value(this.engine.getTypes().getBoolean(), new DataBoolean(primitive));
 	}
 	
-	public ValueBoolean getBooleanOpposite(ValueBoolean value) {
-		return this.getBoolean(!value.getPrimitive());
-	}
-	
-	public ValueBoolean getBooleanTrue() {
+	public Value getBooleanTrue() {
 		return this.getBoolean(true);
 	}
 	
-	public ValueBoolean getBooleanFalse() {
+	public Value getBooleanFalse() {
 		return this.getBoolean(false);
 	}
 	
-	public ValueType getType(String name, ValueType parent) {
-		return new ValueType(this.engine.getTypes().getType(), name, parent);
+	public Value getType(String name, Value parent) {
+		return new Value(this.engine.getTypes().getType(), new DataType(name, parent));
 	}
 	
-	public ValueFunction getFunction(String name, ValueType type, List<Variable> parameters, Expression body) {
-		return new ValueFunction(this.engine.getTypes().getFunction(), name, new Function(this.engine.getScope(), type, parameters, body));
+	public Value getFunction(String name, Value type, List<Declaration> parameters, Expression body) {
+		return new Value(this.engine.getTypes().getFunction(), new DataFunction(name, new Function(this.engine.getScope(), type, parameters, body)));
 	}
 	
-	public ValueInteger getInteger(int primitive) {
-		return new ValueInteger(this.engine.getTypes().getInteger(), primitive);
+	public Value getInteger(int primitive) {
+		return new Value(this.engine.getTypes().getInteger(), new DataInteger(primitive));
 	}
 	
-	public ValueInstance getInstance(ValueType type) {
-		return new ValueInstance(type);
+	public Value getInstance(Value type) {
+		return new Value(type, new DataInstance());
 	}
 	
-	public ValueNull getNull() {
-		return new ValueNull(null);
+	public Value getNull() {
+		return new Value(null, null);
 	}
 	
-	public ValueString getString(String primitive) {
-		return new ValueString(this.engine.getTypes().getString(), primitive);
+	public Value getString(String primitive) {
+		return new Value(this.engine.getTypes().getString(), new DataString(primitive));
 	}
 }

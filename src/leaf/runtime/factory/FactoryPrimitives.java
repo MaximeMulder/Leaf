@@ -7,10 +7,10 @@ import leaf.runtime.Callable;
 import leaf.runtime.Engine;
 import leaf.runtime.Index;
 import leaf.runtime.Scope;
+import leaf.runtime.Value;
+import leaf.runtime.data.DataFunction;
 import leaf.runtime.primitive.*;
-import leaf.runtime.value.ValueType;
-import leaf.runtime.value.ValueFunction;
-import leaf.runtime.value.ValueName;
+import leaf.runtime.value.Constant;
 
 public class FactoryPrimitives {
 	private FactoryTypes types;
@@ -31,7 +31,7 @@ public class FactoryPrimitives {
 	}
 	
 	private void setArray() {
-		ValueType type = this.types.getArray();
+		Value type = this.types.getArray();
 
 		this.setMethod(type, "copy",      new MethodArrayCopy());
 		this.setMethod(type, "append",    new MethodArrayAppend());
@@ -39,10 +39,12 @@ public class FactoryPrimitives {
 		this.setMethod(type, "insert",    new MethodArrayInsert());
 		this.setMethod(type, "remove",    new MethodArrayRemove());
 		this.setMethod(type, "to_string", new MethodArrayToString());
+		
+		this.setSpecial(type, "[]", new MethodArrayAccess());
 	}
 
 	private void setBoolean() {
-		ValueType type = this.types.getBoolean();
+		Value type = this.types.getBoolean();
 
 		this.setMethod(type, "to_string", new MethodBooleanToString());
 		
@@ -50,13 +52,15 @@ public class FactoryPrimitives {
 	}
 	
 	private void setInstance() {
-		ValueType type = this.types.getInstance();
+		Value type = this.types.getInstance();
 
 		this.setMethod(type, "to_string", new MethodInstanceToString());
+		
+		this.setSpecial(type, ".", new MethodInstanceChain());
 	}
 	
 	private void setInteger() {
-		ValueType type = this.types.getInteger();
+		Value type = this.types.getInteger();
 		
 		this.setMethod(type, "to_string", new MethodIntegerToString());
 		
@@ -69,17 +73,19 @@ public class FactoryPrimitives {
 	}
 	
 	private void setObject() {
-		ValueType type = this.types.getObject();
+		Value type = this.types.getObject();
 
 		this.setBinary(type, ">",  new MethodObjectOrderGreater());
 		this.setBinary(type, "<=", new MethodObjectOrderLesserEqual());
 		this.setBinary(type, ">=", new MethodObjectOrderGreaterEqual());
 		this.setBinary(type, "==", new MethodObjectComparison());
 		this.setBinary(type, "!=", new MethodObjectDifference());
+		
+		this.setSpecial(type, ".", new MethodObjectChain());
 	}
 		
 	private void setString() {
-		ValueType type = this.types.getString();
+		Value type = this.types.getString();
 		
 		this.setMethod(type, "to_string", new MethodStringToString());
 		
@@ -89,7 +95,7 @@ public class FactoryPrimitives {
 	}
 	
 	private void setScope() {
-		List<ValueName> values = new ArrayList<ValueName>();
+		List<Value> values = new ArrayList<Value>();
 		
 		values.add(this.types.getArray());
 		values.add(this.types.getBoolean());
@@ -107,21 +113,25 @@ public class FactoryPrimitives {
 		values.add(this.newFunction("new",    new FunctionNew()));
 		values.add(this.newFunction("print",  new FunctionPrint()));
 		
-		for (ValueName value : values) {
-			this.scope.newVariable(value.getName(), null, value);
+		for (Value value : values) {
+			this.scope.setVariable(value.getData().asName().getName(), new Constant(value));
 		}
 	}
 	
-	private void setMethod(ValueType type, String name, Callable callable) {
-		ValueFunction function = newFunction(name, callable);
-		type.newMethod(Index.name(function.getName()), function);
+	private void setMethod(Value type, String name, Callable callable) {
+		Value function = this.newFunction(name, callable);
+		type.getData().asType().setMethod(Index.name(function.getData().asFunction().getName()), function);
 	}
 	
-	private void setBinary(ValueType type, String operator, Callable callable) {
-		type.newMethod(Index.binary(operator), newFunction(null, callable));
+	private void setBinary(Value type, String operator, Callable callable) {
+		type.getData().asType().setMethod(Index.binary(operator), this.newFunction(null, callable));
 	}
 	
-	private ValueFunction newFunction(String name, Callable callable) {
-		return new ValueFunction(this.types.getFunction(), name, callable);
+	private void setSpecial(Value type, String operator, Callable callable) {
+		type.getData().asType().setMethod(Index.special(operator), this.newFunction(null, callable));
+	}
+	
+	private Value newFunction(String name, Callable callable) {
+		return new Value(this.types.getFunction(), new DataFunction(name, callable));
 	}
 }

@@ -4,8 +4,10 @@ import java.util.List;
 
 import leaf.runtime.Callable;
 import leaf.runtime.Engine;
+import leaf.runtime.Value;
 import leaf.runtime.exception.ErrorAssertion;
-import leaf.runtime.value.Value;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
 public class FunctionAssert extends Callable {
 	@Override
@@ -14,11 +16,11 @@ public class FunctionAssert extends Callable {
 	}
 	
 	@Override
-	public Value execute(Engine engine, List<Value> arguments) {
-		if (!arguments.get(0).castBoolean().getPrimitive()) {
+	public Reference execute(Engine engine, List<Value> arguments) {
+		if (!arguments.get(0).cast(engine.getTypes().getBoolean()).getData().asBoolean().getPrimitive()) {
 			throw new ErrorAssertion();
 		}
 		
-		return null;
+		return new Constant(null);
 	}
 }

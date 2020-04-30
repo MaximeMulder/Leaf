@@ -6,6 +6,7 @@ public class Index {
 		PRE,
 		POST,
 		BINARY,
+		SPECIAL,
 	};
 	
 	private String string;
@@ -32,9 +33,18 @@ public class Index {
 		return new Index(Type.BINARY, string);
 	}
 	
+	public static Index special(String string) {
+		return new Index(Type.SPECIAL, string);
+	}
+	
 	@Override
 	public boolean equals(Object object) {
 		Index index = (Index) object;
-		return this.string == index.string && this.type == index.type;
+		return this.string.equals(index.string) && this.type == index.type;
 	}
+	
+    @Override
+    public int hashCode() {
+		return this.type.hashCode() * this.string.hashCode();
+    }
 }

@@ -1,11 +1,12 @@
 package leaf.structure;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
 public class False extends Expression {
 	@Override
-	public IValue run(Engine engine) {
-		return engine.getValues().getBooleanFalse();
+	public Reference run(Engine engine) {
+		return new Constant(engine.getValues().getBooleanFalse());
 	}
 }

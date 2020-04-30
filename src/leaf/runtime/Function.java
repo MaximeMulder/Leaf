@@ -5,18 +5,18 @@ import java.util.List;
 import leaf.runtime.exception.Control;
 import leaf.runtime.exception.ControlReturn;
 import leaf.runtime.exception.ErrorControl;
-import leaf.runtime.value.Value;
-import leaf.runtime.value.ValueType;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 import leaf.structure.Expression;
-import leaf.structure.Variable;
+import leaf.structure.Declaration;
 
 public class Function extends Callable {
 	Scope scope;
-	ValueType type;
-	List<Variable> parameters;
+	Value type;
+	List<Declaration> parameters;
 	Expression body;
 	
-	public Function(Scope scope, ValueType type, List<Variable> parameters, Expression body) {
+	public Function(Scope scope, Value type, List<Declaration> parameters, Expression body) {
 		this.scope = scope;
 		this.type = type;
 		this.parameters = parameters;
@@ -29,24 +29,23 @@ public class Function extends Callable {
 	}
 	
 	@Override
-	public Value execute(Engine engine, List<Value> arguments) {
+	public Reference execute(Engine engine, List<Value> arguments) {
 		Scope scope = engine.pushFrame(this.scope);
 		for (int i = 0; i < this.parameters.size(); i++) {
 			this.parameters.get(i).run(engine).write(arguments.get(i));
 		}
 		
-		Reference result = new Reference(this.type, null);
-		
+		Value result = null;
 		try {
 			this.body.run(engine);
 		} catch (ControlReturn control) {
-			result.write(control.getValue());
+			result = control.getValue().cast(this.type);
 		} catch (Control control) {
 			throw new ErrorControl();
+		} finally {
+			engine.popFrame(scope);
 		}
 		
-		engine.popFrame(scope);
-		
-		return result.read();
+		return new Constant(result);
 	}
 }

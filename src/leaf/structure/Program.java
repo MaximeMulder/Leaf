@@ -3,9 +3,9 @@ package leaf.structure;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
 import leaf.runtime.exception.Control;
 import leaf.runtime.exception.ErrorControl;
+import leaf.runtime.value.Reference;
 
 public class Program extends Expression {
 	List<Statement> statements;
@@ -15,7 +15,7 @@ public class Program extends Expression {
 	}
 
 	@Override
-	public IValue run(Engine engine) {
+	public Reference run(Engine engine) {
 		try {
 			for (Statement statement : this.statements) {
 				statement.run(engine);

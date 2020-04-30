@@ -1,7 +1,8 @@
 package leaf.structure;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
 public class If extends Expression {
 	private Expression condition;
@@ -15,19 +16,14 @@ public class If extends Expression {
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
-		IValue value = null;
-		if (this.condition.run(engine).read().castBoolean().getPrimitive()) {
-			value = this.accept.run(engine);
+	public Reference run(Engine engine) {
+		if (this.condition.run(engine).read().cast(engine.getTypes().getBoolean()).getData().asBoolean().getPrimitive()) {
+			return this.accept.run(engine);
 		} else if (this.reject != null) {
-			value = this.reject.run(engine);
+			return this.reject.run(engine);
 		}
 		
-		if (value != null) {
-			return value.read();
-		}
-		
-		return null;
+		return new Constant(null);
 	}
 	
 	public void setCondition(Expression condition) {

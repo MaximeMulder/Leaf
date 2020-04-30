@@ -4,20 +4,14 @@ import java.util.List;
 
 import leaf.runtime.Callable;
 import leaf.runtime.Engine;
-import leaf.runtime.value.Value;
+import leaf.runtime.Value;
+import leaf.runtime.value.Reference;
 
 public abstract class Method extends Callable {
 	@Override
-	public boolean arguments(List<Value> arguments) {
-		return arguments.size() >= 1 && this.arguments(arguments.get(0), arguments.subList(1, arguments.size()));
-	}
-	
-	@Override
-	public Value execute(Engine engine, List<Value> arguments) {
+	public Reference execute(Engine engine, List<Value> arguments) {
 		return this.execute(engine, arguments.get(0), arguments.subList(1, arguments.size()));
 	};
 	
-	public abstract boolean arguments(Value self, List<Value> arguments);
-	
-	public abstract Value execute(Engine engine, Value self, List<Value> arguments);
+	public abstract Reference execute(Engine engine, Value self, List<Value> arguments);
 }

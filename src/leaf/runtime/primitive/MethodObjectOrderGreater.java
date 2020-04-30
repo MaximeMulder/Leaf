@@ -1,26 +1,24 @@
 package leaf.runtime.primitive;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.Index;
-import leaf.runtime.value.Value;
+import leaf.runtime.Value;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
 public class MethodObjectOrderGreater extends Method {
 	@Override
-	public boolean arguments(Value self, List<Value> arguments) {
-		return arguments.size() == 1;
+	public boolean arguments(List<Value> arguments) {
+		return arguments.size() == 2;
 	}
 
 	@Override
-	public Value execute(Engine engine, Value self, List<Value> parameters) {
-		ArrayList<Value> arguments = new ArrayList<Value>();
-		arguments.add(self);
-		arguments.add(parameters.get(0));
-		return engine.getValues().getBoolean(
-			!self.getType().getMethod(Index.binary("<")).call(engine, arguments).castBoolean().getPrimitive() &&
-			!self.getType().getMethod(Index.binary("==")).call(engine, arguments).castBoolean().getPrimitive()
-		);
+	public Reference execute(Engine engine, Value self, List<Value> arguments) {
+		return new Constant(engine.getValues().getBoolean(
+			!self.callMethod(Index.binary("<"), engine, arguments).read().getData().asBoolean().getPrimitive() &&
+			!self.callMethod(Index.binary("=="), engine, arguments).read().getData().asBoolean().getPrimitive()
+		));
 	}
 }

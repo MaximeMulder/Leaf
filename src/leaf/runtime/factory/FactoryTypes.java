@@ -1,17 +1,18 @@
 package leaf.runtime.factory;
 
-import leaf.runtime.value.ValueType;
+import leaf.runtime.Value;
+import leaf.runtime.data.DataType;
 
 public class FactoryTypes {
-	private ValueType array;
-	private ValueType binary;
-	private ValueType function;
-	private ValueType instance;
-	private ValueType integer;
-	private ValueType object;
-	private ValueType reference;
-	private ValueType string;
-	private ValueType type;
+	private Value array;
+	private Value binary;
+	private Value function;
+	private Value instance;
+	private Value integer;
+	private Value object;
+	private Value reference;
+	private Value string;
+	private Value type;
 
 	public FactoryTypes() {
 		this.type      = this.newType("Type");
@@ -24,51 +25,51 @@ public class FactoryTypes {
 		this.reference = this.newType("Refernece");
 		this.string    = this.newType("String");
 
-		this.type.setParent(this.getObject());
+		this.type.getData().asType().setParent(this.getObject());
 		this.type.setType(this.getType());
 	}
 
-	public ValueType getArray() {
+	public Value getArray() {
 		return this.array;
 	}
 
-	public ValueType getBoolean() {
+	public Value getBoolean() {
 		return this.binary;
 	}
 
-	public ValueType getFunction() {
+	public Value getFunction() {
 		return this.function;
 	}
 
-	public ValueType getInstance() {
+	public Value getInstance() {
 		return this.instance;
 	}
 
-	public ValueType getInteger() {
+	public Value getInteger() {
 		return this.integer;
 	}
 
-	public ValueType getNull() {
+	public Value getNull() {
 		return null;
 	}
 
-	public ValueType getObject() {
+	public Value getObject() {
 		return this.object;
 	}
 
-	public ValueType getReference() {
+	public Value getReference() {
 		return this.reference;
 	}
 
-	public ValueType getString() {
+	public Value getString() {
 		return this.string;
 	}
 
-	public ValueType getType() {
+	public Value getType() {
 		return this.type;
 	}
 
-	private ValueType newType(String name) {
-		return new ValueType(this.getType(), name, this.getObject());
+	private Value newType(String name) {
+		return new Value(this.getType(), new DataType(name, this.getObject()));
 	}
 }

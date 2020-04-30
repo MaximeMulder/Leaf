@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
+import leaf.runtime.Value;
 import leaf.runtime.exception.ControlBreak;
 import leaf.runtime.exception.ControlContinue;
-import leaf.runtime.value.Value;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
 public class Loop extends Expression {
 	private Expression body;
@@ -17,14 +18,14 @@ public class Loop extends Expression {
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
+	public Reference run(Engine engine) {
 		List<Value> results = new ArrayList<Value>();
 		while (true) {
 			Value result = null;
 			try {
-				IValue value = this.body.run(engine);
-				if (value != null) {
-					result = value.read();
+				Reference reference = this.body.run(engine);
+				if (reference != null) {
+					result = reference.read();
 				}
 			} catch (ControlContinue control) {
 				result = control.getValue();
@@ -39,7 +40,7 @@ public class Loop extends Expression {
 			}
 		}
 		
-		return engine.getValues().getArray(null, results);
+		return new Constant(engine.getValues().getArray(null, results));
 	}
 	
 	public void setBody(Expression body) {

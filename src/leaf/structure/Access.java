@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
-import leaf.runtime.value.Value;
+import leaf.runtime.Index;
+import leaf.runtime.Value;
+import leaf.runtime.value.Reference;
 
 public class Access extends Expression {
 	private Expression expression;
@@ -17,14 +18,14 @@ public class Access extends Expression {
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
+	public Reference run(Engine engine) {
 		Value value = this.expression.run(engine).read();
 		List<Value> arguments = new ArrayList<Value>();
 		for (Expression argument : this.arguments) {
 			arguments.add(argument.run(engine).read());
 		}
 		
-		return value.castArray().access(arguments);
+		return value.callMethod(Index.special("[]"), engine, arguments);
 	}
 	
 	public void setExpression(Expression expression) {

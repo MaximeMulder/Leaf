@@ -4,8 +4,9 @@ import java.util.List;
 
 import leaf.runtime.Callable;
 import leaf.runtime.Engine;
-import leaf.runtime.value.Value;
-import leaf.runtime.value.ValueType;
+import leaf.runtime.Value;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
 public class FunctionNew extends Callable {
 	@Override
@@ -14,14 +15,14 @@ public class FunctionNew extends Callable {
 	}
 
 	@Override
-	public Value execute(Engine engine, List<Value> arguments) {
-		ValueType type;
+	public Reference execute(Engine engine, List<Value> arguments) {
+		Value type;
 		if (arguments.size() == 1) {
-			type = arguments.get(0).castType();
+			type = arguments.get(0).cast(engine.getTypes().getType());
 		} else {
 			type = engine.getTypes().getInstance();
 		}
 
-		return engine.getValues().getInstance(type);
+		return new Constant(engine.getValues().getInstance(type));
 	}
 }

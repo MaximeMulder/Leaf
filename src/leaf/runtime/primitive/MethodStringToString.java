@@ -3,17 +3,18 @@ package leaf.runtime.primitive;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.value.Value;
-import leaf.runtime.value.ValueString;
+import leaf.runtime.Value;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
-public class MethodStringToString extends MethodString {
+public class MethodStringToString extends Method {
 	@Override
-	public boolean arguments(Value self, List<Value> arguments) {
-		return arguments.size() == 0;
+	public boolean arguments(List<Value> arguments) {
+		return arguments.size() == 1;
 	}
 	
 	@Override
-	public Value execute(Engine engine, ValueString self, List<Value> arguments) {
-		return self;
+	public Reference execute(Engine engine, Value self, List<Value> arguments) {
+		return new Constant(self);
 	}
 }

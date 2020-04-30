@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
+import leaf.runtime.Value;
 import leaf.runtime.exception.ControlBreak;
 import leaf.runtime.exception.ControlContinue;
-import leaf.runtime.value.Value;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
 public class While extends Expression {
 	private Expression condition;
@@ -19,14 +20,14 @@ public class While extends Expression {
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
+	public Reference run(Engine engine) {
 		List<Value> results = new ArrayList<Value>();
-		while (this.condition.run(engine).read().castBoolean().getPrimitive()) {
+		while (this.condition.run(engine).read().cast(engine.getTypes().getBoolean()).getData().asBoolean().getPrimitive()) {
 			Value result = null;
 			try {
-				IValue value = this.body.run(engine);
-				if (value != null) {
-					result = value.read();
+				Reference reference = this.body.run(engine);
+				if (reference != null) {
+					result = reference.read();
 				}
 			} catch (ControlContinue control) {
 				result = control.getValue();
@@ -41,7 +42,7 @@ public class While extends Expression {
 			}
 		}
 		
-		return engine.getValues().getArray(null, results);
+		return new Constant(engine.getValues().getArray(null, results));
 	}
 	
 	public void setCondition(Expression condition) {

@@ -3,7 +3,7 @@ package leaf.structure;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
+import leaf.runtime.value.Reference;
 
 public class Block extends Expression {
 	List<Statement> statements;
@@ -13,20 +13,14 @@ public class Block extends Expression {
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
+	public Reference run(Engine engine) {
 		engine.pushScope();
-		
-		IValue value = null;
+		Reference reference = null;
 		for (Statement statement : this.statements) {
-			value = statement.run(engine);
+			reference = statement.run(engine);
 		}
 
 		engine.popScope();
-		
-		if (value != null) {
-			return value.read();
-		}
-		
-		return null;
+		return reference;
 	}
 }

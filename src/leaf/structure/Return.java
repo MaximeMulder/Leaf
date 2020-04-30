@@ -1,9 +1,9 @@
 package leaf.structure;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
+import leaf.runtime.Value;
 import leaf.runtime.exception.ControlReturn;
-import leaf.runtime.value.Value;
+import leaf.runtime.value.Reference;
 
 public class Return extends Expression {
 	private Expression expression;
@@ -13,7 +13,7 @@ public class Return extends Expression {
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
+	public Reference run(Engine engine) {
 		Value value;
 		if (this.expression != null) {
 			value = this.expression.run(engine).read();

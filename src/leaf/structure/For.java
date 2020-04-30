@@ -4,34 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
-import leaf.runtime.Reference;
+import leaf.runtime.Value;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 import leaf.runtime.exception.ControlBreak;
 import leaf.runtime.exception.ControlContinue;
-import leaf.runtime.value.Value;
 
 public class For extends Expression {
-	private Variable element;
+	private Declaration element;
 	private Expression array;
 	private Expression body;
 	
-	public For(Variable element, Expression array, Expression body) {
+	public For(Declaration element, Expression array, Expression body) {
 		this.element = element;
 		this.array = array;
 		this.body = body;
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
+	public Reference run(Engine engine) {
 		List<Value> results = new ArrayList<Value>();
-		for (Reference element : this.array.run(engine).read().castArray().getElements()) {
+		for (Reference element : this.array.run(engine).read().cast(engine.getTypes().getArray()).getData().asArray().getElements()) {
 			Value result = null;
 			try {
 				engine.pushScope();
 				this.element.run(engine).write(element.read());
-				IValue value = this.body.run(engine);
-				if (value != null) {
-					result = value.read();
+				Reference reference = this.body.run(engine);
+				if (reference != null) {
+					result = reference.read();
 				}
 			} catch (ControlContinue control) {
 				result = control.getValue();
@@ -47,10 +47,10 @@ public class For extends Expression {
 			}
 		}
 		
-		return engine.getValues().getArray(null, results);
+		return new Constant(engine.getValues().getArray(null, results));
 	}
 
-	public void setElement(Variable element) {
+	public void setElement(Declaration element) {
 		this.element = element;
 	}
 

@@ -1,7 +1,8 @@
 package leaf.structure;
 
 import leaf.runtime.Engine;
-import leaf.runtime.IValue;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
 public class Assignment extends Expression {
 	private Expression reference;
@@ -13,9 +14,9 @@ public class Assignment extends Expression {
 	}
 	
 	@Override
-	public IValue run(Engine engine) {
+	public Reference run(Engine engine) {
 		this.reference.run(engine).write(this.expression.run(engine).read());
-		return null;
+		return new Constant(null);
 	}
 	
 	public void setReference(Expression reference) {

@@ -7,28 +7,30 @@ import java.util.TreeMap;
 
 import leaf.runtime.Engine;
 import leaf.runtime.Index;
-import leaf.runtime.Reference;
-import leaf.runtime.value.Value;
+import leaf.runtime.Value;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
+import leaf.runtime.value.Variable;
 
 public class MethodInstanceToString extends Method {
 	@Override
-	public boolean arguments(Value self, List<Value> arguments) {
-		return arguments.size() == 0;
+	public boolean arguments(List<Value> arguments) {
+		return arguments.size() == 1;
 	}
 	
 	@Override
-	public Value execute(Engine engine, Value self, List<Value> parameters) {
+	public Reference execute(Engine engine, Value self, List<Value> arguments) {
 		String string = "{";
-		Map<Index, Reference> attributes = new TreeMap<Index, Reference>(self.castInstance().getAttributes());
-		for (Entry<Index, Reference> attribute : attributes.entrySet()) {
+		Map<String, Variable> attributes = new TreeMap<String, Variable>(self.getData().asInstance().getAttributes());
+		for (Entry<String, Variable> attribute : attributes.entrySet()) {
 			Value value = attribute.getValue().read();
-			string += attribute.getKey() + ": " + value.getType().getMethod(Index.name("to_string")).call(engine, value).castString().getPrimitive() + ", ";
+			string += attribute.getKey() + ": " + value.callMethod(Index.name("to_string"), engine).read().getData().asString().getPrimitive() + ", ";
 		}
 		
 		if (attributes.size() > 0) {
 			string = string.substring(0, string.length() - 2);
 		}
 		
-		return engine.getValues().getString(string + "}");
+		return new Constant(engine.getValues().getString(string + "}"));
 	}
 }

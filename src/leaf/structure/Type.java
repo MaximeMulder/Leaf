@@ -4,9 +4,9 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.Index;
-import leaf.runtime.value.ValueType;
-import leaf.runtime.value.ValueFunction;
-import leaf.runtime.value.ValueName;
+import leaf.runtime.Value;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
 public class Type extends Structure {
 	private String name;
@@ -20,21 +20,21 @@ public class Type extends Structure {
 	}
 
 	@Override
-	public ValueName run(Engine engine) {
-		ValueType parent;
+	public Reference run(Engine engine) {
+		Value parent;
 		if (this.parent != null) {
-			parent = this.parent.run(engine).read().castType();
+			parent = this.parent.run(engine).read().cast(engine.getTypes().getType());
 		} else {
 			parent = engine.getTypes().getInstance();
 		}
 
-		ValueType type = engine.getValues().getType(this.name, parent);
+		Value type = engine.getValues().getType(this.name, parent);
 		for (Function method : this.methods) {
-			ValueFunction function = method.run(engine).read().castFunction();
-			type.newMethod(Index.name(function.getName()), function);
+			Value function = method.run(engine).read();
+			type.getData().asType().setMethod(Index.name(function.getData().asFunction().getName()), function);
 		}
 
-		return type;
+		return new Constant(type);
 	}
 
 	public void setName(String name) {

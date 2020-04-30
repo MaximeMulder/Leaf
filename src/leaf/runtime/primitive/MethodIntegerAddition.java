@@ -3,17 +3,18 @@ package leaf.runtime.primitive;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.value.Value;
-import leaf.runtime.value.ValueInteger;
+import leaf.runtime.Value;
+import leaf.runtime.value.Constant;
+import leaf.runtime.value.Reference;
 
-public class MethodIntegerAddition extends MethodInteger {
+public class MethodIntegerAddition extends Method {
 	@Override
-	public boolean arguments(Value self, List<Value> arguments) {
-		return arguments.size() == 1;
+	public boolean arguments(List<Value> arguments) {
+		return arguments.size() == 2;
 	}
 	
 	@Override
-	public Value execute(Engine engine, ValueInteger self, List<Value> arguments) {
-		return engine.getValues().getInteger(self.getPrimitive() + arguments.get(0).castInteger().getPrimitive());
+	public Reference execute(Engine engine, Value self, List<Value> arguments) {
+		return new Constant(engine.getValues().getInteger(self.getData().asInteger().getPrimitive() + arguments.get(0).cast(engine.getTypes().getInteger()).getData().asInteger().getPrimitive()));
 	}
 }
