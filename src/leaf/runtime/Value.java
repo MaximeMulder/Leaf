@@ -16,16 +16,6 @@ public class Value {
 		this.data = data;
 	}
 
-	/* public IValue chain(Engine engine, Index index) {
-		DataFunction method = this.getType().getMethod(index);
-		if (method != null) {
-			engine.setSelf(this);
-			return method;
-		}
-
-		return null;
-	} */
-
 	public Value getType() {
 		return this.type;
 	}
@@ -66,6 +56,11 @@ public class Value {
 	public Reference callMethod(Index index, Engine engine, List<Value> arguments) {
 		arguments = new ArrayList<Value>(arguments);
 		arguments.add(0, this);
-		return this.getType().getData().asType().getMethod(index).getData().asFunction().call(engine, arguments);
+		Value self = engine.getSelf();
+		if (self != null) {
+			arguments.add(self);
+		}
+		
+		return this.getType().getData().asType().getMethod(index).getData().asFunction().getCallable().call(engine, arguments);
 	}
 }

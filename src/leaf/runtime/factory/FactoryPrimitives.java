@@ -22,6 +22,7 @@ public class FactoryPrimitives {
 		
 		this.setArray();
 		this.setBoolean();
+		this.setFunction();
 		this.setInstance();
 		this.setInteger();
 		this.setObject();
@@ -50,6 +51,12 @@ public class FactoryPrimitives {
 		this.setMethod(type, "to_string", new MethodBooleanToString());
 		
 		this.setBinary(type, "==", new MethodBooleanComparison());
+	}
+
+	private void setFunction() {
+		Value type = this.types.getFunction();
+		
+		this.setSpecial(type, "()", new PrimitiveFunctionCall());
 	}
 	
 	private void setInstance() {

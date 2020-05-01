@@ -22,9 +22,8 @@ public class Operation extends Expression {
 	@Override
 	public Reference run(Engine engine) {
 		List<Value> arguments = new ArrayList<Value>();
-		arguments.add(this.left.run(engine).read());
 		arguments.add(this.right.run(engine).read());
-		return arguments.get(0).getType().getData().asType().getMethod(Index.binary(this.operator)).getData().asFunction().call(engine, arguments);
+		return this.left.run(engine).read().callMethod(Index.binary(this.operator), engine, arguments);
 	}
 
 	public void setOperator(String operator) {

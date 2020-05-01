@@ -31,7 +31,7 @@ public class MethodInstanceChain extends Method {
 			member = new Variable(null, null);
 			data.setAttribute(name, member);
 		}
-		
+
 		return member;
 	}
 }

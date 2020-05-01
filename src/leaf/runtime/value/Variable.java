@@ -22,13 +22,9 @@ public class Variable implements Reference {
 	@Override
 	public void write(Value value) {
 		if (this.type == null) {
-			// this.type = value.getType();
+			this.type = value.getType();
 		}
 
-		/* if (false !value.getType().is(this.type)) {
-			throw new ErrorType();
-		}*/
-
-		this.value = value;
+		this.value = value.cast(this.type);
 	}
 }

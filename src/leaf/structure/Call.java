@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.Engine;
+import leaf.runtime.Index;
 import leaf.runtime.Value;
 import leaf.runtime.value.Reference;
 
@@ -20,16 +21,11 @@ public class Call extends Expression {
 	public Reference run(Engine engine) {
 		Value value = this.expression.run(engine).read();
 		List<Value> arguments = new ArrayList<Value>();
-		Value self = engine.getSelf();
-		if (self != null) {
-			arguments.add(self);
-		}
-		
 		for (Expression argument : this.arguments) {
 			arguments.add(argument.run(engine).read());
 		}
 		
-		return value.cast(engine.getTypes().getFunction()).getData().asFunction().call(engine, arguments);
+		return value.callMethod(Index.special("()"), engine, arguments);
 	}
 	
 	public void setExpression(Expression expression) {
