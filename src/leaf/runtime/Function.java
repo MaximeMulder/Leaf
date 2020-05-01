@@ -4,13 +4,14 @@ import java.util.List;
 
 import leaf.runtime.exception.Control;
 import leaf.runtime.exception.ControlReturn;
+import leaf.runtime.exception.ErrorArguments;
 import leaf.runtime.exception.ErrorControl;
 import leaf.runtime.value.Constant;
 import leaf.runtime.value.Reference;
 import leaf.structure.Expression;
 import leaf.structure.Declaration;
 
-public class Function extends Callable {
+public class Function implements Callable {
 	Scope scope;
 	Value type;
 	List<Declaration> parameters;
@@ -22,14 +23,13 @@ public class Function extends Callable {
 		this.parameters = parameters;
 		this.body = body;
 	}
-
-	@Override
-	public boolean arguments(List<Value> arguments) {
-		return this.parameters.size() == arguments.size();
-	}
 	
 	@Override
-	public Reference execute(Engine engine, List<Value> arguments) {
+	public Reference call(Engine engine, List<Value> arguments) {
+		if (this.parameters.size() != arguments.size()) {
+			throw new ErrorArguments();
+		}
+
 		Scope scope = engine.pushFrame(this.scope);
 		for (int i = 0; i < this.parameters.size(); i++) {
 			this.parameters.get(i).run(engine).write(arguments.get(i));

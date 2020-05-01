@@ -7,14 +7,8 @@ import leaf.runtime.Engine;
 import leaf.runtime.Value;
 import leaf.runtime.value.Reference;
 
-public class PrimitiveFunctionCall extends Callable {
-	@Override
-	public boolean arguments(List<Value> arguments) {
-		return arguments.size() >= 1;
-	}
-
-	@Override
-	public Reference execute(Engine engine, List<Value> arguments) {
-		return arguments.get(0).getData().asFunction().getCallable().execute(engine, arguments.subList(1, arguments.size()));
+public class PrimitiveFunctionCall implements Callable {
+	public Reference call(Engine engine, List<Value> arguments) {
+		return arguments.get(0).getData().asFunction().getCallable().call(engine, arguments.subList(1, arguments.size()));
 	}
 }
