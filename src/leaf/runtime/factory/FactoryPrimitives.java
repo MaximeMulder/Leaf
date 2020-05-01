@@ -26,6 +26,7 @@ public class FactoryPrimitives {
 		this.setInteger();
 		this.setObject();
 		this.setString();
+		this.setType();
 		
 		this.setScope();
 	}
@@ -92,6 +93,12 @@ public class FactoryPrimitives {
 		this.setBinary(type, "+" , new MethodStringAddition());
 		this.setBinary(type, "<",  new MethodStringOrderLesser());
 		this.setBinary(type, "==", new MethodStringComparison());
+	}
+	
+	private void setType() {
+		Value type = this.types.getType();
+		
+		this.setSpecial(type, "[]" , new MethodTypeAccess());
 	}
 	
 	private void setScope() {
