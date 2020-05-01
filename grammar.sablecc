@@ -85,7 +85,7 @@ Parser
 		;
 
 	Priority
-		Left declaration_type, loop, while, do_while, for, access, call, chain;
+		Left loop, while, do_while, for, access, call, chain;
 		Left operation1;
 		Left operation2;
 		Left operation3;
@@ -93,6 +93,7 @@ Parser
 		Left operation5;
 		Left operation6;
 		Right return, break, continue;
+		Left declaration_type;
 		Left assignment;
 
 	else
