@@ -35,7 +35,7 @@ public class Value {
 				return true;
 			}
 
-			self = this.type.getData().asType().getParent();
+			self = self.getData().asType().getParent();
 		};
 		
 		return false;
