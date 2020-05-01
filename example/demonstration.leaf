@@ -16,13 +16,13 @@ class Dog : Animal {
 	};
 };
 
-function new_dog(name) {
-	dog = new(Dog);
+function new_dog(name): Dog {
+	let dog = new(Dog);
 	dog.name = name;
 	return dog;	
 };
 
-dog = new_dog("Woofie");
+let dog = new_dog("Woofie");
 dog.speak();
 
 class Person {
@@ -36,13 +36,13 @@ class Person {
 	};
 };
 
-function new_person(forename, surname, age) {
-	person = new(Person);
+function new_person(forename, surname, age): Person {
+	let person = new(Person);
 	person.forename = forename;
 	person.surname = surname;
 	person.age = age;
 	return person;
 };
 
-person = new_person("Jean", "Tremblay", 27);
+let person = new_person("Jean", "Tremblay", 27);
 person.say_hello();
