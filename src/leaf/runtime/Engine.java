@@ -1,13 +1,16 @@
 package leaf.runtime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import leaf.runtime.factory.FactoryPrimitives;
 import leaf.runtime.factory.FactoryTypes;
 import leaf.runtime.factory.FactoryValues;
-import leaf.runtime.value.Reference;
+import leaf.runtime.reference.Reference;
 
 public class Engine {
 	private Scope scope;
-	private Value self;
+	private Reference self;
 	private FactoryTypes      types;
 	private FactoryPrimitives primitives;
 	private FactoryValues     values;
@@ -63,13 +66,31 @@ public class Engine {
 		this.scope.setVariable(name, reference);
 	}
 	
-	public Value getSelf() {
-		Value self = this.self;
+	public Reference getSelf() {
+		Reference self = this.self;
 		this.self = null;
 		return self;
 	}
 	
-	public void setSelf(Value self) {
+	public void setSelf(Reference self) {
 		this.self = self;
+	}
+	
+	public Reference callFunction(Reference function, Index index) {
+		return this.callFunction(function, index, new ArrayList<Reference>());
+	}
+	
+	public Reference callFunction(Reference function, Index index, List<Reference> arguments) {
+		return function.read().getType().getData().asType().getMethod(index).getData().asFunction().getCallable().call(this, arguments);
+	}
+	
+	public Reference callMethod(Reference self, Index index) {
+		return this.callMethod(self, index, new ArrayList<Reference>());
+	}
+	
+	public Reference callMethod(Reference self, Index index, List<Reference> arguments) {
+		arguments = new ArrayList<Reference>(arguments);
+		arguments.add(0, self);
+		return self.read().getType().getData().asType().getMethod(index).getData().asFunction().getCallable().call(this, arguments);
 	}
 }

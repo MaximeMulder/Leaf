@@ -3,7 +3,7 @@ package leaf.runtime.data;
 import java.util.HashMap;
 import java.util.Map;
 
-import leaf.runtime.value.Variable;
+import leaf.runtime.reference.Variable;
 
 public class DataInstance extends Data {
 	private Map<String, Variable> attributes;

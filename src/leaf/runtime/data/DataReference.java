@@ -1,15 +1,15 @@
 package leaf.runtime.data;
 
-import leaf.runtime.value.Variable;
+import leaf.runtime.reference.Reference;
 
 public class DataReference extends Data {
-	private Variable variable;
+	private Reference reference;
 	
-	public DataReference(Variable variable) {
-		this.variable = variable;
+	public DataReference(Reference reference) {
+		this.reference = reference;
 	}
 	
-	public Variable getVariable() {
-		return this.variable;
+	public Reference getReference() {
+		return this.reference;
 	}
 }

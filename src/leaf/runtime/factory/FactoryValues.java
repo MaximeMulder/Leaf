@@ -3,9 +3,11 @@ package leaf.runtime.factory;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.Function;
 import leaf.runtime.Value;
+import leaf.runtime.callable.Function;
 import leaf.runtime.data.*;
+import leaf.runtime.reference.Reference;
+import leaf.runtime.reference.Variable;
 import leaf.structure.Expression;
 import leaf.structure.Declaration;
 
@@ -16,8 +18,8 @@ public class FactoryValues {
 		this.engine = engine;
 	}
 	
-	public Value getArray(Value type, List<Value> values) {
-		return new Value(this.engine.getTypes().getArray(), new DataArray(type, values));
+	public Value getArray(List<Variable> elements) {
+		return new Value(this.engine.getTypes().getArray(), new DataArray(elements));
 	}
 	
 	public Value getBoolean(boolean primitive) {
@@ -49,7 +51,11 @@ public class FactoryValues {
 	}
 	
 	public Value getNull() {
-		return new Value(null, null);
+		return new Value(engine.getTypes().getObject(), null);
+	}
+	
+	public Value getReference(Reference reference) {
+		return new Value(engine.getTypes().getReference(), new DataReference(reference));
 	}
 	
 	public Value getString(String primitive) {

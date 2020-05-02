@@ -1,8 +1,8 @@
 package leaf.structure;
 
 import leaf.runtime.Engine;
-import leaf.runtime.value.Constant;
-import leaf.runtime.value.Reference;
+import leaf.runtime.reference.Constant;
+import leaf.runtime.reference.Reference;
 
 public class If extends Expression {
 	private Expression condition;

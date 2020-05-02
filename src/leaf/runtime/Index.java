@@ -47,4 +47,8 @@ public class Index {
     public int hashCode() {
 		return this.type.hashCode() * this.string.hashCode();
     }
+    
+    public String toString() {
+    	return this.type.toString() + " " + this.string;
+    }
 }

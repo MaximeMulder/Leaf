@@ -1,11 +1,7 @@
 package leaf.runtime;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import leaf.runtime.data.Data;
 import leaf.runtime.exception.ErrorType;
-import leaf.runtime.value.Reference;
 
 public class Value {
 	private Value type;
@@ -47,20 +43,5 @@ public class Value {
 		}
 		
 		return this;
-	}
-	
-	public Reference callMethod(Index index, Engine engine) {
-		return this.callMethod(index, engine, new ArrayList<Value>());
-	}
-	
-	public Reference callMethod(Index index, Engine engine, List<Value> arguments) {
-		arguments = new ArrayList<Value>(arguments);
-		arguments.add(0, this);
-		Value self = engine.getSelf();
-		if (self != null) {
-			arguments.add(self);
-		}
-		
-		return this.getType().getData().asType().getMethod(index).getData().asFunction().getCallable().call(engine, arguments);
 	}
 }

@@ -3,7 +3,7 @@ package leaf.structure;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.value.Reference;
+import leaf.runtime.reference.Reference;
 
 public class Block extends Expression {
 	List<Statement> statements;

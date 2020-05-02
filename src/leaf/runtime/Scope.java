@@ -3,7 +3,7 @@ package leaf.runtime;
 import java.util.HashMap;
 import java.util.Map;
 
-import leaf.runtime.value.Reference;
+import leaf.runtime.reference.Reference;
 
 public class Scope {
 	private Scope parent;

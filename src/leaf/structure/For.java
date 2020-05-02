@@ -5,10 +5,11 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.Value;
-import leaf.runtime.value.Constant;
-import leaf.runtime.value.Reference;
 import leaf.runtime.exception.ControlBreak;
 import leaf.runtime.exception.ControlContinue;
+import leaf.runtime.reference.Constant;
+import leaf.runtime.reference.Reference;
+import leaf.runtime.reference.Variable;
 
 public class For extends Expression {
 	private Declaration element;
@@ -23,7 +24,7 @@ public class For extends Expression {
 	
 	@Override
 	public Reference run(Engine engine) {
-		List<Value> results = new ArrayList<Value>();
+		List<Variable> results = new ArrayList<Variable>();
 		for (Reference element : this.array.run(engine).read().cast(engine.getTypes().getArray()).getData().asArray().getElements()) {
 			Value result = null;
 			try {
@@ -42,12 +43,12 @@ public class For extends Expression {
 			} finally {
 				engine.popScope();
 				if (result != null) {
-					results.add(result);
+					results.add(new Variable(engine.getTypes().getObject(), result));
 				}
 			}
 		}
 		
-		return new Constant(engine.getValues().getArray(null, results));
+		return new Constant(engine.getValues().getArray(results));
 	}
 
 	public void setElement(Declaration element) {

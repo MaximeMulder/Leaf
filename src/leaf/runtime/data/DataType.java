@@ -5,7 +5,7 @@ import java.util.Map;
 
 import leaf.runtime.Index;
 import leaf.runtime.Value;
-import leaf.runtime.value.Variable;
+import leaf.runtime.reference.Variable;
 
 public class DataType extends DataName {
 	private Value parent;

@@ -5,12 +5,13 @@ import java.util.List;
 import leaf.runtime.Engine;
 import leaf.runtime.Index;
 import leaf.runtime.Value;
+import leaf.runtime.callable.Primitive4;
 import leaf.runtime.data.DataInstance;
-import leaf.runtime.value.Constant;
-import leaf.runtime.value.Reference;
-import leaf.runtime.value.Variable;
+import leaf.runtime.reference.Constant;
+import leaf.runtime.reference.Reference;
+import leaf.runtime.reference.Variable;
 
-public class PrimitiveInstanceChain extends Primitive {
+public class PrimitiveInstanceChain extends Primitive4 {
 	@Override
 	public void parameters(Engine engine, List<Value> parameters) {
 		parameters.add(engine.getTypes().getInstance());
@@ -18,12 +19,13 @@ public class PrimitiveInstanceChain extends Primitive {
 	}
 
 	@Override
-	public Reference execute(Engine engine, List<Value> arguments) {
-		String name = arguments.get(1).getData().asString().getPrimitive();
-		Value self = arguments.get(0);
+	public Reference execute(Engine engine, List<Reference> arguments) {
+		Reference expression = arguments.get(0);
+		String name = arguments.get(1).read().getData().asString().getPrimitive();
+		Value self = expression.read();
 		Value method = self.getType().getData().asType().getMethod(Index.name(name));
 		if (method != null) {
-			engine.setSelf(self);
+			engine.setSelf(expression);
 			return new Constant(method);
 		}
 

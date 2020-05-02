@@ -5,18 +5,18 @@ import java.util.List;
 import leaf.runtime.Engine;
 import leaf.runtime.Index;
 import leaf.runtime.Value;
-import leaf.runtime.value.Constant;
-import leaf.runtime.value.Reference;
+import leaf.runtime.callable.Primitive3;
+import leaf.runtime.reference.Reference;
 
-public class PrimitiveError extends Primitive {
+public class PrimitiveError extends Primitive3 {
 	@Override
 	public void parameters(Engine engine, List<Value> parameters) {
 		parameters.add(engine.getTypes().getObject());
 	}
 
 	@Override
-	public Reference execute(Engine engine, List<Value> arguments) {
-		System.err.println(arguments.get(0).callMethod(Index.name("to_string"), engine).read().getData().asString().getPrimitive());
-		return new Constant(null);
+	public Value execute(Engine engine, List<Reference> arguments) {
+		System.err.println(engine.callMethod(arguments.get(0), Index.name("to_string")).read().getData().asString().getPrimitive());
+		return null;
 	}
 }

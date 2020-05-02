@@ -7,8 +7,9 @@ import leaf.runtime.Engine;
 import leaf.runtime.Value;
 import leaf.runtime.exception.ControlBreak;
 import leaf.runtime.exception.ControlContinue;
-import leaf.runtime.value.Constant;
-import leaf.runtime.value.Reference;
+import leaf.runtime.reference.Constant;
+import leaf.runtime.reference.Reference;
+import leaf.runtime.reference.Variable;
 
 public class While extends Expression {
 	private Expression condition;
@@ -21,7 +22,7 @@ public class While extends Expression {
 	
 	@Override
 	public Reference run(Engine engine) {
-		List<Value> results = new ArrayList<Value>();
+		List<Variable> results = new ArrayList<Variable>();
 		while (this.condition.run(engine).read().cast(engine.getTypes().getBoolean()).getData().asBoolean().getPrimitive()) {
 			Value result = null;
 			try {
@@ -37,12 +38,12 @@ public class While extends Expression {
 				break;
 			} finally {
 				if (result != null) {
-					results.add(result);
+					results.add(new Variable(engine.getTypes().getObject(), result));
 				}
 			}
 		}
 		
-		return new Constant(engine.getValues().getArray(null, results));
+		return new Constant(engine.getValues().getArray(results));
 	}
 	
 	public void setCondition(Expression condition) {

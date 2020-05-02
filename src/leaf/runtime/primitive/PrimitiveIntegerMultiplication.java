@@ -4,10 +4,9 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.Value;
-import leaf.runtime.value.Constant;
-import leaf.runtime.value.Reference;
+import leaf.runtime.callable.Primitive1;
 
-public class PrimitiveIntegerMultiplication extends Primitive {
+public class PrimitiveIntegerMultiplication extends Primitive1 {
 	@Override
 	public void parameters(Engine engine, List<Value> parameters) {
 		parameters.add(engine.getTypes().getInteger());
@@ -15,7 +14,7 @@ public class PrimitiveIntegerMultiplication extends Primitive {
 	}
 
 	@Override
-	public Reference execute(Engine engine, List<Value> arguments) {
-		return new Constant(engine.getValues().getInteger(arguments.get(0).getData().asInteger().getPrimitive() * arguments.get(1).cast(engine.getTypes().getInteger()).getData().asInteger().getPrimitive()));
+	public Value execute(Engine engine, List<Value> arguments) {
+		return engine.getValues().getInteger(arguments.get(0).getData().asInteger().getPrimitive() * arguments.get(1).cast(engine.getTypes().getInteger()).getData().asInteger().getPrimitive());
 	}
 }

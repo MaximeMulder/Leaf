@@ -2,8 +2,8 @@ package leaf.structure;
 
 import leaf.runtime.Engine;
 import leaf.runtime.Value;
-import leaf.runtime.value.Reference;
-import leaf.runtime.value.Variable;
+import leaf.runtime.reference.Reference;
+import leaf.runtime.reference.Variable;
 
 public class Declaration extends Expression {
 	private String name;

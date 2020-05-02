@@ -4,12 +4,10 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.Value;
-import leaf.runtime.data.DataArray;
-import leaf.runtime.value.Constant;
-import leaf.runtime.value.Reference;
-import leaf.runtime.value.Variable;
+import leaf.runtime.callable.Primitive1;
+import leaf.runtime.reference.Variable;
 
-public class PrimitiveArrayInsert extends Primitive {
+public class PrimitiveArrayInsert extends Primitive1 {
 	@Override
 	public void parameters(Engine engine, List<Value> parameters) {
 		parameters.add(engine.getTypes().getArray());
@@ -18,9 +16,8 @@ public class PrimitiveArrayInsert extends Primitive {
 	}
 
 	@Override
-	public Reference execute(Engine engine, List<Value> arguments) {
-		DataArray data = arguments.get(0).getData().asArray();
-		data.getElements().add(arguments.get(1).getData().asInteger().getPrimitive(), new Variable(data.getType(), arguments.get(2)));
-		return new Constant(null);
+	public Value execute(Engine engine, List<Value> arguments) {
+		arguments.get(0).getData().asArray().getElements().add(arguments.get(1).getData().asInteger().getPrimitive(), new Variable(engine.getTypes().getObject(), arguments.get(2)));
+		return null;
 	}
 }

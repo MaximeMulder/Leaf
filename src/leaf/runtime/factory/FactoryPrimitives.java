@@ -3,14 +3,14 @@ package leaf.runtime.factory;
 import java.util.ArrayList;
 import java.util.List;
 
-import leaf.runtime.Callable;
 import leaf.runtime.Engine;
 import leaf.runtime.Index;
 import leaf.runtime.Scope;
 import leaf.runtime.Value;
+import leaf.runtime.callable.Callable;
 import leaf.runtime.data.DataFunction;
 import leaf.runtime.primitive.*;
-import leaf.runtime.value.Constant;
+import leaf.runtime.reference.Constant;
 
 public class FactoryPrimitives {
 	private FactoryTypes types;
@@ -26,6 +26,7 @@ public class FactoryPrimitives {
 		this.setInstance();
 		this.setInteger();
 		this.setObject();
+		this.setReference();
 		this.setString();
 		this.setType();
 
@@ -89,7 +90,15 @@ public class FactoryPrimitives {
 		this.setBinary(type, "==", new PrimitiveObjectComparison());
 		this.setBinary(type, "!=", new PrimitiveObjectDifference());
 
+		this.setPre(type, "&" , new PrimitiveObjectReference());
+		
 		this.setSpecial(type, ".", new PrimitiveObjectChain());
+	}
+
+	private void setReference() {
+		Value type = this.types.getReference();
+
+		this.setPre(type, "*" , new PrimitiveReferenceGet());
 	}
 
 	private void setString() {
@@ -105,6 +114,7 @@ public class FactoryPrimitives {
 	private void setType() {
 		Value type = this.types.getType();
 
+		this.setPost(type, "&" , new PrimitiveTypeReference());
 		this.setSpecial(type, "[]" , new PrimitiveTypeAccess());
 	}
 
@@ -135,6 +145,14 @@ public class FactoryPrimitives {
 	private void setMethod(Value type, String name, Callable callable) {
 		Value function = this.newFunction(name, callable);
 		type.getData().asType().setMethod(Index.name(function.getData().asFunction().getName()), function);
+	}
+
+	private void setPre(Value type, String operator, Callable callable) {
+		type.getData().asType().setMethod(Index.pre(operator), this.newFunction(null, callable));
+	}
+
+	private void setPost(Value type, String operator, Callable callable) {
+		type.getData().asType().setMethod(Index.post(operator), this.newFunction(null, callable));
 	}
 
 	private void setBinary(Value type, String operator, Callable callable) {

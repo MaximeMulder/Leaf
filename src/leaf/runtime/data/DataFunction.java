@@ -1,6 +1,6 @@
 package leaf.runtime.data;
 
-import leaf.runtime.Callable;
+import leaf.runtime.callable.Callable;
 
 public class DataFunction extends DataName {
 	private Callable callable;

@@ -5,8 +5,7 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.Index;
-import leaf.runtime.Value;
-import leaf.runtime.value.Reference;
+import leaf.runtime.reference.Reference;
 
 public class Call extends Expression {
 	private Expression expression;
@@ -19,13 +18,18 @@ public class Call extends Expression {
 	
 	@Override
 	public Reference run(Engine engine) {
-		Value value = this.expression.run(engine).read();
-		List<Value> arguments = new ArrayList<Value>();
-		for (Expression argument : this.arguments) {
-			arguments.add(argument.run(engine).read());
+		Reference expression = this.expression.run(engine);
+		List<Reference> arguments = new ArrayList<Reference>();
+		Reference self = engine.getSelf();
+		if (self != null) {
+			arguments.add(self);
 		}
 		
-		return value.callMethod(Index.special("()"), engine, arguments);
+		for (Expression argument : this.arguments) {
+			arguments.add(argument.run(engine));
+		}
+
+		return engine.callMethod(expression, Index.special("()"), arguments);
 	}
 	
 	public void setExpression(Expression expression) {

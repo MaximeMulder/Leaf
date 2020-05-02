@@ -3,7 +3,7 @@ package leaf.structure;
 import leaf.runtime.Engine;
 import leaf.runtime.Value;
 import leaf.runtime.exception.ControlContinue;
-import leaf.runtime.value.Reference;
+import leaf.runtime.reference.Reference;
 
 public class Continue extends Expression {
 	private Expression expression;

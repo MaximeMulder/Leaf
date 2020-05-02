@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.Value;
-import leaf.runtime.value.Constant;
-import leaf.runtime.value.Reference;
+import leaf.runtime.reference.Constant;
+import leaf.runtime.reference.Reference;
+import leaf.runtime.reference.Variable;
 
 public class Array extends Expression {
 	private List<Expression> values;
@@ -17,12 +17,12 @@ public class Array extends Expression {
 	
 	@Override
 	public Reference run(Engine engine) {
-		List<Value> values = new ArrayList<Value>();
+		List<Variable> elements = new ArrayList<Variable>();
 		for (Expression value : this.values) {
-			values.add(value.run(engine).read());
+			elements.add(new Variable(engine.getTypes().getObject(), value.run(engine).read()));
 		}
 		
-		return new Constant(engine.getValues().getArray(null, values));
+		return new Constant(engine.getValues().getArray(elements));
 	}
 	
 	public void setValues(List<Expression> values) {

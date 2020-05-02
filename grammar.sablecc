@@ -14,12 +14,12 @@ Lexer
 	comment_block = Shortest '/*' Any* '*/';
 	comment_line = Shortest '//' (Any - endline)*;
 
-	operator1 = '*' | '/';
-	operator2 = '+' | '-';
-	operator3 = '<' | '>' | '<=' | '>=';
-	operator4 = '==' | '!=';
-	operator5 = '&&';
-	operator6 = '||';
+	operator_binary1 = '*' | '/';
+	operator_binary2 = '+' | '-';
+	operator_binary3 = '<' | '>' | '<=' | '>=';
+	operator_binary4 = '==' | '!=';
+	operator_binary5 = '&&';
+	operator_binary6 = '||';
 
 	Ignored
 		whitespace, endline, comment_block, comment_line;
@@ -76,23 +76,30 @@ Parser
 		| {chain:} expression '.' identifier
 		| {assignment:} [reference:] expression '=' expression
 
-		| {operation1:} [left:] expression [operator:] operator1 [right:] expression
-		| {operation2:} [left:] expression [operator:] operator2 [right:] expression
-		| {operation3:} [left:] expression [operator:] operator3 [right:] expression
-		| {operation4:} [left:] expression [operator:] operator4 [right:] expression
-		| {operation5:} [left:] expression [operator:] operator5 [right:] expression
-		| {operation6:} [left:] expression [operator:] operator6 [right:] expression
+		| {operation_pre1:} [operator:] '&' expression
+		| {operation_pre2:} [operator:] '*' expression
+		| {operation_post1:} expression [operator:] '&' 
+		| {operation_post2:} expression [operator:] '?'
+
+		| {operation_binary1:} [left:] expression [operator:] operator_binary1 [right:] expression
+		| {operation_binary2:} [left:] expression [operator:] operator_binary2 [right:] expression
+		| {operation_binary3:} [left:] expression [operator:] operator_binary3 [right:] expression
+		| {operation_binary4:} [left:] expression [operator:] operator_binary4 [right:] expression
+		| {operation_binary5:} [left:] expression [operator:] operator_binary5 [right:] expression
+		| {operation_binary6:} [left:] expression [operator:] operator_binary6 [right:] expression
 		;
 
 	Priority
 		Left loop, while, do_while, for, access, call, chain;
-		Left operation1;
-		Left operation2;
-		Left operation3;
-		Left operation4;
-		Left operation5;
-		Left operation6;
-		Right return, break, continue;
+		Left operation_pre1, operation_pre2;
+		Left operation_post1, operation_post2;
+		Left operation_binary1;
+		Left operation_binary2;
+		Left operation_binary3;
+		Left operation_binary4;
+		Left operation_binary5;
+		Left operation_binary6;
+		Left return, break, continue;
 		Left declaration_type;
 		Left assignment;
 

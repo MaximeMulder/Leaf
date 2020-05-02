@@ -3,7 +3,7 @@ package leaf.structure;
 import leaf.runtime.Engine;
 import leaf.runtime.Value;
 import leaf.runtime.exception.ControlBreak;
-import leaf.runtime.value.Reference;
+import leaf.runtime.reference.Reference;
 
 public class Break extends Expression {
 	private Expression expression;

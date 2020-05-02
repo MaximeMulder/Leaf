@@ -61,32 +61,32 @@ public class Visitor extends Walker {
 	}
 	
 	@Override
-	public void caseOperator1(NOperator1 node) {
+	public void caseOperatorBinary1(NOperatorBinary1 node) {
 		this.set(node.getText());
 	}
 	
 	@Override
-	public void caseOperator2(NOperator2 node) {
+	public void caseOperatorBinary2(NOperatorBinary2 node) {
 		this.set(node.getText());
 	}
 	
 	@Override
-	public void caseOperator3(NOperator3 node) {
+	public void caseOperatorBinary3(NOperatorBinary3 node) {
 		this.set(node.getText());
 	}
 	
 	@Override
-	public void caseOperator4(NOperator4 node) {
+	public void caseOperatorBinary4(NOperatorBinary4 node) {
 		this.set(node.getText());
 	}
 	
 	@Override
-	public void caseOperator5(NOperator5 node) {
+	public void caseOperatorBinary5(NOperatorBinary5 node) {
 		this.set(node.getText());
 	}
 	
 	@Override
-	public void caseOperator6(NOperator6 node) {
+	public void caseOperatorBinary6(NOperatorBinary6 node) {
 		this.set(node.getText());
 	}
 	
@@ -250,47 +250,79 @@ public class Visitor extends Walker {
 	}
 	
 	@Override
-	public void caseExpression_Operation1(NExpression_Operation1 node) {
-		this.set(new Operation(
-			(String) this.get(node.get_Operator()),
-			(Expression) this.get(node.get_Left()),
-			(Expression) this.get(node.get_Right())
+	public void caseExpression_OperationPre1(NExpression_OperationPre1 node) {
+		this.set(new OperationPre(
+			(Expression) this.get(node.get_Expression()),
+			"&"
 		));
 	}
 	
 	@Override
-	public void caseExpression_Operation2(NExpression_Operation2 node) {
-		this.set(new Operation(
-			(String) this.get(node.get_Operator()),
-			(Expression) this.get(node.get_Left()),
-			(Expression) this.get(node.get_Right())
+	public void caseExpression_OperationPre2(NExpression_OperationPre2 node) {
+		this.set(new OperationPre(
+			(Expression) this.get(node.get_Expression()),
+			"*"
 		));
 	}
 	
 	@Override
-	public void caseExpression_Operation3(NExpression_Operation3 node) {
-		this.set(new Operation(
-			(String) this.get(node.get_Operator()),
-			(Expression) this.get(node.get_Left()),
-			(Expression) this.get(node.get_Right())
+	public void caseExpression_OperationPost1(NExpression_OperationPost1 node) {
+		this.set(new OperationPost(
+			(Expression) this.get(node.get_Expression()),
+			"&"
 		));
 	}
 	
 	@Override
-	public void caseExpression_Operation4(NExpression_Operation4 node) {
-		this.set(new Operation(
-			(String) this.get(node.get_Operator()),
-			(Expression) this.get(node.get_Left()),
-			(Expression) this.get(node.get_Right())
+	public void caseExpression_OperationPost2(NExpression_OperationPost2 node) {
+		this.set(new OperationPost(
+			(Expression) this.get(node.get_Expression()),
+			"?"
 		));
 	}
 	
 	@Override
-	public void caseExpression_Operation5(NExpression_Operation5 node) {
-		this.set(new Operation(
-			(String) this.get(node.get_Operator()),
+	public void caseExpression_OperationBinary1(NExpression_OperationBinary1 node) {
+		this.set(new OperationBinary(
 			(Expression) this.get(node.get_Left()),
-			(Expression) this.get(node.get_Right())
+			(Expression) this.get(node.get_Right()),
+			(String) this.get(node.get_Operator())
+		));
+	}
+	
+	@Override
+	public void caseExpression_OperationBinary2(NExpression_OperationBinary2 node) {
+		this.set(new OperationBinary(
+			(Expression) this.get(node.get_Left()),
+			(Expression) this.get(node.get_Right()),
+			(String) this.get(node.get_Operator())
+		));
+	}
+	
+	@Override
+	public void caseExpression_OperationBinary3(NExpression_OperationBinary3 node) {
+		this.set(new OperationBinary(
+			(Expression) this.get(node.get_Left()),
+			(Expression) this.get(node.get_Right()),
+			(String) this.get(node.get_Operator())
+		));
+	}
+	
+	@Override
+	public void caseExpression_OperationBinary4(NExpression_OperationBinary4 node) {
+		this.set(new OperationBinary(
+			(Expression) this.get(node.get_Left()),
+			(Expression) this.get(node.get_Right()),
+			(String) this.get(node.get_Operator())
+		));
+	}
+	
+	@Override
+	public void caseExpression_OperationBinary5(NExpression_OperationBinary5 node) {
+		this.set(new OperationBinary(
+			(Expression) this.get(node.get_Left()),
+			(Expression) this.get(node.get_Right()),
+			(String) this.get(node.get_Operator())
 		));
 	}
 	

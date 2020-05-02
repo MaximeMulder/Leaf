@@ -4,10 +4,9 @@ import java.util.List;
 
 import leaf.runtime.Engine;
 import leaf.runtime.Value;
-import leaf.runtime.value.Constant;
-import leaf.runtime.value.Reference;
+import leaf.runtime.callable.Primitive1;
 
-public class PrimitiveIntegerComparison extends Primitive {
+public class PrimitiveIntegerComparison extends Primitive1 {
 	@Override
 	public void parameters(Engine engine, List<Value> parameters) {
 		parameters.add(engine.getTypes().getInteger());
@@ -15,15 +14,12 @@ public class PrimitiveIntegerComparison extends Primitive {
 	}
 
 	@Override
-	public Reference execute(Engine engine, List<Value> arguments) {
-		Value result = null;
+	public Value execute(Engine engine, List<Value> arguments) {
 		Value other = arguments.get(1);
-		if (other.isa(engine.getTypes().getInteger())) {
-			result = engine.getValues().getBoolean(arguments.get(0).getData().asInteger().getPrimitive() == other.getData().asInteger().getPrimitive());
-		} else {
-			result = engine.getValues().getBooleanFalse();
+		if (!other.isa(engine.getTypes().getInteger())) {
+			return engine.getValues().getBooleanFalse();
 		}
 
-		return new Constant(result);
+		return engine.getValues().getBoolean(arguments.get(0).getData().asInteger().getPrimitive() == other.getData().asInteger().getPrimitive());
 	}
 }

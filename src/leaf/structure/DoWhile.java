@@ -7,8 +7,9 @@ import leaf.runtime.Engine;
 import leaf.runtime.Value;
 import leaf.runtime.exception.ControlBreak;
 import leaf.runtime.exception.ControlContinue;
-import leaf.runtime.value.Constant;
-import leaf.runtime.value.Reference;
+import leaf.runtime.reference.Constant;
+import leaf.runtime.reference.Reference;
+import leaf.runtime.reference.Variable;
 
 public class DoWhile extends Expression {
 	private Expression body;
@@ -21,7 +22,7 @@ public class DoWhile extends Expression {
 	
 	@Override
 	public Reference run(Engine engine) {
-		List<Value> results = new ArrayList<Value>();
+		List<Variable> results = new ArrayList<Variable>();
 		do {
 			Value result = null;
 			try {
@@ -37,12 +38,12 @@ public class DoWhile extends Expression {
 				break;
 			} finally {
 				if (result != null) {
-					results.add(result);
+					results.add(new Variable(engine.getTypes().getObject(), result));
 				}
 			}
 		} while (this.condition.run(engine).read().cast(engine.getTypes().getBoolean()).getData().asBoolean().getPrimitive());
 		
-		return new Constant(engine.getValues().getArray(null, results));
+		return new Constant(engine.getValues().getArray(results));
 	}
 	
 	public void setBody(Expression body) {
