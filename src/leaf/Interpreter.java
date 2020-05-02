@@ -57,7 +57,7 @@ public class Interpreter {
 			visitor.visit(tree);
 			visitor.program().run(engine);
 		} catch (Exception exception) {
-			System.err.println("INTERPRETER ERROR: " + exception.getMessage() + ".");
+			System.err.println("INTERPRETER ERROR: " + exception.getMessage());
 			exception.printStackTrace();
 			System.exit(1);
 		}
