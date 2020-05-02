@@ -5,17 +5,17 @@ import java.util.Map;
 
 import leaf.runtime.Index;
 import leaf.runtime.Value;
-import leaf.runtime.reference.Variable;
+import leaf.runtime.reference.Reference;
 
 public class DataType extends DataName {
 	private Value parent;
-	private Map<Index, Variable> statics;
+	private Map<Index, Reference> statics;
 	private Map<Index, Value> methods;
 
 	public DataType(String name, Value parent) {
 		super(name);
 		this.parent = parent;
-		this.statics = new HashMap<Index, Variable>();
+		this.statics = new HashMap<Index, Reference>();
 		this.methods = new HashMap<Index, Value>();
 	}
 
@@ -27,8 +27,16 @@ public class DataType extends DataName {
 		this.parent = parent;
 	}
 	
-	public Map<Index, Variable> getStatics() {
+	public Map<Index, Reference> getStatics() {
 		return this.statics;
+	}
+
+	public Reference getStatic(Index index) {
+		return this.statics.get(index);
+	}
+
+	public void setStatic(Index index, Reference reference) {
+		this.statics.put(index, reference);
 	}
 	
 	public Map<Index, Value> getMethods() {
@@ -47,37 +55,4 @@ public class DataType extends DataName {
 	public void setMethod(Index index, Value function) {
 		this.methods.put(index, function);
 	}
-
-	/* @Override
-	public IValue chain(Engine engine, Index index) {
-		IValue member = super.chain(engine, index);
-		if (member != null) {
-			return member;
-		}
-
-		member = this.getStatic(index);
-		if (member != null) {
-			return member;
-		}
-
-		return this.newStatic(index, null);
-	}
-
-	public DataType getParent() {
-		return this.parent;
-	}
-
-	public void setParent(DataType parent) {
-		this.parent = parent;
-	}
-
-	public Reference getStatic(Index index) {
-		return this.statics.get(index);
-	}
-
-	public Reference newStatic(Index index, Value value) {
-		Reference reference = new Reference(null, value);
-		this.statics.put(index, reference);
-		return reference;
-	} */
 }

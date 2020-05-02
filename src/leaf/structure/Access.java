@@ -24,7 +24,7 @@ public class Access extends Expression {
 			arguments.add(argument.run(engine));
 		}
 		
-		return engine.callMethod(expression, Index.special("[]"), arguments);
+		return engine.callMethod(expression, Index.post("[]"), arguments);
 	}
 	
 	public void setExpression(Expression expression) {

@@ -14,11 +14,13 @@ import leaf.runtime.reference.Constant;
 
 public class FactoryPrimitives {
 	private FactoryTypes types;
+	private FactoryValues values;
 	private Scope scope;
 
 	public FactoryPrimitives(Engine engine) {
-		this.types = engine.getTypes();
-		this.scope = engine.getScope();
+		this.types  = engine.getTypes();
+		this.values = engine.getValues();
+		this.scope  = engine.getScope();
 
 		this.setArray();
 		this.setBoolean();
@@ -26,6 +28,7 @@ public class FactoryPrimitives {
 		this.setInstance();
 		this.setInteger();
 		this.setObject();
+		this.setOption();
 		this.setReference();
 		this.setString();
 		this.setType();
@@ -35,87 +38,88 @@ public class FactoryPrimitives {
 
 	private void setArray() {
 		Value type = this.types.getArray();
-
-		this.setMethod(type, "copy",      new PrimitiveArrayCopy());
-		this.setMethod(type, "append",    new PrimitiveArrayAppend());
-		this.setMethod(type, "prepend",   new PrimitiveArrayPrepend());
-		this.setMethod(type, "insert",    new PrimitiveArrayInsert());
-		this.setMethod(type, "remove",    new PrimitiveArrayRemove());
-		this.setMethod(type, "to_string", new PrimitiveArrayToString());
-
-		this.setSpecial(type, "[]", new PrimitiveArrayAccess());
+		this.setMethod(type, Index.name("copy"),      new PrimitiveArrayCopy());
+		this.setMethod(type, Index.name("append"),    new PrimitiveArrayAppend());
+		this.setMethod(type, Index.name("prepend"),   new PrimitiveArrayPrepend());
+		this.setMethod(type, Index.name("insert"),    new PrimitiveArrayInsert());
+		this.setMethod(type, Index.name("remove"),    new PrimitiveArrayRemove());
+		this.setMethod(type, Index.name("to_string"), new PrimitiveArrayToString());
+		this.setMethod(type, Index.post("[]"),        new PrimitiveArrayAccess());
 	}
 
 	private void setBoolean() {
 		Value type = this.types.getBoolean();
-
-		this.setMethod(type, "to_string", new PrimitiveBooleanToString());
-
-		this.setBinary(type, "==", new PrimitiveBooleanComparison());
+		this.setStatic(type, Index.name("True"),      this.values.getBooleanTrue());
+		this.setStatic(type, Index.name("False"),     this.values.getBooleanFalse());
+		this.setMethod(type, Index.name("to_string"), new PrimitiveBooleanToString());
+		this.setMethod(type, Index.binary("=="),      new PrimitiveBooleanComparison());
 	}
 
 	private void setFunction() {
 		Value type = this.types.getFunction();
-
-		this.setSpecial(type, "()", new PrimitiveFunctionCall());
+		this.setMethod(type, Index.name("to_string"), new PrimitiveFunctionToString());
+		this.setMethod(type, Index.post("()"),        new PrimitiveFunctionCall());
 	}
 
 	private void setInstance() {
 		Value type = this.types.getInstance();
-
-		this.setMethod(type, "to_string", new PrimitiveInstanceToString());
-
-		this.setSpecial(type, ".", new PrimitiveInstanceChain());
+		this.setMethod(type, Index.name("to_string"), new PrimitiveInstanceToString());
+		this.setMethod(type, Index.post("."),         new PrimitiveInstanceChain());
 	}
 
 	private void setInteger() {
 		Value type = this.types.getInteger();
-
-		this.setMethod(type, "to_string", new PrimitiveIntegerToString());
-
-		this.setBinary(type, "+",  new PrimitiveIntegerAddition());
-		this.setBinary(type, "-",  new PrimitiveIntegerSubtraction());
-		this.setBinary(type, "*",  new PrimitiveIntegerMultiplication());
-		this.setBinary(type, "/",  new PrimitiveIntegerDivision());
-		this.setBinary(type, "<",  new PrimitiveIntegerOrderLesser());
-		this.setBinary(type, "==", new PrimitiveIntegerComparison());
+		this.setMethod(type, Index.name("to_string"), new PrimitiveIntegerToString());
+		this.setMethod(type, Index.binary("+"),       new PrimitiveIntegerAddition());
+		this.setMethod(type, Index.binary("-"),       new PrimitiveIntegerSubtraction());
+		this.setMethod(type, Index.binary("*"),       new PrimitiveIntegerMultiplication());
+		this.setMethod(type, Index.binary("/"),       new PrimitiveIntegerDivision());
+		this.setMethod(type, Index.binary("<"),       new PrimitiveIntegerOrderLesser());
+		this.setMethod(type, Index.binary("=="),      new PrimitiveIntegerComparison());
 	}
 
 	private void setObject() {
 		Value type = this.types.getObject();
+		this.setMethod(type, Index.binary(">"),  new PrimitiveObjectOrderGreater());
+		this.setMethod(type, Index.binary("<="), new PrimitiveObjectOrderLesserEqual());
+		this.setMethod(type, Index.binary(">="), new PrimitiveObjectOrderGreaterEqual());
+		this.setMethod(type, Index.binary("=="), new PrimitiveObjectComparison());
+		this.setMethod(type, Index.binary("!="), new PrimitiveObjectDifference());
+		this.setMethod(type, Index.pre("&"),     new PrimitiveObjectReference());
+		this.setMethod(type, Index.pre("?"),     new PrimitiveObjectOption());
+		this.setMethod(type, Index.post("."),    new PrimitiveObjectChain());
+	}
 
-		this.setBinary(type, ">",  new PrimitiveObjectOrderGreater());
-		this.setBinary(type, "<=", new PrimitiveObjectOrderLesserEqual());
-		this.setBinary(type, ">=", new PrimitiveObjectOrderGreaterEqual());
-		this.setBinary(type, "==", new PrimitiveObjectComparison());
-		this.setBinary(type, "!=", new PrimitiveObjectDifference());
+	private void setOption() {
+		Value type = this.types.getOption();
 
-		this.setPre(type, "&" , new PrimitiveObjectReference());
-		
-		this.setSpecial(type, ".", new PrimitiveObjectChain());
+		this.setStatic(type, Index.name("Null"),      this.values.getOptionNull());
+		this.setStatic(type, Index.post("()"),        this.newFunction(null, new PrimitiveObjectOption()));
+		this.setMethod(type, Index.name("to_string"), new PrimitiveOptionToString());
+		this.setMethod(type, Index.pre("*"),          new PrimitiveOptionGet());
 	}
 
 	private void setReference() {
 		Value type = this.types.getReference();
-
-		this.setPre(type, "*" , new PrimitiveReferenceGet());
+		this.setStatic(type, Index.post("()"),        this.newFunction(null, new PrimitiveObjectReference()));
+		this.setMethod(type, Index.name("to_string"), new PrimitiveReferenceToString());
+		this.setMethod(type, Index.pre("*"),          new PrimitiveReferenceGet());
 	}
 
 	private void setString() {
 		Value type = this.types.getString();
-
-		this.setMethod(type, "to_string", new PrimitiveStringToString());
-
-		this.setBinary(type, "+" , new PrimitiveStringAddition());
-		this.setBinary(type, "<",  new PrimitiveStringOrderLesser());
-		this.setBinary(type, "==", new PrimitiveStringComparison());
+		this.setMethod(type, Index.name("to_string"), new PrimitiveStringToString());
+		this.setMethod(type, Index.binary("+"),       new PrimitiveStringAddition());
+		this.setMethod(type, Index.binary("<"),       new PrimitiveStringOrderLesser());
+		this.setMethod(type, Index.binary("=="),      new PrimitiveStringComparison());
 	}
 
 	private void setType() {
 		Value type = this.types.getType();
-
-		this.setPost(type, "&" , new PrimitiveTypeReference());
-		this.setSpecial(type, "[]" , new PrimitiveTypeAccess());
+		this.setMethod(type, Index.name("to_string"), new PrimitiveTypeToString());
+		this.setMethod(type, Index.post("&"),         new PrimitiveTypeReference());
+		this.setMethod(type, Index.post("?"),         new PrimitiveTypeOption());
+		this.setMethod(type, Index.post("[]"),        new PrimitiveTypeAccess());
 	}
 
 	private void setScope() {
@@ -142,25 +146,12 @@ public class FactoryPrimitives {
 		}
 	}
 
-	private void setMethod(Value type, String name, Callable callable) {
-		Value function = this.newFunction(name, callable);
-		type.getData().asType().setMethod(Index.name(function.getData().asFunction().getName()), function);
+	private void setStatic(Value type, Index index, Value value) {
+		type.getData().asType().setStatic(index, new Constant(value));
 	}
 
-	private void setPre(Value type, String operator, Callable callable) {
-		type.getData().asType().setMethod(Index.pre(operator), this.newFunction(null, callable));
-	}
-
-	private void setPost(Value type, String operator, Callable callable) {
-		type.getData().asType().setMethod(Index.post(operator), this.newFunction(null, callable));
-	}
-
-	private void setBinary(Value type, String operator, Callable callable) {
-		type.getData().asType().setMethod(Index.binary(operator), this.newFunction(null, callable));
-	}
-
-	private void setSpecial(Value type, String operator, Callable callable) {
-		type.getData().asType().setMethod(Index.special(operator), this.newFunction(null, callable));
+	private void setMethod(Value type, Index index, Callable callable) {
+		type.getData().asType().setMethod(index, this.newFunction(null, callable));
 	}
 
 	private Value newFunction(String name, Callable callable) {

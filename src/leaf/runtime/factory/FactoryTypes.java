@@ -10,6 +10,7 @@ public class FactoryTypes {
 	private Value instance;
 	private Value integer;
 	private Value object;
+	private Value option;
 	private Value reference;
 	private Value string;
 	private Value type;
@@ -22,7 +23,8 @@ public class FactoryTypes {
 		this.function  = this.newType("Function");
 		this.instance  = this.newType("Instance");
 		this.integer   = this.newType("Integer");
-		this.reference = this.newType("Refernece");
+		this.option    = this.newType("Option");
+		this.reference = this.newType("Reference");
 		this.string    = this.newType("String");
 
 		this.type.getData().asType().setParent(this.getObject());
@@ -49,12 +51,12 @@ public class FactoryTypes {
 		return this.integer;
 	}
 
-	public Value getNull() {
-		return null;
-	}
-
 	public Value getObject() {
 		return this.object;
+	}
+
+	public Value getOption() {
+		return this.option;
 	}
 
 	public Value getReference() {

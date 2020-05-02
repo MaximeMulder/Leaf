@@ -3,18 +3,19 @@ package leaf.runtime.primitive;
 import java.util.List;
 
 import leaf.runtime.Engine;
-import leaf.runtime.callable.Callable;
-import leaf.runtime.exception.ErrorArguments;
+import leaf.runtime.Value;
+import leaf.runtime.callable.Primitive4;
 import leaf.runtime.reference.Constant;
 import leaf.runtime.reference.Reference;
 
-public class PrimitiveObjectReference implements Callable {
+public class PrimitiveObjectReference extends Primitive4 {
 	@Override
-	public Reference call(Engine engine, List<Reference> arguments) {
-		if (arguments.size() != 1) {
-			throw new ErrorArguments();
-		}
-		
+	public void parameters(Engine engine, List<Value> parameters) {
+		parameters.add(engine.getTypes().getObject());
+	}
+
+	@Override
+	public Reference execute(Engine engine, List<Reference> arguments) {
 		return new Constant(engine.getValues().getReference(arguments.get(0)));
 	}
 }

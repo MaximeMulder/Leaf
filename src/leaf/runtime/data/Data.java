@@ -25,6 +25,10 @@ public class Data {
 		return (DataName) this;
 	}
 
+	public DataOption asOption() {
+		return (DataOption) this;
+	}
+
 	public DataReference asReference() {
 		return (DataReference) this;
 	}

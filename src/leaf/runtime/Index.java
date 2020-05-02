@@ -6,7 +6,6 @@ public class Index {
 		PRE,
 		POST,
 		BINARY,
-		SPECIAL,
 	};
 	
 	private String string;
@@ -31,10 +30,6 @@ public class Index {
 	
 	public static Index binary(String string) {
 		return new Index(Type.BINARY, string);
-	}
-	
-	public static Index special(String string) {
-		return new Index(Type.SPECIAL, string);
 	}
 	
 	@Override

@@ -7,6 +7,6 @@ import leaf.runtime.reference.Reference;
 public class Null extends Expression {
 	@Override
 	public Reference run(Engine engine) {
-		return new Constant(engine.getValues().getNull());
+		return new Constant(engine.getValues().getOptionNull());
 	}
 }

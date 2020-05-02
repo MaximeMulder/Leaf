@@ -3,11 +3,9 @@ package leaf.runtime.reference;
 import leaf.runtime.Value;
 import leaf.runtime.exception.ErrorWrite;
 
-public class Constant implements Reference {
-	private Value value;
-	
+public class Constant extends Reference {	
 	public Constant(Value value) {
-		this.value = value;
+		super(null, value);
 	}
 	
 	@Override

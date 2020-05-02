@@ -20,8 +20,8 @@ public class Engine {
 		this.self = null;
 		
 		this.types      = new FactoryTypes();
-		this.primitives = new FactoryPrimitives(this);
 		this.values     = new FactoryValues(this);
+		this.primitives = new FactoryPrimitives(this);
 	}
 	
 	public FactoryPrimitives getPrimitives() {

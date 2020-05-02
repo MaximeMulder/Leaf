@@ -2,21 +2,9 @@ package leaf.runtime.reference;
 
 import leaf.runtime.Value;
 
-public class Variable implements Reference {
-	private Value type;
-	private Value value;
-	
+public class Variable extends Reference {
 	public Variable(Value type, Value value) {
-		this.type = type;
-		this.value = value;
-		if (value != null) {
-			this.write(value);
-		}
-	}
-	
-	@Override
-	public Value read() {
-		return this.value;
+		super(type, value);
 	}
 
 	@Override

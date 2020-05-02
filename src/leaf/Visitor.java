@@ -261,6 +261,14 @@ public class Visitor extends Walker {
 	public void caseExpression_OperationPre2(NExpression_OperationPre2 node) {
 		this.set(new OperationPre(
 			(Expression) this.get(node.get_Expression()),
+			"?"
+		));
+	}
+	
+	@Override
+	public void caseExpression_OperationPre3(NExpression_OperationPre3 node) {
+		this.set(new OperationPre(
+			(Expression) this.get(node.get_Expression()),
 			"*"
 		));
 	}

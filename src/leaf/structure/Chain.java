@@ -23,7 +23,7 @@ public class Chain extends Expression {
 		Constant name = new Constant(engine.getValues().getString(this.member));
 		List<Reference> arguments = new ArrayList<Reference>();
 		arguments.add(name);
-		return engine.callMethod(expression, Index.special("."), arguments);
+		return engine.callMethod(expression, Index.post("."), arguments);
 	}
 	
 	public void setExpression(Expression expression) {

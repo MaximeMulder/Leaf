@@ -77,8 +77,9 @@ Parser
 		| {assignment:} [reference:] expression '=' expression
 
 		| {operation_pre1:} [operator:] '&' expression
-		| {operation_pre2:} [operator:] '*' expression
-		| {operation_post1:} expression [operator:] '&' 
+		| {operation_pre2:} [operator:] '?' expression
+		| {operation_pre3:} [operator:] '*' expression
+		| {operation_post1:} expression [operator:] '&'
 		| {operation_post2:} expression [operator:] '?'
 
 		| {operation_binary1:} [left:] expression [operator:] operator_binary1 [right:] expression
@@ -91,7 +92,7 @@ Parser
 
 	Priority
 		Left loop, while, do_while, for, access, call, chain;
-		Left operation_pre1, operation_pre2;
+		Left operation_pre1, operation_pre2, operation_pre3;
 		Left operation_post1, operation_post2;
 		Left operation_binary1;
 		Left operation_binary2;
