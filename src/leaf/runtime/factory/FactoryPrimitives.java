@@ -80,14 +80,14 @@ public class FactoryPrimitives {
 
 	private void setObject() {
 		Value type = this.types.getObject();
+		this.setMethod(type, Index.pre("&"),     new PrimitiveObjectReference());
+		this.setMethod(type, Index.pre("?"),     new PrimitiveObjectOption());
+		this.setMethod(type, Index.post("."),    new PrimitiveObjectChain());
 		this.setMethod(type, Index.binary(">"),  new PrimitiveObjectOrderGreater());
 		this.setMethod(type, Index.binary("<="), new PrimitiveObjectOrderLesserEqual());
 		this.setMethod(type, Index.binary(">="), new PrimitiveObjectOrderGreaterEqual());
 		this.setMethod(type, Index.binary("=="), new PrimitiveObjectComparison());
 		this.setMethod(type, Index.binary("!="), new PrimitiveObjectDifference());
-		this.setMethod(type, Index.pre("&"),     new PrimitiveObjectReference());
-		this.setMethod(type, Index.pre("?"),     new PrimitiveObjectOption());
-		this.setMethod(type, Index.post("."),    new PrimitiveObjectChain());
 	}
 
 	private void setOption() {
@@ -97,6 +97,7 @@ public class FactoryPrimitives {
 		this.setStatic(type, Index.post("()"),        this.newFunction(null, new PrimitiveObjectOption()));
 		this.setMethod(type, Index.name("to_string"), new PrimitiveOptionToString());
 		this.setMethod(type, Index.pre("*"),          new PrimitiveOptionGet());
+		this.setMethod(type, Index.binary("=="),      new PrimitiveOptionComparison());
 	}
 
 	private void setReference() {
@@ -104,6 +105,7 @@ public class FactoryPrimitives {
 		this.setStatic(type, Index.post("()"),        this.newFunction(null, new PrimitiveObjectReference()));
 		this.setMethod(type, Index.name("to_string"), new PrimitiveReferenceToString());
 		this.setMethod(type, Index.pre("*"),          new PrimitiveReferenceGet());
+		this.setMethod(type, Index.binary("=="),      new PrimitiveReferenceComparison());
 	}
 
 	private void setString() {
@@ -120,6 +122,7 @@ public class FactoryPrimitives {
 		this.setMethod(type, Index.post("&"),         new PrimitiveTypeReference());
 		this.setMethod(type, Index.post("?"),         new PrimitiveTypeOption());
 		this.setMethod(type, Index.post("[]"),        new PrimitiveTypeAccess());
+		this.setMethod(type, Index.post("."),         new PrimitiveTypeChain());
 	}
 
 	private void setScope() {
@@ -132,6 +135,7 @@ public class FactoryPrimitives {
 		values.add(this.types.getInstance());
 		values.add(this.types.getInteger());
 		values.add(this.types.getObject());
+		values.add(this.types.getOption());
 		values.add(this.types.getReference());
 		values.add(this.types.getString());
 
