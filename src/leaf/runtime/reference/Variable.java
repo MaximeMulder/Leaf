@@ -11,8 +11,10 @@ public class Variable extends Reference {
 	public void write(Value value) {
 		if (this.type == null) {
 			this.type = value.getType();
+		} else {
+			value.cast(this.type);
 		}
 
-		this.value = value.cast(this.type);
+		this.value = value;
 	}
 }

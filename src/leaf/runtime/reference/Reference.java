@@ -8,15 +8,13 @@ public abstract class Reference {
 	protected Value value;
 	
 	public Reference(Value type, Value value) {
+		this.type = type;
 		if (value != null) {
-			if (type != null) {
-				this.type = type;
+			if (this.type != null) {
 				value.cast(this.type);
 			} else {
 				this.type = value.getType();
 			}
-		} else {
-			this.type = null;
 		}
 
 		this.value = value;
