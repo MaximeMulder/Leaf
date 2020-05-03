@@ -1,0 +1,16 @@
+/**
+ *
+ * This file provides functionnal code examples using types.
+ *
+ */
+
+let a: String = "string";
+
+let b = "string";
+
+let c;
+c = "string";
+
+assert(Object&  == Reference);
+assert(Object?  == Option);
+assert(Object[] == Array);

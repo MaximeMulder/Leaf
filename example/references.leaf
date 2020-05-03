@@ -1,0 +1,16 @@
+/**
+ *
+ * This file provides functionnal code examples using references.
+ *
+ */
+
+let x = 0;
+let y = 1;
+
+let a = &x;
+let b = &y;
+
+*a = 1;
+
+assert(a != b);
+assert(*a == *b);

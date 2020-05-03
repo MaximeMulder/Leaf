@@ -1,13 +1,5 @@
 /**
  *
- * This file aims to provide a playground to experiment with this project language.
+ * This file provides a playground to experiment with the Leaf language.
  *
  */
-
-let a = Option.Null;
-
-print(a);
-
-a = ?Boolean.True;
-
-print(a);

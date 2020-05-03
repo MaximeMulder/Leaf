@@ -1,0 +1,19 @@
+/**
+ *
+ * This file provides functionnal code examples using arrays.
+ *
+ */
+
+let fruits: String[] = ["Apple", "Peach", "Strawberry"];
+print(fruits);
+
+fruits.append("Blueberry");
+fruits.prepend("Banana");
+fruits.remove(2);
+
+print(fruits[3]);
+fruits[1] = "Lemon";
+
+for fruit in fruits {
+	print("This is a " + fruit + ".");
+};

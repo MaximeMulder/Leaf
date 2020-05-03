@@ -1,0 +1,27 @@
+/**
+ *
+ * This file provides functionnal code examples using classes.
+ *
+ */
+
+class Pet {
+	function get_name(self): String {
+		return self.name;
+	};
+
+	function to_string(self): String {
+		return "I am a pet and my name is " + self.name + ".";
+	};
+};
+
+class Dog : Pet {
+	function to_string(self): String {
+		return "Woof! Woof! I am " + self.name + ".";
+	};
+};
+
+let woofie = new(Dog);
+woofie.name = "Woofie";
+
+print(woofie.get_name());
+print(woofie);

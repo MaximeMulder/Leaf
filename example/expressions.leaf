@@ -1,0 +1,19 @@
+/**
+ *
+ * This file provides functionnal code examples using expressions.
+ *
+ */
+
+let a = if (true) {
+	0;
+} else {
+	1;
+};
+
+print(a);
+
+let numbers = for number in [1, 2, 3, 4, 5] {
+	number + 1;
+};
+
+print(numbers);

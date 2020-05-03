@@ -1,0 +1,12 @@
+/**
+ *
+ * This file provides functionnal code examples using options.
+ *
+ */
+
+let a = ?true;
+let b = null;
+
+assert(a == ?true);
+assert(*a == true);
+assert(b == null);

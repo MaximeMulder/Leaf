@@ -1,0 +1,17 @@
+/**
+ *
+ * This file provides functionnal code examples using objetcs.
+ *
+ */
+
+function string(): Type {
+	return String;
+};
+
+function execute(callback: Function): Object {
+	return callback();
+};
+
+let a: execute(string) = "string";
+
+print(a);
