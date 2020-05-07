@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This repository contains the session project of my winter 2020 compilation classes at UQAM, Montreal, Canada.
+This repository contains my session project for the winter 2020 compilation classes of UQAM, Montreal, Canada.
 This project is an interpreter aiming to implement several experimental features for my Leaf language project.
 
 ## How to build
@@ -16,7 +16,7 @@ java -jar sablecc.jar -d src -p leaf ./grammar.sablecc
 ## How to run
 
 You can provide a file name as a command line argument to read and interpret the code of this file.
-You can also provide no argument to type and run code on the console.
+You can also provide no argument to type the input code directly in the console.
 
 ## Language
 
