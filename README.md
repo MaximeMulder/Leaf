@@ -7,7 +7,7 @@ This project is an interpreter aiming to implement several experimental features
 
 ## How to build
 
-This project was made in Java using the compiler compiler [SableCC](http://sablecc.org/). To build the project, download SableCC version 4-beta.2 and run its jar in the project root directory using the command line:
+This project was made in Java using the parser generator [SableCC](http://sablecc.org/). To build the project, download SableCC version 4-beta.2 and run its jar in the project root directory using the command line:
 
 ```shell
 java -jar sablecc.jar -d src -p leaf ./grammar.sablecc
